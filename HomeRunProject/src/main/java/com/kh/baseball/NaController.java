@@ -4,8 +4,10 @@ public class NaController {
 	
 	public void abc() {
 		
-		System.out.println("¾îÂÉ°ÅÀú~~");
-		System.out.println("\³ªµµ 8ÇàÇÔ ¤»");
+		System.out.println("ì–´ìª¼ê±°ì €~~");
+		System.out.println("\ë‚˜ë„ 8í–‰í•¨ ã…‹");
+		System.out.println("å ì™ì˜™å ì‹¬ê³¤ì˜™å ì™ì˜™~~");
+		System.out.println("ï¿½ë¸˜ï¿½ë–¥ ï¿½êµ¹ 8ï¿½ë»¾ï¿½ì˜‰ï¿½ë¾½ï¿½ë¹ï¿½ë¹ï§ï¿½~~");
 	}
 
 }
