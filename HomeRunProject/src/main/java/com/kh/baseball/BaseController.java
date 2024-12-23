@@ -6,6 +6,7 @@ public class BaseController {
 		System.out.println("어쩌고저쩌고");
 		System.out.println("민돌테스트");
 		System.out.println("민돌테스트2");
+		System.out.println("민돌테스트3");
 	}
 	
 
