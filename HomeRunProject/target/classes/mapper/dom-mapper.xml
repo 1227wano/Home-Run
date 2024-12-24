@@ -26,6 +26,45 @@
 		 	   STATUS = 'Y'
 	</select>
 
-
+	<insert id="save" parameterType="dom">
+		INSERT 
+		  INTO 
+		  	   TB_DOM 
+		  	   (
+		  	   DOM_NO, 
+		  	   DOM_NAME, 
+		  	   DOM_CONTENT, 
+		  	   DOM_ADDR
+		  	   )
+		VALUES 
+			   (
+			   SEQ_DOM_NO.NEXTVAL,
+			   #{domName},
+			   #{domContent},
+			   #{domAddr}
+			   )
+	</insert>
+	
+	<insert id="saveDomFile">
+		INSERT
+		  INTO
+		  	   TB_DOM_ATTACHMENT
+		  	   (
+		  	   DOM_ATTACHMENT_NO,
+		  	   REF_DNO,
+		  	   ORIGIN_NAME,
+		  	   CHANGE_NAME,
+		  	   FILE_PATH
+		  	   )
+		VALUES
+		  	   (
+		  	   SEQ_DOM_ATTACHMENT_NO.NEXTVAL,
+		  	   SEQ_DOM_NO.CURRVAL,
+		  	   #{originName},
+		  	   #{changeName},
+		  	   #{filePath},
+		  	   )
+	</insert>
+	
 
 </mapper>
