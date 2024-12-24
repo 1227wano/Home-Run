@@ -1,5 +1,7 @@
 package com.kh.baseball.dom.controller;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,13 +22,11 @@ public class DomController {
 	private final ModelAndViewUtil mv;
 	
 	
-	@GetMapping("domList")
+	@GetMapping("dom")
 	public ModelAndView selectDomList(@RequestParam(value="page", defaultValue="1") int page) {
 		
-		
-		
-		
-		return mv.setViewNameAndData(null, null);
+		Map<String, Object> map = domService.findAll(page);
+		return mv.setViewNameAndData("dom/list", map);
 	}
 	
 	
