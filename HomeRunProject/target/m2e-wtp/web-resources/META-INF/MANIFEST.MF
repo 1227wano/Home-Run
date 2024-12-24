@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
+Built-By: tpgns
+=======
 Built-By: USER
+>>>>>>> f7a5bb65c5b1408e131557f160bc7cf1aac52f27
 Build-Jdk: 11.0.25
 Created-By: Maven Integration for Eclipse
 
