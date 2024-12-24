@@ -17,18 +17,17 @@
 	</bean>
 	
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
-		<!-- MyBatis설정 파일(mybatis-config.xml) 위치를 지정해서 설정 값들을 가져와야함 -->
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
 	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
-		<!-- 기본생성자 없음! 매개변수 생성자 참조 설정 -->
 		<constructor-arg ref="sqlSessionFactory"/>
 	</bean>
 	
 	<mybatis-spring:scan base-package="com.kh.baseball.dom.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.baseball.freeboard.model.dao"/>
+	<mybatis-spring:scan base-package="com.kh.baseball.member.model.dao"/>
 	
 	
 	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
