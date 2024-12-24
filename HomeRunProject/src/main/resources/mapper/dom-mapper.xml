@@ -4,7 +4,27 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.dom.model.dao.DomMapper">
 
-
+	<select id="findTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_DOM
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
+	
+	<select id="findAll" resultType="dom">
+		SELECT
+			   DOM_NO AS domNo,
+			   DOM_NAME AS domName,
+			   DOM_CONTENT AS domContent,
+			   DOM_ADDR AS domAddr,
+			   STATUS
+		  FROM
+		  	   TB_DOM
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
 
 
 
