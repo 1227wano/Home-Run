@@ -124,7 +124,7 @@
 			<!-- Modal body -->
 			<div class="modal-body">
 
-				<form action="로그인 매핑값" name="sign-in" method="post" id="signInForm"
+				<form action="/baseball/login.me" name="sign-in" method="post" id="signInForm"
 					style="margin-bottom: 0;">
 					<table style="cellpadding: 0; cellspacing: 0; margin: 0 auto; width: 100%">
 						<tr>
@@ -133,7 +133,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="text" name="" id="signInId"
+							<td><input type="text" name="userId" id="signInId"
 								class="form-control tooltipstered" maxlength="10"
 								required="required" aria-required="true"
 								style="margin-bottom: 25px; width: 100%; height: 40px; border: 1px solid #d9d9de"
@@ -146,7 +146,7 @@
 						</tr>
 						<tr>
 							<td><input type="password" size="17" maxlength="20" id="signInPw"
-								name="" class="form-control tooltipstered" 
+								name="userPwd" class="form-control tooltipstered" 
 								maxlength="20" required="required" aria-required="true"
 								style="ime-mode: inactive; margin-bottom: 25px; height: 40px; border: 1px solid #d9d9de"
 								placeholder="최소 8자"></td>

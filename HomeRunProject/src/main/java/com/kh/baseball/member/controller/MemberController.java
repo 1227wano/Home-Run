@@ -21,11 +21,15 @@ public class MemberController {
 	private final MemberService memberService;
 	private final ModelAndViewUtil mv;
 	
-	@PostMapping
+	@PostMapping("login.me")
 	public ModelAndView login(Member member, HttpSession session) {
 		
 		Member loginMember = memberService.login(member);
 		
+		log.info("{}" , member);
+		log.info("{}" , loginMember);
+		
+		//return null;
 		session.setAttribute("loginUser", loginMember);
 		session.setAttribute("alertMsg","로그인 완료");
 		return mv.setViewNameAndData("redirect:/", null);

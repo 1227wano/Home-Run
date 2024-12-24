@@ -18,7 +18,7 @@
 	 WHERE
 	        USER_ID = #{userId}
 	  AND   
-	        STATUS = 'Y';
+	        STATUS = 'Y'
 </select>
 
 

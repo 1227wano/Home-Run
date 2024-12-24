@@ -1,8 +1,10 @@
 package com.kh.baseball.member.model.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.kh.baseball.exception.ComparePasswordException;
 import com.kh.baseball.member.model.dao.MemberMapper;
 import com.kh.baseball.member.model.vo.Member;
 
@@ -17,6 +19,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	private final MemberMapper mapper;
 	private final MemberValidator validator;
+	private final PasswordEncryptor passwordEncoder;
 
 	@Override
 	public void join(Member member) {
@@ -28,8 +31,13 @@ public class MemberServiceImpl implements MemberService {
 
 		Member loginMember = validator.validateMemberExists(member);
 		
+		if(!!!passwordEncoder.matches(member.getUserPwd(), loginMember.getUserPwd())) {
+			throw new ComparePasswordException("비밀번호가 일치하지 않습니다.");
+		} else {
+			return loginMember;
+		}
 		
-		return null;
+	
 	}
 
 	@Override
