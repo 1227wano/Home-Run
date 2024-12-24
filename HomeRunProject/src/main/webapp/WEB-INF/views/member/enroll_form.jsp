@@ -60,7 +60,7 @@
     </div>
 
     <!-- 푸터바 -->
-    <jsp:include page="" />
+   <!--  <jsp:include page= /> -->
 
 </body>
 </html>
