@@ -28,6 +28,8 @@
 	</bean>
 	
 	<mybatis-spring:scan base-package="com.kh.baseball.dom.model.dao"/>
+	<mybatis-spring:scan base-package="com.kh.baseball.freeboard.model.dao"/>
+	
 	
 	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
 	      id="transactionManager">
