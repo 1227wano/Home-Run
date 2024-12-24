@@ -23,6 +23,6 @@
 	
 	<context:component-scan base-package="com.kh.baseball" />
 	
-	
+	<!-- 인터셉터 쓰실분은 여기 작성해주세요 -->
 	
 </beans:beans>
