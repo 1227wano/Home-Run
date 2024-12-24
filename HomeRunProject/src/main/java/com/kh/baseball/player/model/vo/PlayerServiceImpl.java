@@ -2,12 +2,26 @@ package com.kh.baseball.player.model.vo;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.kh.baseball.player.model.service.PlayerService;
 
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
 
 	@Override
-	public int insertPlayer(Player player) {
+	public int savePlayer(Player player) {
+		
+		
+		
+		
+		
+		
+		
+		
 		return 0;
 	}
 
