@@ -1,5 +1,6 @@
 package com.kh.baseball.dom.model.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +10,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 @ToString
+@Builder
 public class Dom {
 	
-	
+	private Long domNo;
+	private String domName;
+	private String domContent;
+	private String domAddr;
+	private String status;
 	
 }
