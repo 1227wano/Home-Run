@@ -124,5 +124,9 @@ $RECYCLE.BIN/
 /.metadata/
 /Servers/
 /target/
+**/target/**
 /lib/
 /HomeRunProject/target/m2e-wtp/web-resources/META-INF
+
+.classpath
+.project
