@@ -1,7 +1,10 @@
 package com.kh.baseball.member.model.service;
 
+import org.springframework.stereotype.Service;
+
 import com.kh.baseball.member.model.vo.Member;
 
+@Service
 public class MemberServiceImpl implements MemberService {
 
 	@Override

@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	
 	private final MemberService memberService;
-	private final ModelAndView mn;
 	
 	
 	

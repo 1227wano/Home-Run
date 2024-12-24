@@ -10,20 +10,14 @@
 
 	<typeAliases>
 		<typeAlias type="com.kh.baseball.dom.model.vo.Dom" alias="dom"/>
-<<<<<<< HEAD
-		<typeAlias type="com.kh.baseball.member.model.vo" alias="member"/>
-=======
+		<typeAlias type="com.kh.baseball.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.baseball.freeboard.model.vo.Freeboard" alias="freeboard"/>
->>>>>>> 5e96254919d7136ec1774e5eee6d2c0c620be3d1
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="/mapper/dom-mapper.xml" />
-<<<<<<< HEAD
 		<mapper resource="/mapper/member-mapper.xml"/>
-=======
 		<mapper resource="/mapper/freeboard-mapper.xml" />
->>>>>>> 5e96254919d7136ec1774e5eee6d2c0c620be3d1
 	</mappers>
 
 
