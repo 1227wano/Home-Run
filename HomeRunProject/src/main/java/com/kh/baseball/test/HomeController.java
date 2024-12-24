@@ -1,4 +1,4 @@
-package com.kh.baseball;
+package com.kh.baseball.test;
 
 import java.text.DateFormat;
 import java.util.Date;

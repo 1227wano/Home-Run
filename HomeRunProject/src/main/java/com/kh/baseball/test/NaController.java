@@ -1,4 +1,4 @@
-package com.kh.baseball;
+package com.kh.baseball.test;
 
 public class NaController {
 	
