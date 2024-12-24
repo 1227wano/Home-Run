@@ -35,7 +35,7 @@ public class Player {
 	 * playerDate - sysdate
 	 * playerIntro - <input type="text" placeholder="1000자 이내로 시합성적 및 자신소개글을 입력하세요." required> 
 	 * playerSalary - 희망연봉 -> <input type="number">
-	 * playerNo - 희망 등번호 -> 아이디중복처럼 겹치면 다른 번호를 입력하라고 표시?
+	 * playerNo - 등번호 -> 팀 소속 신청시 입력받은 등번호 조인
 	 * playerStatus - default 'N' (사용자에겐 안보임)
 	 * playerTeam - 선수팀 -> 선수등록신청시는 당연히 없으므로 default '없음' (사용자에겐 안보임)
 	 */
