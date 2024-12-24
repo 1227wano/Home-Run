@@ -8,5 +8,25 @@
 </head>
 <body>
 
+    <div>
+        <br>
+        <div>
+            <input type="hidden" value="${ dom.domNo }" />
+            <img src="/baseball${dom.imagePath}" alt="이미지">
+            <p>
+                <label>${dom.domName}</label>
+            </p>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+        
+
+
+
 </body>
 </html>
