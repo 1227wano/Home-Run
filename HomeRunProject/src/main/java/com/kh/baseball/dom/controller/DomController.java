@@ -26,6 +26,7 @@ public class DomController {
 	public ModelAndView selectDomList(@RequestParam(value="page", defaultValue="1") int page) {
 		
 		Map<String, Object> map = domService.findAll(page);
+		log.info("구장 리스트 정보 : {}, {}", map, map.get("domList"));
 		return mv.setViewNameAndData("dom/list", map);
 	}
 	
