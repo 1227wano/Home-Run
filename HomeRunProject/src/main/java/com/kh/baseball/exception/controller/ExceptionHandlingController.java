@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.baseball.exception.ComparePasswordException;
 import com.kh.baseball.exception.UserIdNotFoundException;
-
-import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +27,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(UserIdNotFoundException.class)
 	protected ModelAndView NoSuchUserIdError(DuplicateKeyException e) {
 		return createErrorResponse("아이디가 존재하지 않습니다.", e);
+	}
+	
+	@ExceptionHandler(ComparePasswordException.class)
+	protected ModelAndView NotMatchingPasswordError(ComparePasswordException e) { 
+		return createErrorResponse("비밀번호가 일치하지 않습니다.", e);
 	}
 
 }
