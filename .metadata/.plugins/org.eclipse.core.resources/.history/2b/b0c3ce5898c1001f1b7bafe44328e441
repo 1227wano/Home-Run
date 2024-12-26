@@ -1,8 +1,0 @@
-package com.kh.baseball.player.model.service;
-
-public interface PlayerService {
-	
-	
-	
-
-}
