@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
@@ -50,17 +49,6 @@ public class DomServiceImpl implements DomService {
 		map.put("pageInfo", pi);
 		
 		return map;
-	}
-
-	@Override
-	public void save(Dom dom, MultipartFile upfile) {
-		
-		mapper.save(dom);
-		
-		if(upfile != null) {
-			mapper.saveDomFile(upfile);
-		}
-		
 	}
 	
 }
