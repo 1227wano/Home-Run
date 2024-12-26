@@ -3,6 +3,7 @@ package com.kh.baseball.player.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,14 +22,20 @@ public class PlayerController {
 	private final PlayerService playerService;
 	private final ModelAndViewUtil mv;
 	
-	@PostMapping("savePlayer")
+	@GetMapping("savePlayerform.player")
+	public String playerform() {
+		return "player/player_form";	// 
+	}
+	
+	@PostMapping("savePlayer.player")
 	public ModelAndView savePlayer(Player player, HttpSession session) {
 		
 		playerService.savePlayer(player);
 		
 		session.setAttribute("alertMsg", "선수 등록 신청 성공");
 		
-		return null;
+		// 응답페이지 미정
+		return mv.setViewNameAndData("", null);
 		
 	}
 	
