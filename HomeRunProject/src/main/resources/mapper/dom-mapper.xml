@@ -19,11 +19,15 @@
 			   DOM_NAME AS domName,
 			   DOM_CONTENT AS domContent,
 			   DOM_ADDR AS domAddr,
-			   STATUS
+			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
 		  FROM
 		  	   TB_DOM
+		  JOIN
+		  	   TB_DOM_ATTACHMENT ON (DOM_NO = REF_DNO)
 		 WHERE
-		 	   STATUS = 'Y'
+		 	   TB_DOM.STATUS = 'Y'
+		   AND
+		   	   TB_DOM_ATTACHMENT.STATUS = 'Y'
 	</select>
 	
 	<select id="findAttachment" resultType="com.kh.baseball.dom.model.vo.DomAttachment">
@@ -31,7 +35,6 @@
 			   DOM_ATTACHMENT_NO domAttachmentNo,
 			   REF_DNO refDno,
 			   ORIGIN_NAME originName,
-			   FILE_PATH || '/' || CHANGE_NAME AS imagePath,
 			   CREATE_DATE createDate,
 			   STATUS
 		  FROM
@@ -59,7 +62,7 @@
 			   )
 	</insert>
 	
-	<insert id="saveDomFile">
+	<insert id="saveDomFile" parameterType="com.kh.baseball.dom.model.vo.DomAttachment">
 		INSERT
 		  INTO
 		  	   TB_DOM_ATTACHMENT
@@ -76,7 +79,7 @@
 		  	   SEQ_DOM_NO.CURRVAL,
 		  	   #{originName},
 		  	   #{changeName},
-		  	   #{filePath},
+		  	   #{filePath}
 		  	   )
 	</insert>
 	

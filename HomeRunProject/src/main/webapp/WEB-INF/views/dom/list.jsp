@@ -16,9 +16,7 @@
             <c:forEach items="${ domList }" var="dom">
 	            <input type="hidden" value="${ dom.domNo }" />
                 <label>${ dom.domName }</label>
-            </c:forEach>
-            <c:forEach items="${ attList }" var="att">
-	            <img src="/baseball${ att.imagePath }" alt="이미지">
+	            <img src="/baseball${ dom.imagePath }" alt="이미지">
             </c:forEach>
             
         </div>
