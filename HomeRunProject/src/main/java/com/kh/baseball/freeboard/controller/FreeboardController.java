@@ -12,5 +12,5 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FreeboardController {
 
-	private final FreeboardService freeboardService;
+	private final FreeboardService freeboardService; 
 }
