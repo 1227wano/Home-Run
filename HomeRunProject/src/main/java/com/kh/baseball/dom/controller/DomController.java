@@ -35,6 +35,12 @@ public class DomController {
 		return mv.setViewNameAndData("dom/list", map);
 	}
 	
+	
+	@GetMapping("saveForm.dom")
+	public String saveForm() {
+		return "dom/enroll_form";
+	}
+	
 	@PostMapping("dom")
 	public ModelAndView save(Dom dom, MultipartFile upfile, HttpSession session) {
 		
@@ -43,7 +49,7 @@ public class DomController {
 		
 		domService.save(dom, upfile);
 		session.setAttribute("alertMsg", "구장 등록 성공");
-		return mv.setViewNameAndData(null, null);
+		return mv.setViewNameAndData("redirect:/dom", null);
 	}
 	
 	

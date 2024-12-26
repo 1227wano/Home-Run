@@ -25,7 +25,22 @@
 		 WHERE
 		 	   STATUS = 'Y'
 	</select>
-
+	
+	<select id="findAttachment" resultType="com.kh.baseball.dom.model.vo.DomAttachment">
+		SELECT
+			   DOM_ATTACHMENT_NO domAttachmentNo,
+			   REF_DNO refDno,
+			   ORIGIN_NAME originName,
+			   FILE_PATH || '/' || CHANGE_NAME AS imagePath,
+			   FILE_PATH filePath,
+			   CREATE_DATE createDate,
+			   STATUS
+		  FROM
+		  	   TB_DOM_ATTACHMENT
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
+ 
 	<insert id="save" parameterType="dom">
 		INSERT 
 		  INTO 

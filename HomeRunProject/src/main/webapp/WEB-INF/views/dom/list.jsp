@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,16 +12,21 @@
     <div>
         <br>
         <div>
-            <input type="hidden" value="${ dom.domNo }" />
-            <img src="/baseball${dom.imagePath}" alt="이미지">
-            <p>
-                <label>${dom.domName}</label>
-            </p>
+            
+            <c:forEach items="${ domList }" var="dom">
+	            <input type="hidden" value="${ dom.domNo }" />
+                <label>${ dom.domName }</label>
+            </c:forEach>
+            <c:forEach items="${ attList }" var="att">
+	            <img src="/baseball${ att.imagePath }" alt="이미지">
+            </c:forEach>
+            
         </div>
+       	<a href="saveForm.dom">구장 등록 폼으로 이동</a>
     </div>
     
     
-    
+    <h1>어이없네</h1>
     
     
     
