@@ -13,6 +13,7 @@ import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
 import com.kh.baseball.dom.model.dao.DomMapper;
 import com.kh.baseball.dom.model.vo.Dom;
+import com.kh.baseball.dom.model.vo.DomAttachment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,13 +42,15 @@ public class DomServiceImpl implements DomService {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		List<Dom> domList = mapper.findAll(rowBounds);
-		
-		log.info("등록된 구장 정보 : {}", domList);
+		List<DomAttachment> attList = mapper.findAttachment();
+//		log.info("등록된 구장 정보 : {}", domList);
+//		log.info("구장별 이미지 정보 : {}", attList);
 		
 		// 4절 데이터 가공
 		Map<String, Object> map = new HashMap();
 		map.put("domList", domList);
 		map.put("pageInfo", pi);
+		map.put("attList", attList);
 		
 		return map;
 	}

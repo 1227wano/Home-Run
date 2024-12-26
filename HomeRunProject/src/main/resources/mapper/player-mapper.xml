@@ -4,7 +4,35 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.player.model.dao.PlayerMapper">
 
-
+	<insert id="savePlayer" parameterType="player">
+	INSERT 
+	  INTO 
+	        TB_PLAYER
+	        (
+	        USER_NO,
+	        GRADE,
+	        PLAYER_POSITION,
+	        PLAYER_DATE,
+	        PLAYER_INTRO,
+	        PLAYER_SALARY,
+	        PLAYER_NO,
+	        PLAYER_STATUS,
+	        PLAYER_TEAM
+	        ) 
+	VALUES
+	        (
+	        1,
+	        1,
+	        2,
+	        SYSDATE,
+	        '나는 잘해',
+	        1000000,
+	        27,
+	        'N',
+	        'N'
+	        );
+	</insert>
+	
 
 
 
