@@ -1,0 +1,57 @@
+package com.kh.baseball.player.model.vo;
+
+import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+// 에너테이션으로 생성들 필요
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class Player {
+	
+	private int userNo;
+	private int grade;
+	private int playerPosition;
+	private Date playerDate;
+	private String playerIntro;
+	private int playerSalary;
+	private int playerNo;
+	private String playerStatus;
+	private String playerTeam;
+	
+	
+	/* 
+	 * 입력받을시
+	 * userNo - 시퀀스
+	 * grade - select(1=프로, 2=아마추어, 3=일반)
+	 * playerPosition - select(1=코칭스태프, 2=투수, 3=포수, 4=내야수, 5=외야수)
+	 * playerDate - input type="date"
+	 * playerIntro
+	 * playerSalary
+	 * playerNo
+	 * playerStatus
+	 * playerTeam
+	 * 
+	 */
+	
+	 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
