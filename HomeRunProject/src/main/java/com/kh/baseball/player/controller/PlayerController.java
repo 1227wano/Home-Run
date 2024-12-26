@@ -11,7 +11,9 @@ import com.kh.baseball.player.model.service.PlayerService;
 import com.kh.baseball.player.model.vo.Player;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class PlayerController {
@@ -19,7 +21,7 @@ public class PlayerController {
 	private final PlayerService playerService;
 	private final ModelAndViewUtil mv;
 	
-	@PostMapping("insert")
+	@PostMapping("savePlayer")
 	public ModelAndView savePlayer(Player player, HttpSession session) {
 		
 		playerService.savePlayer(player);

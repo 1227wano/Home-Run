@@ -13,6 +13,8 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+MANIFEST.MANIFEST
+pom.properties
 
 # External tool builders
 .externalToolBuilders/
