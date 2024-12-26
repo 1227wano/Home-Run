@@ -57,7 +57,7 @@
             <a class="nav-link js-scroll-trigger" href="#">구장</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">팀 및 선수</a>
+            <a class="nav-link js-scroll-trigger" href="savePlayerform.player">팀 및 선수</a> <!-- 임시 -->
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#">야구교실</a>

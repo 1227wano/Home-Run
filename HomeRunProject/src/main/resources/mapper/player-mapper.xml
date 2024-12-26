@@ -21,16 +21,16 @@
 	        ) 
 	VALUES
 	        (
-	        1,
-	        1,
 	        2,
+	        #{grade},
+	        #{playerPosition},
 	        SYSDATE,
-	        '나는 잘해',
-	        1000000,
+	        #{playerIntro},
+	        #{playerSalary},
 	        27,
 	        'N',
 	        'N'
-	        );
+	        )
 	</insert>
 	
 

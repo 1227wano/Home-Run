@@ -24,7 +24,7 @@ public class PlayerController {
 	
 	@GetMapping("savePlayerform.player")
 	public String playerform() {
-		return "player/player_form";	// 
+		return "player/player_enroll";	 
 	}
 	
 	@PostMapping("savePlayer.player")
@@ -33,6 +33,8 @@ public class PlayerController {
 		playerService.savePlayer(player);
 		
 		session.setAttribute("alertMsg", "선수 등록 신청 성공");
+		
+		log.info("입력된거 : {}", player);
 		
 		// 응답페이지 미정
 		return mv.setViewNameAndData("", null);
