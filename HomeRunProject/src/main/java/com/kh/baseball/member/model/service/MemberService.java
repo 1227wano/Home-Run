@@ -10,6 +10,9 @@ public interface MemberService {
 	//로그인
 	Member login(Member member);
 	
+	//로그아웃
+	
+	
 	//아이디 중복 조회
 	String checkId(String userId);
 	

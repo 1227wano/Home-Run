@@ -20,7 +20,6 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
   <!-- Custom styles for this template -->
-  <link href="resources/css/agency.min.css" rel="stylesheet">
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
   
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -82,7 +81,7 @@
           <c:choose>
           	<c:when test="${ empty sessionScope.loginUser }">
           	  <li class="nav-item">
-	          <a class="nav-link js-scroll-trigger" href="/baseball/enrollForm.me">회원가입</a>
+	          <a class="nav-link js-scroll-trigger" href="/baseball/enrollform.me">회원가입</a>
 	          </li>
 	          <li class="nav-item">
 	          <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#log-in">로그인</a>
@@ -96,7 +95,7 @@
 	          <a class="nav-link js-scroll-trigger" href="myPage">마이페이지</a>
 	          </li>
 	          <li class="nav-item">
-	          <a class="nav-link js-scroll-trigger" href="logout" onclick="return confirm('진짜로 로그아웃 하려고?')">로그아웃</a>
+	          <a class="nav-link js-scroll-trigger" href="/baseball/logout.me" >로그아웃</a>
 	          </li>
           	</c:otherwise>
           </c:choose>

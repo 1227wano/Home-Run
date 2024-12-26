@@ -3,7 +3,9 @@ package com.kh.baseball.member.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.baseball.common.ModelAndViewUtil;
@@ -37,6 +39,36 @@ public class MemberController {
 		
 	}
 	
+	
+	@GetMapping("logout.me")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginUser");
+		return "redirect:/";
+	}
+	
+	@GetMapping("enrollform.me")
+	public String enrollFrom(Member member) {
+		return "member/enroll_form";
+	}
+	
+	@PostMapping("sign_up.me")
+	public ModelAndView signUp(Member member, HttpSession session) {
+		memberService.join(member);
+		session.setAttribute("alert", "회원가입 완료");
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	@ResponseBody
+	@GetMapping("idcheck")
+	public String checkId(String userId) {
+		return memberService.checkId(userId);
+	}
+	
+	@ResponseBody
+	@GetMapping("nicknamecheck")
+	public String checkNickName(String nickName) {
+		return memberService.checkNickName(nickName);
+	}
 	
 
 }

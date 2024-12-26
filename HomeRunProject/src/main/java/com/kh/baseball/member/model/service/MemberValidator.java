@@ -2,6 +2,8 @@ package com.kh.baseball.member.model.service;
 
 import org.springframework.stereotype.Component;
 
+import com.kh.baseball.exception.TooLargeValueException;
+import com.kh.baseball.exception.UserFoundException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 import com.kh.baseball.member.model.dao.MemberMapper;
 import com.kh.baseball.member.model.vo.Member;
@@ -23,6 +25,23 @@ public class MemberValidator {
 		throw new UserIdNotFoundException("존재하지 않는 아이디입니다.");
 	}
 	
+	public void validateDuplicateMember(Member member) {
+		Member existingMember = mapper.login(member);
+		if(existingMember != null && !member.getUserId().equals(existingMember.getUserId())) {
+			throw new UserFoundException("이미 존재하는 회원입니다.");
+		}
+	}
+	
+	public void validateIdLength(Member member) {
+		if(member.getUserId().length() > 30) {
+			throw new TooLargeValueException("8글자 이하로 작성해주세요.");
+		}
+	}
+	
+	public void validateJoinMember(Member member) {
+		validateDuplicateMember(member);
+		validateIdLength(member);
+	}
 	
 
 }

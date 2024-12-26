@@ -23,6 +23,15 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void join(Member member) {
+		
+		Member userInfo = mapper.login(member);
+		
+		validator.validateJoinMember(member);
+		
+		member.setUserPwd(passwordEncoder.encode(member.getUserPwd()));
+		
+		mapper.join(member);
+		
 
 	}
 
@@ -36,20 +45,18 @@ public class MemberServiceImpl implements MemberService {
 		} else {
 			return loginMember;
 		}
-		
-	
 	}
+	
+	
 
 	@Override
 	public String checkId(String userId) {
-		// TODO Auto-gene rated method stub
-		return null;
+		return mapper.checkId(userId) >0 ? "NNNNN" : "NNNNY";
 	}
 
 	@Override
 	public String checkNickName(String nickName) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.checkNickName(nickName) > 0 ? "NNNNN" : "NNNNY";
 	}
 
 	@Override
