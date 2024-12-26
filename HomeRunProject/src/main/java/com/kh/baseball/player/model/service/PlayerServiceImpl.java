@@ -1,11 +1,11 @@
-package com.kh.baseball.player.model.vo;
+package com.kh.baseball.player.model.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.kh.baseball.player.model.dao.PlayerMapper;
-import com.kh.baseball.player.model.service.PlayerService;
+import com.kh.baseball.player.model.vo.Player;
 
 import lombok.RequiredArgsConstructor;
 

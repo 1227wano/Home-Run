@@ -12,12 +12,14 @@
 		<typeAlias type="com.kh.baseball.dom.model.vo.Dom" alias="dom"/>
 		<typeAlias type="com.kh.baseball.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.baseball.freeboard.model.vo.Freeboard" alias="freeboard"/>
+		<typeAlias type="com.kh.baseball.player.model.vo.Player" alias="player"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="/mapper/dom-mapper.xml" />
 		<mapper resource="/mapper/member-mapper.xml"/>
 		<mapper resource="/mapper/freeboard-mapper.xml" />
+		<mapper resource="/mapper/player-mapper.xml" />
 	</mappers>
 
 
