@@ -10,7 +10,7 @@ public interface PlayerService {
 	
 	
 	// 선수 등록 신청
-	int savePlayer(Player player);
+	void savePlayer(Player player);
 
 	// 선수 정보 일람
 	List<Player> selectPlayerBoard();			
