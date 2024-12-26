@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.baseball.dom.model.dao.DomMapper">
+
+	<select id="findTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_DOM
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
+	
+	<select id="findAll" resultType="dom">
+		SELECT
+			   DOM_NO AS domNo,
+			   DOM_NAME AS domName,
+			   DOM_CONTENT AS domContent,
+			   DOM_ADDR AS domAddr,
+			   STATUS
+		  FROM
+		  	   TB_DOM
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
+
+	<insert id="save" parameterType="dom">
+		INSERT 
+		  INTO 
+		  	   TB_DOM 
+		  	   (
+		  	   DOM_NO, 
+		  	   DOM_NAME, 
+		  	   DOM_CONTENT, 
+		  	   DOM_ADDR
+		  	   )
+		VALUES 
+			   (
+			   SEQ_DOM_NO.NEXTVAL,
+			   #{domName},
+			   #{domContent},
+			   #{domAddr}
+			   )
+	</insert>
+	
+	<insert id="saveDomFile">
+		INSERT
+		  INTO
+		  	   TB_DOM_ATTACHMENT
+		  	   (
+		  	   DOM_ATTACHMENT_NO,
+		  	   REF_DNO,
+		  	   ORIGIN_NAME,
+		  	   CHANGE_NAME,
+		  	   FILE_PATH
+		  	   )
+		VALUES
+		  	   (
+		  	   SEQ_DOM_ATTACHMENT_NO.NEXTVAL,
+		  	   SEQ_DOM_NO.CURRVAL,
+		  	   #{originName},
+		  	   #{changeName},
+		  	   #{filePath},
+		  	   )
+	</insert>
+	
+
+</mapper>
