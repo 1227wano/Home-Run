@@ -32,7 +32,6 @@
 			   REF_DNO refDno,
 			   ORIGIN_NAME originName,
 			   FILE_PATH || '/' || CHANGE_NAME AS imagePath,
-			   FILE_PATH filePath,
 			   CREATE_DATE createDate,
 			   STATUS
 		  FROM
