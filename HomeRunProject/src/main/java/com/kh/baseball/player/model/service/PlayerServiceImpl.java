@@ -1,8 +1,15 @@
 package com.kh.baseball.player.model.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.player.model.dao.PlayerMapper;
 import com.kh.baseball.player.model.vo.Player;
@@ -14,23 +21,50 @@ import lombok.RequiredArgsConstructor;
 public class PlayerServiceImpl implements PlayerService {
 
 	private final PlayerMapper mapper;
-	// private final ; 검증용 클래스 생성?
-	
+	private final ServletContext context;
 	
 	@Override
-	public void savePlayer(Player player) {
+	public void savePlayer(Player player, MultipartFile upfile) {
 		
-		// 데이터 가공 후 다오로 넘겨서 디비에 인서트
-		// 익셉션핸들러 
-		// 값 검증
+		// 익셉션핸들러 & 값 검증
+		// 파일 유무 체크 / 업로드
 		
+		if(!("".equals(upfile.getOriginalFilename()))) {
+			
+			handleFileUpload(player, upfile);
+			
+		}
 		mapper.savePlayer(player);
+	}
+
+	private void handleFileUpload(Player player, MultipartFile upfile) {
 		
+		String fileName = upfile.getOriginalFilename();
+		String ext = fileName.substring(fileName.lastIndexOf("."));
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		int randomNum = (int) Math.random() * 90000 + 10000;
+		String changeName = currentTime + randomNum + ext;
+		
+		String savePath = context.getRealPath("/resources/upload_files");
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+			// throw new FailToFileUploadException("파일 이상해");	 이거 익셉션 만들어서 넣기..?
+		}
 		
 	}
 
 	@Override
-	public List<Player> selectPlayerBoard() {
+	public List<Player> findAllPlayer(Player userNo) {
+		
+		
+		
+		
+		
 		return null;
 	}
 

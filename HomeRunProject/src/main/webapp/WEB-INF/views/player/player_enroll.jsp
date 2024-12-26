@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>선수 등록용 화면</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="content">
@@ -55,6 +57,19 @@
         </div>
         <br><br>
     </div>
+    
+    <div>
+    <h1>여기 등록된 전체 선수 열람</h1>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     <script>
         $(function(){
