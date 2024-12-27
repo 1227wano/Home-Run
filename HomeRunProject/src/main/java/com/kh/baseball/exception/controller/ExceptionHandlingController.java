@@ -42,6 +42,7 @@ public class ExceptionHandlingController {
 	protected ModelAndView NoSuchNoticeError(NoticeNotFoundException e) {
 		return createErrorResponse("게시글이 존재하지 않습니다.", e);
 	}
+	
 	//-----Player Exception
 	@ExceptionHandler(PlayerNotFoundException.class)
 	protected ModelAndView NoSuchBoardError(PlayerNotFoundException e) {

@@ -2,142 +2,113 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
-<html lang="ko">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>공지사항</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #F9F9F9;
-      color: #333;
-    }
-    .content {
-      width: 80%;
-      margin: 50px auto;
-      background-color: white;
-      padding: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    #searchForm {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    #searchForm select,
-    #searchForm input {
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    #searchForm select {
-      margin-right: 10px;
-      width: 100px;
-    }
-    #searchForm input {
-      flex: 1;
-      margin-right: 10px;
-    }
-    #searchForm button {
-      padding: 8px 20px;
-      background-color: black;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    #searchForm button:hover {
-      background-color: #444;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table th {
-      text-align: center;
-      background-color: #F4F4F4;
-      padding: 10px;
-      font-weight: bold;
-      border: 1px solid #ddd;
-    }
-    table td {
-      padding: 10px;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-    th:nth-child(1), td:nth-child(1) {
-      width: 10%;
-      text-align: center;
-    }
-    th:nth-child(2), td:nth-child(2) {
-      width: 70%;
-    }
-    th:nth-child(3), td:nth-child(3) {
-      width: 20%;
-      text-align: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .content {
+            background-color:rgb(247, 245, 245);
+            width:80%;
+            margin:auto;
+        }
+        .innerOuter {
+            border:1px solid lightgray;
+            width:80%;
+            margin:auto;
+            padding:5% 10%;
+            background-color:white;
+        }
+
+        #noticeList {text-align:center;}
+        #noticeList>tbody>tr:hover {cursor:pointer;}
+
+        #pagingArea {width:fit-content; margin:auto;}
+        
+        #searchForm {
+            width:80%;
+            margin:auto;
+        }
+        #searchForm>* {
+            float:left;
+            margin:5px;
+        }
+        .select {width:20%;}
+        .text {width:53%;}
+        .searchBtn {width:20%;}
+    </style>
 </head>
 <body>
+    
+    <jsp:include page="../common/menubar.jsp" />
 
-	<jsp:include page="../common/menubar.jsp" />
-	
-	  <div class="content">
-	  	<br><br>
-	    <h2>공지사항</h2>
-	    <br>
-	    <form id="searchForm" action="/searchNotice" method="get">
-	      <select name="condition">
-	        <option value="title">제목</option>
-	        <option value="content">내용</option>
-	      </select>
-	      <input type="text" name="keyword" placeholder="검색어를 입력하세요">
-	      <button type="submit">검색</button>
-	    </form>
-	     <h2>공지사항 목록</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>작성일</th>
-                    <th>첨부파일</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="notice" items="${noticeList}">
+    <div class="content">
+        <br><br>
+        <div class="innerOuter" style="padding:5% 10%;">
+            <h2>공지사항</h2>
+            <br>
+            <br>
+            <table id="noticeList" class="table table-hover" align="center">
+                <thead>
                     <tr>
-                        <td>${notice.noticeNo}</td>
-                        <td>${notice.title}</td>
-                        <td>${notice.creationDate}</td>
+                        <th>글번호</th>
+                        <th>제목</th>
+                        <th>작성일</th>
+                        <th>첨부파일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${ notice.noticeNo }</td>
+                        <td>${ notice.noticeTitle }</td>
+                        <td>${ notice.creationDate }</td>
                         <td>
-                            <c:if test="${not empty notice.attachment}">
-                                <a href="${notice.attachment}" download>💌</a>
-                            </c:if>
-                            <c:if test="${empty notice.attachment}">
-                                없음
-                            </c:if>
+                        	<c:if test="${ not empty notice.attachment }">
+                        		💌
+                        	</c:if>
                         </td>
                     </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-	  </div>
-	  
-	  
-	  
+                </tbody>
+            </table>
+            <br>
+
+            <div id="pagingArea">
+                <ul class="pagination">
+                    <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+                </ul>
+            </div>
+
+            <br clear="both"><br>
+
+            <form id="searchForm" action="" method="get" align="center">
+                <div class="select">
+                    <select class="custom-select" name="condition">
+                        <option value="writer">작성자</option>
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                    </select>
+                </div>
+                <div class="text">
+                    <input type="text" class="form-control" name="keyword">
+                </div>
+                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+            </form>
+            <br><br>
+        </div>
+        <br><br>
+
+    </div>
+
+    <jsp:include page="" />
+
 </body>
 </html>

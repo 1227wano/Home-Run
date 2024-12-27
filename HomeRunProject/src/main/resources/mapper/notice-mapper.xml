@@ -9,8 +9,7 @@
 				COUNT(*)
 		  FROM
 		  		TB_NOTICE
-		 WHERE
-		 		STATUS = 'Y'
+		 
 	</select>
 	
 	<select id="selectNoticeList" resultType="notice">
