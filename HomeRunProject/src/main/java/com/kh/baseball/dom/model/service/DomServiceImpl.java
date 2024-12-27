@@ -83,7 +83,7 @@ public class DomServiceImpl implements DomService {
 		// 첨부파일이 존재했다 => 업로드 + Board객체에 originName , changeName set
 		domAtt.setOriginName(fileName);
 		domAtt.setChangeName(changeName);
-		domAtt.setFilePath(savePath);
+		domAtt.setFilePath("/resources/upload_files/");
 	}
 
 	@Override
