@@ -75,7 +75,7 @@
 
 <select id="searchId" resultType="member" parameterType="member">
 	SELECT
-	        USER_ID userId
+	        USER_ID AS userId
 	  FROM 
 	        TB_USER
 	 WHERE
