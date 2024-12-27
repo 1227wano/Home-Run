@@ -1,6 +1,8 @@
 package com.kh.baseball.member.model.service;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -23,6 +25,15 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void join(Member member) {
+		
+		Member userInfo = mapper.login(member);
+		
+		validator.validateJoinMember(member);
+		
+		member.setUserPwd(passwordEncoder.encode(member.getUserPwd()));
+		
+		mapper.join(member);
+		
 
 	}
 
@@ -36,26 +47,30 @@ public class MemberServiceImpl implements MemberService {
 		} else {
 			return loginMember;
 		}
-		
-	
 	}
+	
+	
 
 	@Override
 	public String checkId(String userId) {
-		// TODO Auto-gene rated method stub
-		return null;
+		return mapper.checkId(userId) > 0 ? "IIIII" : "IIIIY";
 	}
 
 	@Override
 	public String checkNickName(String nickName) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.checkNickName(nickName) > 0 ? "NNNNN" : "NNNNY";
 	}
 
 	@Override
-	public String findById(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> searchId(Member member) {
+		
+		Member searchId = validator.validateIdExists(member);
+		Map<String, Object> map = new HashMap();
+		map.put("successId", searchId);
+		
+		return map;
+		
+	
 	}
 
 	@Override

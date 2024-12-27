@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -48,11 +49,11 @@ public class PlayerController {
 	
 	// 등록된 전체 선수 열람
 	@GetMapping("findAllPlayer.player")
-	public ModelAndView findAllPlayer() {
+	public ModelAndView findAllPlayer(@RequestParam(value="page", defaultValue="1") int page) {
 		
-		Map<String, Object> map = playerService.findAllPlayer();
+		Map<String, Object> map = playerService.findAllPlayer(page);
 		
-		return mv.setViewNameAndData("player/list", map);
+		return mv.setViewNameAndData("player/list", map); // player/list 아직 없음
 	}
 	
 	

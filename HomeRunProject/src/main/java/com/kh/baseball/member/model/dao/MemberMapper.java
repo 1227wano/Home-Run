@@ -8,6 +8,14 @@ import com.kh.baseball.member.model.vo.Member;
 public interface MemberMapper {
 
 	Member login(Member member);
+
+	void join(Member member);
+
+	int checkId(String userId);
+
+	int checkNickName(String nickName);
+
+	Member searchId(Member member);
 	
 	
 	
