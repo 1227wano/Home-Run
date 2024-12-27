@@ -49,7 +49,7 @@
 
 </insert>
 
-<select id="checkId" resultType="_int">
+<select id="checkId" parameterType="string" resultType="_int">
 	SELECT
 	        COUNT(*)
 	  FROM
@@ -62,7 +62,7 @@
 
 
 
-<select id="checkNickName" resultType="_int">
+<select id="checkNickName" parameterType="string" resultType="_int">
 	SELECT
 			COUNT(*)
 	  FROM
@@ -71,6 +71,17 @@
 			NICKNAME = #{nickName}
 	  AND
 	  		STATUS = 'Y'
+</select>
+
+<select id="searchId" resultType="member" parameterType="member">
+	SELECT
+	        USER_ID userId
+	  FROM 
+	        TB_USER
+	 WHERE
+	        USER_NAME = #{userName}
+	   AND 
+	        PHONE = #{phone}
 </select>
 
 

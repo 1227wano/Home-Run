@@ -22,15 +22,17 @@
             
             <script>
             
-            $(function(){
+       
+            
+            function idcheck(){
             	
             	const $idInput = $('#enroll_form > #userId');
             	const $checkResult = $('#check-result');
             	const $joinBtn = $('#join-btn');
             	
-            	$idInput.keyup(function(){
-            	
-            		if( $idInput.val().length >= 8){
+        
+     
+            		if( $idInput.val().length >= 5){
             			
             			$.ajax({
             				
@@ -40,8 +42,10 @@
             					userId : $idInput.val()
             				},
             				success : function(result){
-            					//console.log(result);
-            					if(result.substr(4) === 'N'){
+            					
+            					console.log(result);
+            					
+            					if(result.substr(4) === 'I'){
             						$checkResult.show().css('color', 'red').text('사용할 수 없는 아이디입니다.');
             						$joinBtn.attr('disabled',true);
             					}else{
@@ -50,38 +54,46 @@
             					}
             				}	
             			});
-            		}           		
-            	});
+            		         		
+            	}
 	
-            }); 
+            }
             
-            $(function(){
+            function nicknamecheck(){
             	
             	const $nickNameInput = $('#enroll_form > #nickName');
-            	const $checkResult2 = $('#checkResult2');
+            	const $nickNameCheckResult = $('#nickNameCheckResult');
             	const $joinBtn = $('#join-btn');
             	
-            	$nickNameInput.keyup(function(){
-            		if($nickNameInput.val().length >= 8){
-            			$ajax({
+            		
+            		if($nickNameInput.val().length >= 2){
+            			
+            			$.ajax({
+            				
             				url : 'nicknamecheck',
-            				type : 'get',
+            				type : 'get',  
             				data : {
-            					nickName : $nickName.val()
+            					
+            					nickName : $nickNameInput.val()
             				},
             				success : function(result){
+            					
+            					console.log(result);
+            					
             					if(result.substr(4) === 'N'){
-            						$checkResult.show().css('color','red').text('이미 사용중인 닉네임입니다.');
+            						$nickNameCheckResult.show().css('color','red').text('이미 사용중인 닉네임입니다.');
             						$joinBtn.attr('disabled',true);
             					}else{
-            						$checkResult.show().css('color', 'blue').text('사용 가능한 닉네임입니다.');
+            						$nickNameCheckResult.show().css('color', 'blue').text('사용 가능한 닉네임입니다.');
             						$joinBtn.removeAttr('disabled');
             					}
+            					
             				}
+            				
             			});
             		}
-            	});
-            });
+            	}
+            
             
             
             
@@ -90,6 +102,7 @@
                 <div class="form-group" id="enroll_form">
                     <label for="userId"> 아이디 </label>
                     <input type="text" class="form-control" id="userId" placeholder="아이디를 입력해주세요" name="userId" required> 
+                    <button type="button" onclick="idcheck()">중복확인</button> <br>
                     <div id="check-result" style="fonst-size:0.7em; display:none;"></div> <br>
 
                     <label for="userPwd"> 비밀번호 </label>
@@ -102,7 +115,9 @@
                     <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요" name="userName" required> <br>
 
                     <label for="nickName"> 닉네임 </label>
-                    <input type="text" class="form-control" id="email" placeholder="닉네임을 입력해주세요" name="nickName"> <br>
+                    <input type="text" class="form-control" id="nickName" placeholder="닉네임을 입력해주세요" name="nickName">
+                    <button type="button" onclick="nicknamecheck()" >중복확인</button> <br>
+                    <div id="nickNameCheckResult" style="fonst-size:0.7em; display:none;"></div> <br>
 
                     <label for="phone"> 전화번호 </label>
                     <input type="number" class="form-control" id="age" placeholder="전화번호를 입력해주세요" name="phone"> <br>

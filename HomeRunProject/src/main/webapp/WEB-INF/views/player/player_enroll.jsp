@@ -65,6 +65,6 @@
 
     </script>
 
-    <jsp:include page="푸터푸터" />
+    <!--<jsp:include page="푸터푸터" />-->
 </body>
 </html>

@@ -13,7 +13,7 @@
 
     <br> 
     <div align="center">
-        <h2>ERROR</h2>
+        <h2>${ errorMsg }</h2>
         <br><br>
         <h1 style="font-weight:bold;"></h1>
     </div>

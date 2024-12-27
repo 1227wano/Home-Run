@@ -1,5 +1,7 @@
 package com.kh.baseball.member.model.service;
 
+import java.util.Map;
+
 import com.kh.baseball.member.model.vo.Member;
 
 public interface MemberService {
@@ -20,7 +22,7 @@ public interface MemberService {
 	String checkNickName(String nickName);
 	
 	//아이디 찾기
-	String findById(Member member);
+	Map<String, Object> searchId(Member member);
 	
 	//비밀번호 찾기 
 	String findByPassword(Member member);

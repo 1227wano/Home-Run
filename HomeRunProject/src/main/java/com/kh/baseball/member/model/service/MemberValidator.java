@@ -2,6 +2,7 @@ package com.kh.baseball.member.model.service;
 
 import org.springframework.stereotype.Component;
 
+import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.exception.UserFoundException;
 import com.kh.baseball.exception.UserIdNotFoundException;
@@ -41,6 +42,16 @@ public class MemberValidator {
 	public void validateJoinMember(Member member) {
 		validateDuplicateMember(member);
 		validateIdLength(member);
+	}
+	
+	public Member validateIdExists(Member member) {
+		
+		System.out.println(member);
+		Member existingId = mapper.searchId(member);
+		if(existingId != null) {
+			return existingId;
+		}
+		throw new IdNotFoundException("아이디가 존재하지 않습니다.");
 	}
 	
 

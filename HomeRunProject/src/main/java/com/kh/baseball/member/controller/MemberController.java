@@ -1,5 +1,7 @@
 package com.kh.baseball.member.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -70,5 +72,17 @@ public class MemberController {
 		return memberService.checkNickName(nickName);
 	}
 	
+	@GetMapping("searchId")
+	public String searchId(Member member) {
+		return "member/searchId";
+	}
+	
+	@PostMapping("findById.me")
+	public ModelAndView findById(Member member) {
+		log.info("{}" , member);
+		Map<String, Object> successId = memberService.searchId(member);
+		
+		return mv.setViewNameAndData("member/searchIdSuccess", successId);
+	}
 
 }
