@@ -13,6 +13,7 @@
 		<typeAlias type="com.kh.baseball.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.baseball.freeboard.model.vo.Freeboard" alias="freeboard"/>
 		<typeAlias type="com.kh.baseball.player.model.vo.Player" alias="player"/>
+		<typeAlias type="com.kh.baseball.notice.model.vo.Notice" alias="notice"/>
 	</typeAliases>
 
 	<mappers>
@@ -20,6 +21,7 @@
 		<mapper resource="/mapper/member-mapper.xml"/>
 		<mapper resource="/mapper/freeboard-mapper.xml" />
 		<mapper resource="/mapper/player-mapper.xml" />
+		<mapper resource="/mapper/notice-mapper.xml" />
 	</mappers>
 
 
