@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.baseball.exception.ComparePasswordException;
+import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,12 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(ComparePasswordException.class)
 	protected ModelAndView NotMatchingPasswordError(ComparePasswordException e) { 
 		return createErrorResponse("비밀번호가 일치하지 않습니다.", e);
+	}
+	
+	//-----Player Exception
+	@ExceptionHandler(PlayerNotFoundException.class)
+	protected ModelAndView NoSuchBoardError(PlayerNotFoundException e) {
+		return createErrorResponse("선수가 존재하지 않습니다.", e);
 	}
 
 }

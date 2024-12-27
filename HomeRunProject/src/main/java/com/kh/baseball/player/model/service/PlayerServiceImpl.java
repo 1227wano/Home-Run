@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.player.model.dao.PlayerMapper;
 import com.kh.baseball.player.model.vo.Player;
 
@@ -27,8 +28,7 @@ public class PlayerServiceImpl implements PlayerService {
 		int totalCount = mapper.selectTotalCount();
 
 		if (totalCount == 0) {
-			
-			// 익셉션 만들면 throw new PlayerNotFoundException("등록된 선수 없어");
+			throw new PlayerNotFoundException("등록된 선수가 없습니다");
 		}
 		return totalCount;
 	}
@@ -69,10 +69,13 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public Map<String, Object> findAllPlayer() {
+	public Map<String, Object> findAllPlayer(int currentPage) {
 		
-		// 리스트가 비어있는 경우
-		// 
+		// 총 개수 == DB 조회
+		// 요청 페이지 == currentPage
+		// 첫 페이지에 선수 몇명? == 15명 -> 더보기버튼으로 15명씩 추가 셀렉
+		int totalCount = getTotalCount();
+		
 		
 		
 		
