@@ -29,6 +29,7 @@
 	<mybatis-spring:scan base-package="com.kh.baseball.freeboard.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.baseball.member.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.baseball.player.model.dao"/>
+	<mybatis-spring:scan base-package="com.kh.baseball.notice.model.dao"/>
 	
 	
 	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
