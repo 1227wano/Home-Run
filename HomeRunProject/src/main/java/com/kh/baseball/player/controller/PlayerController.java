@@ -1,5 +1,7 @@
 package com.kh.baseball.player.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -46,11 +48,11 @@ public class PlayerController {
 	
 	// 등록된 전체 선수 열람
 	@GetMapping("findAllPlayer.player")
-	public ModelAndView findAllPlayer(Player userNo) {
+	public ModelAndView findAllPlayer() {
 		
-		playerService.findAllPlayer(userNo);
+		Map<String, Object> map = playerService.findAllPlayer();
 		
-		
+		return mv.setViewNameAndData("player/list", map);
 	}
 	
 	

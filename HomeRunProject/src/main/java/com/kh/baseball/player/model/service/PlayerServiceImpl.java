@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -22,6 +22,16 @@ public class PlayerServiceImpl implements PlayerService {
 
 	private final PlayerMapper mapper;
 	private final ServletContext context;
+	
+	private int getTotalCount() {
+		int totalCount = mapper.selectTotalCount();
+
+		if (totalCount == 0) {
+			
+			// 익셉션 만들면 throw new PlayerNotFoundException("등록된 선수 없어");
+		}
+		return totalCount;
+	}
 	
 	@Override
 	public void savePlayer(Player player, MultipartFile upfile) {
@@ -59,9 +69,10 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public List<Player> findAllPlayer(Player userNo) {
+	public Map<String, Object> findAllPlayer() {
 		
-		
+		// 리스트가 비어있는 경우
+		// 
 		
 		
 		

@@ -1,6 +1,7 @@
 package com.kh.baseball.player.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +15,7 @@ public interface PlayerService {
 	void savePlayer(Player player, MultipartFile upfile);
 
 	// 선수 정보 일람
-	List<Player> findAllPlayer(Player userNo);			
+	Map<String, Object> findAllPlayer();			
 
 	// 선수 정보 상세조회
 	Player selectPlayer(int userNo);
