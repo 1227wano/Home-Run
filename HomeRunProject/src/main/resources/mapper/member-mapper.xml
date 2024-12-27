@@ -21,7 +21,7 @@
 	        STATUS = 'Y'
 </select>
 
-<insert id="join">
+<insert id="join" parameterType="member">
 	INSERT
 	  INTO
 	        TB_USER
