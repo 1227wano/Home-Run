@@ -4,6 +4,24 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.dom.model.dao.DomMapper">
 
+	<sql id="domColumn">
+		SELECT
+			   DOM_NO AS domNo,
+			   DOM_NAME AS domName,
+			   DOM_CONTENT AS domContent,
+			   DOM_ADDR AS domAddr,
+			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
+	</sql>
+	
+	<sql id="domAttachmentColumn" >
+		SELECT
+			   DOM_ATTACHMENT_NO domAttachmentNo,
+			   REF_DNO refDno,
+			   ORIGIN_NAME originName,
+			   CREATE_DATE createDate,
+			   TB_DOM_ATTACHMENT.STATUS status
+	</sql>
+
 	<select id="findTotalCount" resultType="_int">
 		SELECT
 			   COUNT(*)
@@ -14,12 +32,7 @@
 	</select>
 	
 	<select id="findAll" resultType="dom">
-		SELECT
-			   DOM_NO AS domNo,
-			   DOM_NAME AS domName,
-			   DOM_CONTENT AS domContent,
-			   DOM_ADDR AS domAddr,
-			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
+		<include refid="domColumn" />
 		  FROM
 		  	   TB_DOM
 		  JOIN
@@ -28,19 +41,33 @@
 		 	   TB_DOM.STATUS = 'Y'
 		   AND
 		   	   TB_DOM_ATTACHMENT.STATUS = 'Y'
+		 ORDER
+		 	BY
+		       DOM_NO DESC
+	</select>
+	
+	<select id="findById" resultType="dom" parameterType="long">
+		<include refid="domColumn" />
+		  FROM
+		  	   TB_DOM
+		  JOIN
+		  	   TB_DOM_ATTACHMENT ON (DOM_NO = REF_DNO)
+		 WHERE
+		 	   TB_DOM.STATUS = 'Y'
+		   AND
+		   	   TB_DOM_ATTACHMENT.STATUS = 'Y'
+		   AND
+		   	   DOM_NO = #{domNo}
 	</select>
 	
 	<select id="findAttachment" resultType="com.kh.baseball.dom.model.vo.DomAttachment">
-		SELECT
-			   DOM_ATTACHMENT_NO domAttachmentNo,
-			   REF_DNO refDno,
-			   ORIGIN_NAME originName,
-			   CREATE_DATE createDate,
-			   STATUS
+		<include refid="domAttachmentColumn" />
 		  FROM
 		  	   TB_DOM_ATTACHMENT
+		  JOIN
+		  	   TB_DOM ON (REF_DNO = DOM_NO)
 		 WHERE
-		 	   STATUS = 'Y'
+		 	   TB_DOM_ATTACHMENT.STATUS = 'Y'
 	</select>
  
 	<insert id="save" parameterType="dom">

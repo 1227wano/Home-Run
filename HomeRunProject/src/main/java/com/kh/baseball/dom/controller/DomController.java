@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,11 +45,31 @@ public class DomController {
 	@PostMapping("dom")
 	public ModelAndView save(Dom dom, MultipartFile upfile, HttpSession session) {
 		
-		log.info("구장 정보 : {}, 파일 정보 : {}", dom, upfile);
-		log.info("원본파일명 : {}", upfile.getOriginalFilename());
+//		log.info("구장 정보 : {}, 파일 정보 : {}", dom, upfile);
+//		log.info("원본파일명 : {}", upfile.getOriginalFilename());
 		
 		domService.save(dom, upfile);
-		session.setAttribute("alertMsg", "구장 등록 성공");
+//		session.setAttribute("alertMsg", "구장 등록 성공");
+		return mv.setViewNameAndData("redirect:/dom", null);
+	}
+	
+	@GetMapping("dom/{id}")
+	public ModelAndView detailForm(@PathVariable(name="id") Long id) {
+		
+		log.info("넘어온 구장 식별 번호 : {}", id);
+		
+//		Map<String, Object> map = domService.findById(id);
+//		log.info("가져온 구장 정보 : {}", map.get("dom"));
+		
+		return mv.setViewNameAndData("dom/detail_form", null);
+	}
+	
+	
+	@GetMapping("delete.dom")
+	public ModelAndView delete(Dom dom) {
+		
+		
+		
 		return mv.setViewNameAndData("redirect:/dom", null);
 	}
 	

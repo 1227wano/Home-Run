@@ -54,7 +54,7 @@ public class DomServiceImpl implements DomService {
 //		log.info("구장별 이미지 정보 : {}", attList);
 		
 		// 4절 데이터 가공
-		Map<String, Object> map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("domList", domList);
 		map.put("pageInfo", pi);
 		map.put("attList", attList);
@@ -70,7 +70,7 @@ public class DomServiceImpl implements DomService {
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int randomNum = (int)(Math.random() * 90000) + 10000;
 		
-		String changeName = "KH_Hyper_" + currentTime + "_" + randomNum + ext;
+		String changeName = "KH_HomeRun_" + currentTime + "_" + randomNum + ext;
 		
 		// 맨뒤 / 는 upload_files폴더 내부에 만들거다 라는 의미
 		String savePath = context.getRealPath("/resources/upload_files/");
@@ -83,7 +83,7 @@ public class DomServiceImpl implements DomService {
 		// 첨부파일이 존재했다 => 업로드 + Board객체에 originName , changeName set
 		domAtt.setOriginName(fileName);
 		domAtt.setChangeName(changeName);
-		domAtt.setFilePath("/resources/upload_files/");
+		domAtt.setFilePath(savePath);
 	}
 
 	@Override
@@ -100,5 +100,19 @@ public class DomServiceImpl implements DomService {
 		}
 		
 	}
+
+	@Override
+	public Map<String, Object> findById(Long id) {
+		
+		Map<String, Object> map = new HashMap<>();
+		Dom dom = mapper.findById(id);
+		map.put("dom", dom);
+		
+		
+		return map;
+	}
+
+	
+	
 	
 }
