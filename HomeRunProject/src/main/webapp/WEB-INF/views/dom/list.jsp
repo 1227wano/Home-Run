@@ -54,7 +54,7 @@
 	    	}
     	</script>
         
-	    <a href="saveForm.dom">구장 등록 폼으로 이동</a>
+	    <a href="/baseball/saveForm.dom">구장 등록 폼으로 이동</a>
     </div>
     
     

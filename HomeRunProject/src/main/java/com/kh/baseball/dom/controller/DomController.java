@@ -64,14 +64,22 @@ public class DomController {
 		return mv.setViewNameAndData("dom/detail_form", map);
 	}
 	
-	
-	@GetMapping("delete.dom")
-	public ModelAndView delete(Dom dom) {
+	@GetMapping("update.dom")
+	public ModelAndView updateForm(Long domNo) {
 		
 		
 		
-		return mv.setViewNameAndData("redirect:/dom", null);
+		return mv.setViewNameAndData("redirect:/dom/" + domNo, null);
 	}
+	
+	
+//	@GetMapping("delete.dom")
+//	public ModelAndView delete(Dom dom, Long userId) {
+//		
+//		log.info("삭제할 구장 정보 : {}", dom);
+//		
+//		return mv.setViewNameAndData("redirect:/dom", null);
+//	}
 	
 	
 }

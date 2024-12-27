@@ -29,7 +29,8 @@
 		src="/baseball${ requestScope.dom.imagePath }" alt="대표이미지">
 		<input type="file" id="" class="form-control-file border" name="upfile">
 	</div>
-
+	
+	
 
 
 </body>
