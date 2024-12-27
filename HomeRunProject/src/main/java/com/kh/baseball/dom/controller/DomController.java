@@ -58,10 +58,10 @@ public class DomController {
 		
 		log.info("넘어온 구장 식별 번호 : {}", id);
 		
-//		Map<String, Object> map = domService.findById(id);
-//		log.info("가져온 구장 정보 : {}", map.get("dom"));
+		Map<String, Object> map = domService.findById(id);
+		log.info("가져온 구장 정보 : {}", map.get("dom"));
 		
-		return mv.setViewNameAndData("dom/detail_form", null);
+		return mv.setViewNameAndData("dom/detail_form", map);
 	}
 	
 	

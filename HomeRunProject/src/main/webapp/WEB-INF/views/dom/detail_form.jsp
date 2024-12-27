@@ -12,21 +12,21 @@
 
 	<div>
 		<label>구장명</label>
-		<input type="text" name="domName" value="${ requestScope.domList.domName }">
+		<input type="text" name="domName" value="${ requestScope.dom.domName }">
 	</div>
 	<!-- <input type="hidden" name="userNo" value="${ loginUser.userNo }" /> -->
 	<div>
 		<label>구장 세부 내용</label>
-		<input type="text" name="domContent" value="${ requestScope.domList.domContent }">
+		<input type="text" name="domContent" value="${ requestScope.dom.domContent }">
 	</div>
 	<div>
 		<label>구장위치</label>
-		<input type="text" name="domAddr" value="${ requestScope.domList.domAddr }">
+		<input type="text" name="domAddr" value="${ requestScope.dom.domAddr }">
 	</div>
 	<div>
 		<label>구장이미지 첨부</label>
-		<img width="300" height="180" name="${ requestScope.domList.originName }" 
-		src="/baseball${ requestScope.domList.filePath }" alt="대표이미지">
+		<img width="300" height="180" name="${ requestScope.dom.imagePath }" 
+		src="/baseball${ requestScope.dom.imagePath }" alt="대표이미지">
 		<input type="file" id="" class="form-control-file border" name="upfile">
 	</div>
 

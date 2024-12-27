@@ -50,7 +50,7 @@
         
         <script>
 	    	function detail(num){
-	    		location.href = `/dom/\${num}`;
+	    		location.href = `/baseball/dom/\${num}`;
 	    	}
     	</script>
         
