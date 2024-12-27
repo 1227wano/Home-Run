@@ -20,5 +20,6 @@ public class Dom {
 	private String domContent;
 	private String domAddr;
 	private String status;
+	private String imagePath;
 	
 }

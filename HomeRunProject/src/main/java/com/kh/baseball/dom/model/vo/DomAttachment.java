@@ -22,5 +22,5 @@ public class DomAttachment {
 	private String filePath;
 	private String createDate;
 	private String status;
-	private String imagePath;
+	
 }

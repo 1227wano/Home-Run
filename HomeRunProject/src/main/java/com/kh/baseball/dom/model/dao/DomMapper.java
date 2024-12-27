@@ -17,10 +17,12 @@ public interface DomMapper {
 	// 등록된 구장 조회
 	List<Dom> findAll(RowBounds rowBounds);
 	List<DomAttachment> findAttachment();
+	// 구장 세부 조회
+	Dom findById(Long domNo);
 	// 구장 등록
-	void save(Dom dom);
+	int save(Dom dom);
 	// 구장 파일 등록
-	void saveDomFile(MultipartFile upfile);
+	int saveDomFile(DomAttachment domAtt);
 
 	
 	

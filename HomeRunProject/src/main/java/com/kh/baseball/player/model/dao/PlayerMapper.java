@@ -8,6 +8,8 @@ import com.kh.baseball.player.model.vo.Player;
 public interface PlayerMapper {
 
 	void savePlayer(Player player);
+
+	int selectTotalCount();
 	
 	
 
