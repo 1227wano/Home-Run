@@ -22,7 +22,7 @@
             <h2>아이디 찾기</h2>
             <br>
             <form action="findById.me" method="post">
-				<div>
+				<div style="width: 40%; margin: auto;">
                 <label for="searchUserName"> 이름 </label>
                 <input type="text" class="form-control" id="searchUserName" placeholder="이름을 입력해주세요" name="userName" required> <br>
 
@@ -32,7 +32,7 @@
 				
 				<br>
 		        <div class="btns" align="center">
-		            <button type="submit" class="btn btn-primary">아이디 찾기</button>
+		            <button type="submit" class="btn btn-primary" style="color: #003876">아이디 찾기</button>
 		        </div>
 						
 				

@@ -49,7 +49,7 @@
         
         <div class="search" align="center">
 				
-            <a href="#" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px; "> HOME </a> |
+            <a href="home" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px; "> HOME </a> |
         
             <a href="#" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 찾기</a>
         

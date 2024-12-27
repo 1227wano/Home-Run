@@ -17,7 +17,7 @@
     <div class="content">
         <br><br>
         <div class="innerOuter">
-            <h2>회원가입</h2>
+            <h2 style="text-align: center;">회원가입</h2>
             <br>
             
             <script>
@@ -99,7 +99,7 @@
             
             </script>
             <form action="sign_up.me" method="post">
-                <div class="form-group" id="enroll_form">
+                <div class="form-group" id="enroll_form" style="width: 50%; margin: auto;">
                     <label for="userId"> 아이디 </label>
                     <input type="text" class="form-control" id="userId" placeholder="아이디를 입력해주세요" name="userId" required> 
                     <button type="button" onclick="idcheck()">중복확인</button> <br>
