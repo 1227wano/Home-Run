@@ -8,9 +8,25 @@
 		SELECT
 				COUNT(*)
 		  FROM
-		  		NOTICE
+		  		TB_NOTICE
 		 WHERE
 		 		STATUS = 'Y'
+	</select>
+	
+	<select id="selectNoticeList" resultType="notice">
+		SELECT
+				NOTICE_NO noticeNo,
+				NOTICE_TITLE noticeTitle,
+				NOTICE_CONTENT noticeContent,
+				TO_CHAR(CREATION_DATE, 'YYYY-MM-DD') as creationDate,
+				ORIGIN_NAME originName
+	 	  FORM
+	 	  		NOTICE
+	 	 WHERE
+	 	 		STATUS = 'Y'
+	 	 ORDER
+	 	 	BY
+	 	 		NOTICE_NO DESC
 	</select>
 
 

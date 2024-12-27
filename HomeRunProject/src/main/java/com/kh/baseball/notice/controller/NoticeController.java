@@ -23,10 +23,8 @@ public class NoticeController {
 	
 	@GetMapping("notices")
 	public ModelAndView selectNoticeList(@RequestParam(value="page", defaultValue="1") int page) {
-		
 		Map<String, Object> map = noticeService.selectNoticeList(page);
-		
-		return mv.setViewNameAndData(null, map);
+		return mv.setViewNameAndData("notice/list", map);
 	}
 	
 	

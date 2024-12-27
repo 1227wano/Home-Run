@@ -11,7 +11,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>공지사항</title>
   <style>
-    /* 페이지 스타일 */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -31,7 +30,6 @@
       text-align: center;
       margin-bottom: 20px;
     }
-    /* 검색 폼 스타일 */
     #searchForm {
       display: flex;
       justify-content: center;
@@ -63,7 +61,6 @@
     #searchForm button:hover {
       background-color: #444;
     }
-    /* 테이블 스타일 */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -81,7 +78,6 @@
       border: 1px solid #ddd;
       text-align: left;
     }
-    /* 열 너비 조정 */
     th:nth-child(1), td:nth-child(1) {
       width: 10%;
       text-align: center;
@@ -100,8 +96,9 @@
 	<jsp:include page="../common/menubar.jsp" />
 	
 	  <div class="content">
+	  	<br><br>
 	    <h2>공지사항</h2>
-	    <!-- 검색 폼 -->
+	    <br>
 	    <form id="searchForm" action="/searchNotice" method="get">
 	      <select name="condition">
 	        <option value="title">제목</option>
@@ -110,30 +107,36 @@
 	      <input type="text" name="keyword" placeholder="검색어를 입력하세요">
 	      <button type="submit">검색</button>
 	    </form>
-	    <!-- 테이블 -->
-	    <table>
-	      <thead>
-	        <tr>
-	          <th>번호</th>
-	          <th>제목</th>
-	          <th>작성일</th>
-	        </tr>
-	      </thead>
-	      <tbody>
-	        <%-- 동적 데이터 반복 출력 --%>
-	        <c:forEach var="notice" items="${공지사항목록}">
-	          <tr>
-	            <!-- 게시글 번호 -->
-	            <td>${'게시글번호'}</td>
-	            <!-- 게시글 제목 -->
-	            <td>${'게시글제목'}</td>
-	            <!-- 작성일 -->
-	            <td>${'작성일'}</td>
-	          </tr>
-	        </c:forEach>
-	      </tbody>
-	    </table>
+	     <h2>공지사항 목록</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <th>첨부파일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="notice" items="${noticeList}">
+                    <tr>
+                        <td>${notice.noticeNo}</td>
+                        <td>${notice.title}</td>
+                        <td>${notice.creationDate}</td>
+                        <td>
+                            <c:if test="${not empty notice.attachment}">
+                                <a href="${notice.attachment}" download>💌</a>
+                            </c:if>
+                            <c:if test="${empty notice.attachment}">
+                                없음
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
 	  </div>
+	  
 	  
 	  
 </body>
