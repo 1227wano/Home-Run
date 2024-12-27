@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.baseball.exception.ComparePasswordException;
+import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.UserIdNotFoundException;
@@ -36,6 +37,11 @@ public class ExceptionHandlingController {
 		return createErrorResponse("비밀번호가 일치하지 않습니다.", e);
 	}
 	
+	// ----Notice Exception
+	@ExceptionHandler(NoticeNotFoundException.class)
+	protected ModelAndView NoSuchNoticeError(NoticeNotFoundException e) {
+		return createErrorResponse("게시글이 존재하지 않습니다.", e);
+	}
 	//-----Player Exception
 	@ExceptionHandler(PlayerNotFoundException.class)
 	protected ModelAndView NoSuchBoardError(PlayerNotFoundException e) {
