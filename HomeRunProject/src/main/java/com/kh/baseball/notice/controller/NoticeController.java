@@ -27,7 +27,10 @@ public class NoticeController {
 		return mv.setViewNameAndData("notice/list", map);
 	}
 	
-	
+	@GetMapping("insertForm")
+	public String insertForm() {
+		return "notice/insert_form";
+	}
 	
 	
 	

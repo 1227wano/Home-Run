@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.RowBounds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.kh.baseball.common.PageInfo;
-import com.kh.baseball.common.Pagination;
-import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.notice.model.dao.NoticeMapper;
 import com.kh.baseball.notice.model.vo.Notice;
 
@@ -20,76 +20,56 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class NoticeServiceImpl implements NoticeService {
-
+	
+	@Autowired
 	private final NoticeMapper mapper;
-	
-	private int getTotalCount() {
-		int totalCount = mapper.selectTotalCount();
-		if(totalCount == 0) {
-			throw new NoticeNotFoundException("게시글이 없습니다.");
-		}
-		return totalCount;
-	}
-	
-	private PageInfo getPageInfo(int totalCount, int page) {
-		return Pagination.getPageInfo(totalCount, page, 5, 5);
-	}
-	
-	private List<Notice> getNoticeList(PageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getPageLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getPageLimit());
-		return mapper.selectNoticeList(rowBounds);
-	}
 	
 	@Override
 	public Map<String, Object> selectNoticeList(int currentPage) {
-		/*
-		int totalCount = mapper.selectTotalCount();
+		log.info("요청페이지 : {}", currentPage);
 		
-		if(totalCount == 0) {
-			throw new NoticeNotFoundException("게시글이 없습니다.");
-		}
-		*/
-		int totalCount = getTotalCount();
+		Map<String, Object> result = new HashMap<String, Object>();
+		int pageSize = 10;
 		
-		// log.info("게시글 개수 : {}", totalCount);
-		// log.info("요청 페이지 : {}", currentPage);
-		// PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, currentPage, 5);
-		PageInfo pi = getPageInfo(totalCount, currentPage);
-		/*
-		int offset = (pi.getCurrentPage() - 1) * pi.getPageLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getPageLimit());
-		List<Notice> notices = mapper.selectNoticeList(rowBounds);
-		*/
+		List<Notice> notices = mapper.selectAllNotices();
+		result.put("notices", notices);
+		result.put("currentPage", currentPage);
+		result.put("pageSize", pageSize);
 		
-		List<Notice> notices = getNoticeList(pi);
-		// log.info("게시글목록 : {}", notices);
-		
-		Map<String, Object> map = new HashMap();
-		map.put("notices", notices);
-		map.put("pageInfo", pi);
-		
-		return map;
+		log.info("Fatched {} notices for page : {}", notices.size(), currentPage);
+		return result;
 	}
 
 	@Override
-	public void insertNotice(Notice notice) {
-
+	@Transactional
+	public void addNotice(Notice notice) {
+		log.info("Adding new notice : {}", notice);
+		mapper.insertNotice(notice);
 	}
 
 	@Override
-	public Notice selectNotice(int noticeNo) {
-		return null;
-	}
-
-	@Override
+	@Transactional
 	public void updateNotice(Notice notice) {
-
+		 log.info("Updating notice: {}", notice);
+	     mapper.updateNotice(notice);
 	}
 
 	@Override
-	public void delecteNotice(int noticeNo) {
+	@Transactional
+	public void deleteNotice(int noticeNo) {
+		log.info("Deleting notice with ID : {}", noticeNo);
+		mapper.deleteNotice(noticeNo);
+	}
 
+	@Override
+	public Notice getNoticeById(int noticeNo) {
+		log.info("Fatching notice with ID : {}", noticeNo);
+		return mapper.selectNoticeById(noticeNo);
+	}
+
+	@Override
+	public void daleteNotice(int noticeNo) {
+		
 	}
 
 }

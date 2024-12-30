@@ -4,29 +4,71 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.notice.model.dao.NoticeMapper">
 
-	<select id="selectTotalCount" resultType="_int">
+	<select id="selectAllNotices" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
-				COUNT(*)
+				notice_no AS noticeNo,
+				title AS Title,
+				content AS Content,
+				creation_date AS creationDate,
+				attachment AS attachMent
 		  FROM
 		  		TB_NOTICE
-		 
 	</select>
 	
-	<select id="selectNoticeList" resultType="notice">
+	<insert id="insertNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
+		INSERT
+		  INTO
+		  		TB_NOTICE
+		  		(
+		  		TITLE,
+		  		CONTENT,
+		  		CREATION_DATE,
+		  		ATTACHMENT
+		  		)
+		 VALUES
+		 		(
+		 		#{Title},
+		 		#{Content},
+		 		#{creation_Date},
+		 		#{attachMent}
+		 		)
+	</insert>
+	
+	<update id="updateNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
+		UPDATE
+				TB_NOTICE
+		   SET
+		   		TITLE = #{Title},
+		   		CONTENT = #{Content},
+		   		CREATION_DATE = #{creationDate},
+		   		ATTACHMENT = #{attachMent}
+		  WHERE
+		  		NOTICE_NO = #{noticeNo}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="_int">
+		DELETE
+		  FROM
+		  		TB_NOTICE
+		 WHERE
+		 		NOTICE_NO = #{noticeNo}
+	</delete>
+	
+	<select id="selectNoticeById" parameterType="_int" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
-				NOTICE_NO noticeNo,
-				NOTICE_TITLE noticeTitle,
-				NOTICE_CONTENT noticeContent,
-				TO_CHAR(CREATION_DATE, 'YYYY-MM-DD') as creationDate,
-				ORIGIN_NAME originName
-	 	  FORM
-	 	  		NOTICE
-	 	 WHERE
-	 	 		STATUS = 'Y'
-	 	 ORDER
-	 	 	BY
-	 	 		NOTICE_NO DESC
+				notice_no AS noticeNo,
+				title AS Title,
+				content AS Content,
+				creation_date AS creationDate,
+				attachment AS attachMent
+		  FROM
+		  		TB_NOTICE
+		 WHERE
+		 		NOTICE_NO = #{noticeNo}
 	</select>
+	
+	
+	
 
 
 </mapper>

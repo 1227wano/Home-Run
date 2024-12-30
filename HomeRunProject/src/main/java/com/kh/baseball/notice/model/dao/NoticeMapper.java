@@ -10,7 +10,13 @@ import com.kh.baseball.notice.model.vo.Notice;
 @Mapper
 public interface NoticeMapper {
 
-	int selectTotalCount();
+	List<Notice> selectAllNotices();
 	
-	List<Notice> selectNoticeList(RowBounds rowBounds);
+	void insertNotice(Notice notice);
+	
+	void updateNotice(Notice notice);
+	
+	void deleteNotice(int noticeId);
+	
+	Notice selectNoticeById(int noticeId);
 }

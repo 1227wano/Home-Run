@@ -8,11 +8,13 @@ public interface NoticeService {
 
 	Map<String, Object> selectNoticeList(int currentPage);
 
-	void insertNotice(Notice notice);
-
-	Notice selectNotice(int noticeNo);
-
+	void addNotice(Notice notice);
+	
 	void updateNotice(Notice notice);
+	
+	void daleteNotice(int noticeNo);
+	
+	Notice getNoticeById(int noticeNo);
 
-	void delecteNotice(int noticeNo);
+	void deleteNotice(int noticeNo);
 }
