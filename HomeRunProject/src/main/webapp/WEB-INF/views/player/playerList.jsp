@@ -79,6 +79,8 @@
                         NO.선수번호
                     </span>
                 </a><br>
+                
+                
 
                 <div class="playerLists">
                     <br>
@@ -110,8 +112,8 @@
 				</c:forEach>
 				
 				<!-- 더보기 ajax 버튼 -->
-                <c:forEach begin="${ player.userNo = 1 }" end="${ player.userNo = player.userNo.length }" var="num">
-					<c:if test="${ playerStatus = 'Y' }" >
+                <c:forEach begin="1" end="15" var="num">
+					<c:if test="${ playerStatus == 'Y' }" >
 						<li class=""><a class=""
 							href=""> 더보기 </a></li>
 					</c:if>
@@ -122,6 +124,22 @@
         
         <script>
         	
+        $.ajax({
+        	url : asdasd,
+        	type : 'get',
+        	data : {
+        		player.userNo
+        	},
+        	success : function(r){
+        		const result = [...r.list];
+        		const asd = map(a) =>{
+        			<td>\${a.asdasd}</td>
+        			사진 선수명 등번호 포지션
+        		}
+        		
+        		document... .innerHTML = asd;
+        	}
+        })
         
         </script>
         

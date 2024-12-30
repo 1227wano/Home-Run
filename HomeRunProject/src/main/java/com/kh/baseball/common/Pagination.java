@@ -6,7 +6,7 @@ public class Pagination {
 		super();
 	}
 
-	public static PageInfo getPageInfo(int listCount, int currentPage, int boardLimit, int pageLimit) {
+	public static PageInfo getPageInfo(String playerTeam, int listCount, int currentPage, int boardLimit, int pageLimit) {
 		
 		int maxPage = (int)(Math.ceil((double)listCount / boardLimit));
 		int startPage = (currentPage - 1) / pageLimit * pageLimit + 1;

@@ -49,17 +49,19 @@ public class PlayerController {
 	
 	// 등록된 전체 선수 열람
 	@GetMapping("findAllPlayer.player")
-	public ModelAndView findAllPlayer(@RequestParam(value="page", defaultValue="1") int page) {
+	public ModelAndView findAllPlayer(Player player, @RequestParam(value="page", defaultValue="1") int page) {
 		
-		Map<String, Object> map = playerService.findAllPlayer(page);
+		Map<String, Object> map = playerService.findAllPlayerKorean(player.getPlayerTeam(), page);
 		
 		return mv.setViewNameAndData("player/list", map); // player/list 아직 없음
 	}
 	
 	
 	
-	
-	
+	@GetMapping("playerList.player")
+	public ModelAndView forwardPlayerList() {
+		return mv.setViewNameAndData("player/playerList", null);
+	}
 	
 	
 	

@@ -38,14 +38,14 @@ public class PlayerServiceImpl implements PlayerService {
 		return totalCount;
 	}
 	
-	private PageInfo getPageInfo(int totalCount, int page) {
-		return Pagination.getPageInfo(totalCount, page, 5, 5);
+	private PageInfo getPageInfo(String playerTeam, int totalCount, int page) {
+		return Pagination.getPageInfo(playerTeam, totalCount, page, 5, 5);
 	}
 	
 	private List getPlayerList(PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowbounds = new RowBounds(offset, pi.getBoardLimit()); 
-		return mapper.findAllPlayer(rowbounds);
+		return mapper.findAllPlayerKorean(rowbounds);
 	}
 	
 	
@@ -85,14 +85,14 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public Map<String, Object> findAllPlayer(int currentPage) {
+	public Map<String, Object> findAllPlayerKorean(String playerTeam, int currentPage) {
 		
 		// 총 개수 == DB 조회
 		// 요청 페이지 == currentPage
 		// 첫 페이지에 선수 몇명? == 15명 -> 더보기버튼으로 15명씩 추가 셀렉
 		int totalCount = getTotalCount();
 		
-		PageInfo pi = getPageInfo(currentPage, totalCount);
+		PageInfo pi = getPageInfo(playerTeam, currentPage, totalCount);
 		
 		List<Player> players = getPlayerList(pi);
 		

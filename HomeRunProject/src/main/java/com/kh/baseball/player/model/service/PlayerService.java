@@ -15,7 +15,7 @@ public interface PlayerService {
 	void savePlayer(Player player, MultipartFile upfile);
 
 	// 선수 정보 일람
-	Map<String, Object> findAllPlayer(int currentPage);			
+	Map<String, Object> findAllPlayerKorean(String playerTeam, int currentPage);			
 
 	// 선수 정보 상세조회
 	Player selectPlayer(int userNo);

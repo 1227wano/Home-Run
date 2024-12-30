@@ -51,14 +51,15 @@
 		        PLAYER_NO playerNo,
 		        PLAYER_STATUS playerStatus,
 		        PLAYER_TEAM playerTeam,
+		        USER_NAME userName
 		  FROM
 		  		PLAYER
+		  JOIN
+		  		USER USING (USER_NO)	
 		 WHERE
 		 		PLAYER_TEAM = #{playerTeam}
 		   AND
 		 		PLAYER_STATUS = 'Y'
-		  JOIN
-		  		
 		 ORDER
 		 	BY
 		 		USER_NAME ASC
