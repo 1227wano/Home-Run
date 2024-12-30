@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +16,7 @@
             <h2>선수등록</h2>
             <br>
 
-            <form action="savePlayer.player" method="post">
+            <form id="players" action="savePlayer.player" method="post" enctype="multipart/form-data">
                 <div class="form-group" id="player-enroll-form">
                     <label for=""> 선수 등급 : </label> &nbsp;&nbsp;
                     <input type="radio" id="pro" value="1" name="grade">
@@ -47,6 +48,14 @@
                     <label for="player-salary">희망 연봉 : </label>
                     <input type="number" min="1000000" max="1000000000" step="1000000" name="playerSalary" value="1000000">                    
                     <br><br>
+                    
+                    선수용 사진을 선택해주세요. <input type="file" name="upfile">
+                    <!-- 
+                        선택한 파일이 이미지가 아닐 경우를 대비
+                        뒷단 : contentType 이 image가 아니라면 예외처리
+                        앞단 : ajax / page 로 image파일이 아닐때 파일 양식 안내 
+                    -->
+                    
                 </div>
                 <br>
                 <div class="btns" align="center">

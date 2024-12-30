@@ -4,13 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.baseball.common.PageInfo;
+import com.kh.baseball.common.Pagination;
 import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.player.model.dao.PlayerMapper;
 import com.kh.baseball.player.model.vo.Player;
@@ -25,13 +30,24 @@ public class PlayerServiceImpl implements PlayerService {
 	private final ServletContext context;
 	
 	private int getTotalCount() {
-		int totalCount = mapper.selectTotalCount();
+		int totalCount = mapper.getTotalCount();
 
 		if (totalCount == 0) {
 			throw new PlayerNotFoundException("등록된 선수가 없습니다");
 		}
 		return totalCount;
 	}
+	
+	private PageInfo getPageInfo(int totalCount, int page) {
+		return Pagination.getPageInfo(totalCount, page, 5, 5);
+	}
+	
+	private List getPlayerList(PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowbounds = new RowBounds(offset, pi.getBoardLimit()); 
+		return mapper.findAllPlayer(rowbounds);
+	}
+	
 	
 	@Override
 	public void savePlayer(Player player, MultipartFile upfile) {
@@ -76,10 +92,15 @@ public class PlayerServiceImpl implements PlayerService {
 		// 첫 페이지에 선수 몇명? == 15명 -> 더보기버튼으로 15명씩 추가 셀렉
 		int totalCount = getTotalCount();
 		
+		PageInfo pi = getPageInfo(currentPage, totalCount);
 		
+		List<Player> players = getPlayerList(pi);
 		
+		Map<String, Object> map = new HashMap();
+		map.put("players", players);
+		map.put("PageInfo", pi);
 		
-		return null;
+		return map;
 	}
 
 	@Override

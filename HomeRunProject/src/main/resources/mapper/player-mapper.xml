@@ -33,6 +33,64 @@
 	        )
 	</insert>
 	
+	<select id="getTotalCount" resultType="_int">
+		SELECT
+				COUNT(*)
+		 FROM	
+		 		PLAYER
+		WHERE
+				PLAYER_STATUS = 'Y'
+	</select>
+	
+	<!-- 가나다순으로 보기 -->
+	<select id="findAllPlayerKorean" resultType="player">
+		SELECT
+				USER_NO userNo,
+		        GRADE grade,
+		        PLAYER_POSITION playerPosition,
+		        PLAYER_NO playerNo,
+		        PLAYER_STATUS playerStatus,
+		        PLAYER_TEAM playerTeam,
+		  FROM
+		  		PLAYER
+		 WHERE
+		 		PLAYER_TEAM = #{playerTeam}
+		   AND
+		 		PLAYER_STATUS = 'Y'
+		  JOIN
+		  		
+		 ORDER
+		 	BY
+		 		USER_NAME ASC
+	</select>
+	
+	
+	<!-- 조회수 순으로 보기 -->
+	<select id="findAllPlayerCount" resultType="player">
+		SELECT
+				USER_NO userNo,
+		        GRADE grade,
+		        PLAYER_POSITION playerPosition,
+		        PLAYER_NO playerNo,
+		        PLAYER_STATUS playerStatus,
+		        PLAYER_TEAM playerTeam,
+		        TEAM_NAME teamName
+		  FROM
+		  		PLAYER
+		 WHERE
+		 		PLAYER_TEAM = #{playerTeam}
+		   AND
+		 		PLAYER_STATUS = 'Y'
+		  JOIN
+		  		
+		 ORDER
+		 	BY
+		 		COUNT ASC
+	</select>
+	
+	<select id="findPlayerDetail" resultType="player">
+		
+	</select>
 
 
 
