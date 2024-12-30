@@ -16,6 +16,8 @@ public interface MemberMapper {
 	int checkNickName(String nickName);
 
 	Member searchId(Member member);
+
+	void updateMember(Member member); 
 	
 	
 	

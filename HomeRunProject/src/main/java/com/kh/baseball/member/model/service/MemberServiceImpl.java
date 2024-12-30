@@ -3,6 +3,8 @@ package com.kh.baseball.member.model.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -78,5 +80,22 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void updateMember(Member member, HttpSession session) {
+		
+		//log.info("{}", member);
+		validator.validateMemberExists(member);
+		mapper.updateMember(member);
+		session.setAttribute("loginUser", mapper.login(member)); //여기서 넘기는것으로 수정
+	}
+
+	@Override
+	public void deleteMember(String userPwd, HttpSession session) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 }

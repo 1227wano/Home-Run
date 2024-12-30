@@ -29,6 +29,7 @@
 
     #mainNav .navbar-nav .nav-item .nav-link {
         font-weight: 600;
+       
     }
     
     #search {
@@ -99,7 +100,7 @@
           	<c:otherwise>
           	  <label>${ sessionScope.loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
 	          <li class="nav-item">
-	          <a class="nav-link js-scroll-trigger" href="myPage">마이페이지</a>
+	          <a class="nav-link js-scroll-trigger" href="/baseball/mypage.me">마이페이지</a>
 	          </li>
 	          <li class="nav-item">
 	          <a class="nav-link js-scroll-trigger" href="/baseball/logout.me" >로그아웃</a>
@@ -171,7 +172,7 @@
 				
 					<a href="searchId" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px; "> 아이디 찾기 </a> |
 			
-					<a href="#" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 찾기</a>
+					<a href="#" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 변경</a>
 				
 			</div>
 		

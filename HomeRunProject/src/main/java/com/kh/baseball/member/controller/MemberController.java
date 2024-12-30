@@ -30,8 +30,8 @@ public class MemberController {
 		
 		Member loginMember = memberService.login(member);
 		
-		log.info("{}" , member);
-		log.info("{}" , loginMember);
+		//log.info("{}" , member);
+		//log.info("{}" , loginMember);
 		
 		//return null;
 		session.setAttribute("loginUser", loginMember);
@@ -83,6 +83,25 @@ public class MemberController {
 		Map<String, Object> successId = memberService.searchId(member);
 		
 		return mv.setViewNameAndData("member/searchIdSuccess", successId);
+	}
+	
+	
+	@GetMapping("mypage.me")
+	public String mypage() {
+		
+		return "member/my_page";
+	}
+	
+	@PostMapping("update.me")
+	public ModelAndView updateMember(Member member, HttpSession session) {
+		
+		log.info("{}", member);
+		
+		// session.setAttribute("loginUser", memberService.login(member));
+		memberService.updateMember(member,session);
+		session.setAttribute("alert", "정보 수정 완료");
+		return mv.setViewNameAndData("redirect:mypage.me", null);
+		
 	}
 
 }

@@ -2,6 +2,8 @@ package com.kh.baseball.member.model.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.kh.baseball.member.model.vo.Member;
 
 public interface MemberService {
@@ -26,5 +28,14 @@ public interface MemberService {
 	
 	//비밀번호 찾기 
 	String findByPassword(Member member);
+	
+	
+	
+	// -- 마이페이지 --
+	// 회원 정보 수정
+	void updateMember(Member member, HttpSession session);
+	
+	// 회원 탈퇴
+	void deleteMember(String userPwd, HttpSession session);
 
 }
