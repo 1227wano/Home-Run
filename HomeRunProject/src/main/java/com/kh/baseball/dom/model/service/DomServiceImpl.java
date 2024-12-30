@@ -33,10 +33,10 @@ public class DomServiceImpl implements DomService {
 	private final DomMapper mapper;
 	private final ServletContext context;
 	
-	public Map<String, Object> findAll(int currentPage){
+	public Map<String, Object> selectDomList(int currentPage){
 		
 		// 1절 글 개수 조회
-		int totalCount = mapper.findTotalCount();
+		int totalCount = mapper.selectTotalCount();
 		
 		if(totalCount == 0) { // 예외처리
 			log.info("현재 등록된 구장 수 : {}", totalCount);
@@ -48,8 +48,8 @@ public class DomServiceImpl implements DomService {
 		// 3절 DB 조회 결과
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		List<Dom> domList = mapper.findAll(rowBounds);
-		List<DomAttachment> attList = mapper.findAttachment();
+		List<Dom> domList = mapper.selectDomList(rowBounds);
+		List<DomAttachment> attList = mapper.selectAttachmentList();
 //		log.info("등록된 구장 정보 : {}", domList);
 //		log.info("구장별 이미지 정보 : {}", attList);
 		
@@ -87,29 +87,37 @@ public class DomServiceImpl implements DomService {
 	}
 
 	@Override
-	public void save(Dom dom, MultipartFile upfile) {
+	public void insertDom(Dom dom, MultipartFile upfile) {
 		
-		mapper.save(dom);
+		mapper.insertDom(dom);
 		
 		if(!("".equals(upfile.getOriginalFilename()))) {
 			
 			DomAttachment domAtt = new DomAttachment();
 			handleFileUpload(domAtt, upfile);
 			
-			mapper.saveDomFile(domAtt);
+			mapper.insertDomFile(domAtt);
 		}
 		
 	}
 
 	@Override
-	public Map<String, Object> findById(Long id) {
+	public Map<String, Object> selectId(Long id) {
 		
 		Map<String, Object> map = new HashMap<>();
-		Dom dom = mapper.findById(id);
+		Dom dom = mapper.selectId(id);
 		map.put("dom", dom);
 		
 		
 		return map;
+	}
+
+	@Override
+	public void updateDom(Dom dom, MultipartFile upfile) {
+		
+		
+		
+		
 	}
 
 	

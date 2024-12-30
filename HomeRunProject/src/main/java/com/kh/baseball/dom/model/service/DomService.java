@@ -9,11 +9,13 @@ import com.kh.baseball.dom.model.vo.DomAttachment;
 
 public interface DomService {
 
-	Map<String, Object> findAll(int currentPage);
+	Map<String, Object> selectDomList(int currentPage);
 
-	void save(Dom dom, MultipartFile upfile);
+	void insertDom(Dom dom, MultipartFile upfile);
 
-	Map<String, Object> findById(Long id);
+	Map<String, Object> selectId(Long id);
+
+	void updateDom(Dom dom, MultipartFile upfile);
 	
 	
 }
