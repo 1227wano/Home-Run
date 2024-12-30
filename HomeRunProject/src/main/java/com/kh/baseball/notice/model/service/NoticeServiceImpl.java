@@ -1,14 +1,18 @@
 package com.kh.baseball.notice.model.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.ServletContext;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.notice.model.dao.NoticeMapper;
 import com.kh.baseball.notice.model.vo.Notice;
@@ -21,8 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoticeServiceImpl implements NoticeService {
 	
-	@Autowired
 	private final NoticeMapper mapper;
+	private final ServletContext context;
 	
 	@Override
 	public Map<String, Object> selectNoticeList(int currentPage) {
@@ -42,9 +46,29 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	@Transactional
-	public void addNotice(Notice notice) {
+	public void addNotice(Notice notice, MultipartFile upfile) {
 		log.info("Adding new notice : {}", notice);
-		mapper.insertNotice(notice);
+		if(!("".equals(upfile.getOriginalFilename()))) {
+			String fileName = upfile.getOriginalFilename();
+			String ext = fileName.substring(fileName.lastIndexOf("."));
+			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			int randomNum = (int)(Math.random() * 9000) + 1000;
+			String changeName = currentTime + randomNum + ext;
+			
+			String savePath = context.getRealPath("/resources/upload_files/");
+			
+				try {
+					upfile.transferTo(new File(savePath + changeName));
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				notice.setAttachMent("resorces/upload_files" + changeName);
+			
+		}
+		mapper.addNotice(notice);
 	}
 
 	@Override

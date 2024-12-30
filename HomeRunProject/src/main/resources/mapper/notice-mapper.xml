@@ -7,29 +7,32 @@
 	<select id="selectAllNotices" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
 				notice_no AS noticeNo,
-				title AS Title,
-				content AS Content,
+				title AS noticeTitle,
+				content AS noticeContent,
 				creation_date AS creationDate,
 				attachment AS attachMent
 		  FROM
 		  		TB_NOTICE
+		 ORDER
+		 	BY
+		 		NOTICE_NO DESC
 	</select>
 	
-	<insert id="insertNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
+	<insert id="addNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
 		INSERT
 		  INTO
 		  		TB_NOTICE
 		  		(
+		  		NOTICE_NO,
 		  		TITLE,
 		  		CONTENT,
-		  		CREATION_DATE,
 		  		ATTACHMENT
 		  		)
 		 VALUES
 		 		(
-		 		#{Title},
-		 		#{Content},
-		 		#{creation_Date},
+		 		SEQ_NOTICE_NO.NEXTVAL,
+		 		#{noticeTitle},
+		 		#{noticeContent},
 		 		#{attachMent}
 		 		)
 	</insert>

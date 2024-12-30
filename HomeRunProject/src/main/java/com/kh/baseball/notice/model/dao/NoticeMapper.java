@@ -12,7 +12,7 @@ public interface NoticeMapper {
 
 	List<Notice> selectAllNotices();
 	
-	void insertNotice(Notice notice);
+	void addNotice(Notice notice);
 	
 	void updateNotice(Notice notice);
 	

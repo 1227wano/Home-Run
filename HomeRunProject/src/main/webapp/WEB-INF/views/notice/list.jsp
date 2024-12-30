@@ -57,6 +57,11 @@
 	        <div class="innerOuter" style="padding:5% 10%;">
 	            <h2>공지사항</h2>
 	            <br><br>
+	            
+	            <c:if test="${ sessionScope.loginUser.userId == 'admin' }">
+            		<a class="btn btn-secondary" style="float:right;" href="insertForm">글쓰기</a>
+            	</c:if>
+            	
 	            <table id="noticeList" class="table table-hover" align="center">
 	                <thead>
 	                    <tr>
@@ -74,7 +79,7 @@
 	                        <td>${ notice.noticeTitle }</td>
 	                        <td>${ notice.creationDate }</td>
 	                        <td>
-	                        	<c:if test="${ not empty notice.attachment }">
+	                        	<c:if test="${ not empty notice.attachMent }">
 	                        		💌
 	                        	</c:if>
 	                        </td>
