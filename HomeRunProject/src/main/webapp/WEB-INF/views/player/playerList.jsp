@@ -47,12 +47,14 @@
         <script> 
         
          $(function (){
-	        let moreNum = 1;
+	        
 	        showMorePlayer(moreNum);
          });
         
         function showMorePlayer(moreNum){
         	
+        	let moreNum = 1;
+
         	$.ajax({
             	url : "/baseball/playerList.player",
             	type : 'get',
