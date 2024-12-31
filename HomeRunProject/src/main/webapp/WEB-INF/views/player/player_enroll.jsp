@@ -51,7 +51,7 @@
                     
                     선수용 사진을 선택해주세요. <input type="file" name="upfile">
                     <!-- 
-                        선택한 파일이 이미지가 아닐 경우를 대비
+                        선택한 파일이 이미지가 아닐 경우
                         뒷단 : contentType 이 image가 아니라면 예외처리
                         앞단 : ajax / page 로 image파일이 아닐때 파일 양식 안내 
                     -->

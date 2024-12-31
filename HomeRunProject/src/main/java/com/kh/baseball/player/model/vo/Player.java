@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Player {
 	
-	private int userNo;
+	private int playerNo;
 	private int grade;
 	private int playerPosition;
 	private Date playerDate;

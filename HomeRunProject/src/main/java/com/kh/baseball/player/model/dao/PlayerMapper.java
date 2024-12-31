@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.player.model.vo.Player;
+import com.kh.baseball.player.model.vo.PlayerAttachment;
 
 @Mapper
 public interface PlayerMapper {
@@ -15,7 +16,11 @@ public interface PlayerMapper {
 
 	int getTotalCount();
 
-	List findAllPlayer(RowBounds rowbounds);
+	void savePlayerFile(PlayerAttachment playerAtt);
+	
+	List<Player> findAllPlayerKorean(RowBounds rowbounds);
+
+	
 	
 	
 

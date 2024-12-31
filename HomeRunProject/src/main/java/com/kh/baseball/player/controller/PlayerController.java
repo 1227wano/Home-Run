@@ -43,7 +43,7 @@ public class PlayerController {
 		log.info("입력된거 : {}", player);
 		
 		// 응답페이지 미정
-		return mv.setViewNameAndData("", null);
+		return mv.setViewNameAndData("redirect:/savePlayer.player", null);
 		
 	}
 	
@@ -51,9 +51,9 @@ public class PlayerController {
 	@GetMapping("findAllPlayer.player")
 	public ModelAndView findAllPlayer(Player player, @RequestParam(value="page", defaultValue="1") int page) {
 		
-		Map<String, Object> map = playerService.findAllPlayerKorean(player.getPlayerTeam(), page);
+		Map<String, Object> map = playerService.findAllPlayerKorean(page);
 		
-		return mv.setViewNameAndData("player/list", map); // player/list 아직 없음
+		return mv.setViewNameAndData("player/playerList", map); // player/list 아직 없음
 	}
 	
 	

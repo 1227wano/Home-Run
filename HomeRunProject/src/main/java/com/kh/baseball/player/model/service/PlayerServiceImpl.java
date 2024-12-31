@@ -19,6 +19,7 @@ import com.kh.baseball.common.Pagination;
 import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.player.model.dao.PlayerMapper;
 import com.kh.baseball.player.model.vo.Player;
+import com.kh.baseball.player.model.vo.PlayerAttachment;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,40 +39,45 @@ public class PlayerServiceImpl implements PlayerService {
 		return totalCount;
 	}
 	
-	private PageInfo getPageInfo(String playerTeam, int totalCount, int page) {
-		return Pagination.getPageInfo(playerTeam, totalCount, page, 5, 5);
+	private PageInfo getPageInfo(int totalCount, int page) {
+		return Pagination.getPageInfo(totalCount, page, 5, 5);
 	}
 	
-	private List getPlayerList(PageInfo pi) {
+	private List<Player> getPlayerList(PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowbounds = new RowBounds(offset, pi.getBoardLimit()); 
 		return mapper.findAllPlayerKorean(rowbounds);
 	}
 	
 	
+	
 	@Override
 	public void savePlayer(Player player, MultipartFile upfile) {
 		
-		// 익셉션핸들러 & 값 검증
-		// 파일 유무 체크 / 업로드
+		// 익셉션핸들러(handler) & 값 검증(validate) 해야됨
 		
+		mapper.savePlayer(player);
+		
+		// 파일 유무 체크 / 업로드
 		if(!("".equals(upfile.getOriginalFilename()))) {
 			
-			handleFileUpload(player, upfile);
+			PlayerAttachment playerAtt = new PlayerAttachment();
+			handleFileUpload(playerAtt, upfile);
 			
+			mapper.savePlayerFile(playerAtt);
 		}
-		mapper.savePlayer(player);
+		
 	}
 
-	private void handleFileUpload(Player player, MultipartFile upfile) {
+	private void handleFileUpload(PlayerAttachment playerAtt, MultipartFile upfile) {
 		
 		String fileName = upfile.getOriginalFilename();
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		int randomNum = (int) Math.random() * 90000 + 10000;
+		int randomNum = (int)(Math.random() * 90000) + 10000;
 		String changeName = currentTime + randomNum + ext;
 		
-		String savePath = context.getRealPath("/resources/upload_files");
+		String savePath = context.getRealPath("/resources/upload_files/");
 		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
@@ -85,14 +91,14 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public Map<String, Object> findAllPlayerKorean(String playerTeam, int currentPage) {
+	public Map<String, Object> findAllPlayerKorean(int currentPage) {
 		
 		// 총 개수 == DB 조회
 		// 요청 페이지 == currentPage
-		// 첫 페이지에 선수 몇명? == 15명 -> 더보기버튼으로 15명씩 추가 셀렉
+		// 첫 페이지에 선수 몇명? == 10명 -> 더보기버튼으로 10명씩 추가 셀렉
 		int totalCount = getTotalCount();
 		
-		PageInfo pi = getPageInfo(playerTeam, currentPage, totalCount);
+		PageInfo pi = getPageInfo(currentPage, totalCount);
 		
 		List<Player> players = getPlayerList(pi);
 		
@@ -103,6 +109,12 @@ public class PlayerServiceImpl implements PlayerService {
 		return map;
 	}
 
+	@Override
+	public Map<String, Object> findAllPlayerCount(int currentPage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public Player selectPlayer(int userNo) {
 		return null;
@@ -117,5 +129,7 @@ public class PlayerServiceImpl implements PlayerService {
 	public int deletePlayer(int userNo) {
 		return 0;
 	}
+
+	
 
 }

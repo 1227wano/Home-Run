@@ -17,129 +17,67 @@
 
 <body>
     <main id="main">
-        <ul class="playerList">
-            <li>
-                <a href="">
-                    <img src="resources/image/bono.jpg" alt="선수사진" class="player-photo">
-                    <strong class="name">
-                        선수명
-                    </strong>
-                    <span class="position">
-                        포지션
-                    </span>
-                    <span class="number">
-                        NO.선수번호
-                    </span>
-                </a>
-                <a href="">
-                    <img src="resources/image/bono.jpg" alt="선수사진" class="player-photo">
-                    <strong class="name">
-                        선수명
-                    </strong>
-                    <span class="position">
-                        포지션
-                    </span>
-                    <span class="number">
-                        NO.선수번호
-                    </span>
-                </a>
-                <a href="">
-                    <img src="resources/image/bono.jpg" alt="선수사진" class="player-photo">
-                    <strong class="name">
-                        선수명
-                    </strong>
-                    <span class="position">
-                        포지션
-                    </span>
-                    <span class="number">
-                        NO.선수번호
-                    </span>
-                </a>
-                <a href="">
-                    <img src="resources/image/bono.jpg" alt="선수사진" class="player-photo">
-                    <strong class="name">
-                        선수명
-                    </strong>
-                    <span class="position">
-                        포지션
-                    </span>
-                    <span class="number">
-                        NO.선수번호
-                    </span>
-                </a>
-                <a href="">
-                    <img src="resources/image/bono.jpg" alt="선수사진" class="player-photo">
-                    <strong class="name">
-                        선수명
-                    </strong>
-                    <span class="position">
-                        포지션
-                    </span>
-                    <span class="number">
-                        NO.선수번호
-                    </span>
-                </a><br>
-                
-                
-
-                <div class="playerLists">
-                    <br>
-                    <c:choose>
-                        <c:when test="${ empty map }">
-                            등록된 첨부파일이 없습니다.
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach items="${ map }" var="player">
-                                <div class="playerImgs" align="center">
-                                    <input type="hidden" value="${ player.userNo }" /> <img
-                                        src="${ player.imagePath }" alt="이미지">
-                                    <p>
-                                        <label>No. ${ player.backNo }</label> <span>${ player.playerName }</span>                                        <br> <label>조회수</label> : <span>${ board.count }</span>
-                                    </p>
-                                </div>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-
-
-                <button id="more-btn" align="center">'더보기' ajax로 선수 15명 더 보여주기</button>
-                
-                <!-- 본래 페이징의 숫자버튼 -->
-                <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
-					<li class="page-item"><a class="page-link"
-						href="boards?page=${ num }"> ${ num } </a></li>
-				</c:forEach>
-				
-				<!-- 더보기 ajax 버튼 -->
-                <c:forEach begin="1" end="15" var="num">
-					<c:if test="${ playerStatus == 'Y' }" >
-						<li class=""><a class=""
-							href=""> 더보기 </a></li>
-					</c:if>
-				</c:forEach>
-				
-            </li>
-        </ul>
+		<div class="playerLists">
+			<ul class="playerList">
+				<c:choose>
+					<c:when test="${ not empty map }"> 
+						
+						<li id="">
+							<a href="상세보기로 넘어가"> 
+								<img src="${ player.imagePath }" alt="선수사진" class="player-photo">
+								<strong class="name"> ${ player.playerName } </strong>
+								<span class="team"> ${ player.playerTeam } </span> 
+								<span class="position"> ${ player.playerPosition } </span> 
+								<span class="number"> ${ player.backNo } </span>
+							</a>
+						</li>
+						
+						<!-- 15명까지 출력 -->
+						
+						<button id="show-more-btn" align="center" onclick="showMorePlayer();">'더보기' ajax로 선수 15명 더 보여주기</button>
+					</c:when>
+					<c:otherwise>
+						등록된 첨부파일이 없습니다. 
+						show-more-btn { style  display:none 
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</div>
         
-        <script>
+        <script> 
+        
+         $(function (){
+	        let moreNum = 1;
+	        showMorePlayer(moreNum);
+         });
+        
+        function showMorePlayer(moreNum){
         	
-        $.ajax({
-        	url : asdasd,
-        	type : 'get',
-        	data : {
-        		player.userNo
-        	},
-        	success : function(r){
-        		const result = [...r.list];
-        		const asd = map(a) =>{
-        			<td>\${a.asdasd}</td>
-        			사진 선수명 등번호 포지션
-        		}
-        		
-        		document... .innerHTML = asd;
-        	}
-        })
+        	$.ajax({
+            	url : "/baseball/playerList.player",
+            	type : 'get',
+            	data : { 
+            		currentPage : moreNum	
+            	},
+            	success : function(response){
+            		const players = [...response.list];
+            		const resulrPlayersInfo = players.map(p =>
+							    			        		`<tr>
+							            						<td>\${p.player.imagePath}</td>
+							    			        			<td>\${p.player.playerName}</td>
+							    			        			<td>\${p.player.backNo}</td>
+							    			        			<td>\${p.player.playerPosition}</td>
+							    			        			<td>\${p.player.backNo}</td>
+							    			        		</tr>`
+							    			        	).join('');
+            		}
+    				$('#playerList li').html(resulrPlayersInfo);
+    				moreNum++;
+            	}
+            })
+        }
+        
+        
         
         </script>
         
