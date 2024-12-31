@@ -41,9 +41,9 @@
 	    </style>
 	    
 	      <script>
-		        function detail(noticeNo) {
+		        function detail(num) {
 		            // 공지사항 세부 페이지로 이동
-		            window.location.href = '/notice/detail.jsp?noticeNo=' + noticeNo;
+		            location.href = `notices/\${num}`;
 		        }
     	   </script>
     

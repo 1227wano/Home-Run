@@ -29,7 +29,7 @@ public class NoticeServiceImpl implements NoticeService {
 	private final ServletContext context;
 	
 	@Override
-	public Map<String, Object> selectNoticeList(int currentPage) {
+	public Map<String, Object> selectAllNotices(int currentPage) {
 		log.info("요청페이지 : {}", currentPage);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -45,7 +45,6 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	@Transactional
 	public void addNotice(Notice notice, MultipartFile upfile) {
 		log.info("Adding new notice : {}", notice);
 		if(!("".equals(upfile.getOriginalFilename()))) {
@@ -65,36 +64,33 @@ public class NoticeServiceImpl implements NoticeService {
 					e.printStackTrace();
 				}
 				
-				notice.setAttachMent("resorces/upload_files" + changeName);
+				notice.setAttachMent("/baseball/resources/upload_files" + changeName);
 			
 		}
 		mapper.addNotice(notice);
 	}
 
 	@Override
-	@Transactional
 	public void updateNotice(Notice notice) {
 		 log.info("Updating notice: {}", notice);
 	     mapper.updateNotice(notice);
 	}
 
 	@Override
-	@Transactional
 	public void deleteNotice(int noticeNo) {
-		log.info("Deleting notice with ID : {}", noticeNo);
 		mapper.deleteNotice(noticeNo);
 	}
 
 	@Override
-	public Notice getNoticeById(int noticeNo) {
-		log.info("Fatching notice with ID : {}", noticeNo);
-		return mapper.selectNoticeById(noticeNo);
+	public Map<String, Object> selectNoticeById(int noticeNo) {
+		return null;
 	}
 
-	@Override
-	public void daleteNotice(int noticeNo) {
-		
-	}
+	
+
+	
+
+	
 
 }
 

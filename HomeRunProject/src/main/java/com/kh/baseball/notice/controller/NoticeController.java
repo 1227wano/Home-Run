@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +27,7 @@ public class NoticeController {
 	
 	@GetMapping("notices")
 	public ModelAndView selectNoticeList(@RequestParam(value="page", defaultValue="1") int page) {
-		Map<String, Object> map = noticeService.selectNoticeList(page);
+		Map<String, Object> map = noticeService.selectAllNotices(page);
 		return mv.setViewNameAndData("notice/list", map);
 	}
 	
@@ -42,8 +43,18 @@ public class NoticeController {
 		return "redirect:notices";
 	}
 	
+	@GetMapping("notices/{id}")
+	public ModelAndView selectNoticeById(@PathVariable(name="id") int id) {
+		Map<String, Object> responseData = noticeService.selectNoticeById(id);
+		return mv.setViewNameAndData("notice/detail", responseData);
+	}
 	
-	
+	@PostMapping("notices/delete")
+	public String delteNotice(@RequestParam int noticeNo, @RequestParam(required = true) String attachMent) {
+		log.info("삭제할 공지사항 번호 : {}, 첨부파일 : {}", noticeNo, attachMent);
+		noticeService.deleteNotice(noticeNo);
+		return "redirect:notices";
+	}
 	
 	
 	

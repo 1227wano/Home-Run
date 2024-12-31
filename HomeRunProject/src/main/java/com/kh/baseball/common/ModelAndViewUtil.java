@@ -9,11 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class ModelAndViewUtil {
 	
 	public ModelAndView setViewNameAndData(String viewName, Map<String, Object> modelData) {
-		
 		ModelAndView mv = new ModelAndView();
 		
 		mv.setViewName(viewName);
-		
 		if(modelData != null) {
 			mv.addAllObjects(modelData);
 		}
