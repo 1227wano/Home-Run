@@ -25,4 +25,11 @@
 	
 	<!-- 인터셉터 쓰실분은 여기 작성해주세요 -->
 	
+	<interceptors>
+		<interceptor>
+			<mapping path="/mypage.me"/>
+			<beans:bean class="com.kh.baseball.common.interceptor.LoginInterceptor" id="loginInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 </beans:beans>

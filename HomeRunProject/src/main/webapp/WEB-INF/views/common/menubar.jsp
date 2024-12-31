@@ -47,11 +47,20 @@
 
 <body id="page-top">
 
+		<c:if test="${ not empty alertMsg }">
+		<script>
+			alert('${ alertMsg }');
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+		</c:if>
+		
+		
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="#">
-      	<img class="img-fluid" src="" alt="로고없음" style="width:130px; height:50px;" />
+      <a class="navbar-brand" href="/baseball/">
+      	<img class="img-fluid" src="" alt="로고없음" 
+      	style="width:130px; height:50px;" />
       </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         메뉴

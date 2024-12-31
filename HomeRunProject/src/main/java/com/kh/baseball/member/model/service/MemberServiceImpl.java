@@ -92,7 +92,20 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void deleteMember(String userPwd, HttpSession session) {
-		// TODO Auto-generated method stub
+		
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		
+		loginUser.setUserPwd(userPwd);
+		
+		Member userInfo = validator.validateMemberExists(loginUser);
+		
+		/*
+		if(!!! passwordEncoder.matches(loginUser.getUserPwd(), userInfo.getUserPwd())) {
+			throw new ComparePasswordException("비밀번호가 일치하지 않습니다.");
+		}
+		*/
+		
+		mapper.deleteMember(userInfo);
 		
 	}
 	

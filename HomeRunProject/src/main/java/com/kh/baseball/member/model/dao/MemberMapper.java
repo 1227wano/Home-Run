@@ -17,7 +17,9 @@ public interface MemberMapper {
 
 	Member searchId(Member member);
 
-	void updateMember(Member member); 
+	void updateMember(Member member);
+
+	void deleteMember(Member userInfo); 
 	
 	
 	

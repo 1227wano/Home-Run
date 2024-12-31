@@ -97,6 +97,18 @@
 			USER_ID = #{userId}
 </update>
 
+<update id="deleteMember" parameterType="member">
+	UPDATE
+			TB_USER
+	  SET
+	  		STATUS = 'N',
+	  		MODIFY_DATE = SYSDATE
+	WHERE
+			USER_ID = #{ userId }
+
+
+</update>
+
 
 
 

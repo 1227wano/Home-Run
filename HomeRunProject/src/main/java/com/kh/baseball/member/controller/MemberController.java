@@ -56,7 +56,7 @@ public class MemberController {
 	@PostMapping("sign_up.me")
 	public ModelAndView signUp(Member member, HttpSession session) {
 		memberService.join(member);
-		session.setAttribute("alert", "회원가입 완료");
+		session.setAttribute("alertMsg", "회원가입 완료");
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
@@ -99,9 +99,19 @@ public class MemberController {
 		
 		// session.setAttribute("loginUser", memberService.login(member));
 		memberService.updateMember(member,session);
-		session.setAttribute("alert", "정보 수정 완료");
+		session.setAttribute("alertMsg", "정보 수정 완료");
 		return mv.setViewNameAndData("redirect:mypage.me", null);
 		
+	}
+	
+	@PostMapping("delete.me")
+	public ModelAndView delete(String userPwd, HttpSession session ) {
+		memberService.deleteMember(userPwd, session);
+		
+		session.removeAttribute("loginUser");
+		session.setAttribute("alertMsg", "탈퇴 완료");
+		
+		return mv.setViewNameAndData("redirect:/", null);
 	}
 
 }
