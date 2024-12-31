@@ -16,6 +16,9 @@
 	
 	<!-- <input type="hidden" name="userNo" value="${ loginUser.userNo }" /> -->
 	<div align="center">
+	
+		<h2>구장 상세 정보</h2>
+		
 		<div>
 			<label>구장명</label>
 			<input type="text" name="domName" value="${ requestScope.dom.domName }">
@@ -32,16 +35,16 @@
 			<label>구장 이미지 첨부</label>
 			<img width="300" height="180" name="${ requestScope.dom.imagePath }" 
 			src="/baseball${ requestScope.dom.imagePath }" alt="대표이미지">
-			<input type="file" id="" class="form-control-file border" name="upfile">
 		</div>
 		
 		<div align="center">
             <!-- Application > Session > Request > Page -->
         	<c:if test="${ not empty sessionScope.loginUser.userId }"></c:if>
         	
-            	<a onclick="postSubmit(1);">수정하기</a>
-            	<a onclick="postSubmit(2);">삭제하기</a>
-        	
+        	<div>
+            	<button onclick="postSubmit(1);">수정하기</button>
+            	<button onclick="">삭제하기</button>
+        	</div>
         </div>
 		
 		<form action="" method="post" id="postForm">

@@ -23,10 +23,12 @@
 	<br><br><br><br><br>
 	
 	<div class="domEnroll-area">
-		<form id="" method="post" action="dom" enctype="multipart/form-data" >
+		<form id="" method="post" action="update" enctype="multipart/form-data" >
 			
 			<input type="hidden" name="domNo" value="${ dom.domNo }" />
-			<input type="file" id="upfile" name="upfile" onchange="loadImg(this);" />
+			
+			<h2>구장 정보 수정</h2>
+			
 			<div>
 				<label>구장명</label>
 				<input type="text" name="domName" value="${ dom.domName }">
@@ -41,9 +43,9 @@
 			</div>
 			<div>
 				<label>구장 이미지 첨부</label>
-				<img width="300" height="180" name="${ requestScope.dom.imagePath }" 
+				<img width="300" height="180" id="title-img"
 				src="/baseball${ requestScope.dom.imagePath }" alt="대표이미지">
-				<input type="file" id="" class="form-control-file border" name="upfile">
+				<input type="file" id="upfile" name="upfile" onchange="loadImg(this);" />
 			</div>
 			
 			<br>
@@ -78,6 +80,7 @@
 				}
 				
 				$(function (){
+					
 					$('#upfile').hide();
 					
 					$('#title-img').click(function (){

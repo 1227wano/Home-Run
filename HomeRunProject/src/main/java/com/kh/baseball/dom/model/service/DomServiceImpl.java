@@ -35,25 +35,19 @@ public class DomServiceImpl implements DomService {
 	
 	public Map<String, Object> selectDomList(int currentPage){
 		
-		// 1절 글 개수 조회
 		int totalCount = mapper.selectTotalCount();
 		
-		if(totalCount == 0) { // 예외처리
-			log.info("현재 등록된 구장 수 : {}", totalCount);
+		if(totalCount == 0) {
+			log.info("현재 등록된 구장 수 : {}", totalCount); // 예외처리
 		}
 		
-		// 2절 페이징 처리
 		PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 5, 5);
 		
-		// 3절 DB 조회 결과
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		List<Dom> domList = mapper.selectDomList(rowBounds);
 		List<DomAttachment> attList = mapper.selectAttachmentList();
-//		log.info("등록된 구장 정보 : {}", domList);
-//		log.info("구장별 이미지 정보 : {}", attList);
 		
-		// 4절 데이터 가공
 		Map<String, Object> map = new HashMap<>();
 		map.put("domList", domList);
 		map.put("pageInfo", pi);
@@ -72,15 +66,13 @@ public class DomServiceImpl implements DomService {
 		
 		String changeName = "KH_HomeRun_" + currentTime + "_" + randomNum + ext;
 		
-		// 맨뒤 / 는 upload_files폴더 내부에 만들거다 라는 의미
 		String savePath = context.getRealPath("/resources/upload_files/");
 		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
 		} catch (IllegalStateException | IOException e) {
-			log.info("안올라간다~ {}", upfile);
+			log.info("안올라간다 {}", upfile);
 		}
-		// 첨부파일이 존재했다 => 업로드 + Board객체에 originName , changeName set
 		domAtt.setOriginName(fileName);
 		domAtt.setChangeName(changeName);
 		domAtt.setFilePath("/resources/upload_files/");
@@ -89,14 +81,24 @@ public class DomServiceImpl implements DomService {
 	@Override
 	public void insertDom(Dom dom, MultipartFile upfile) {
 		
-		mapper.insertDom(dom);
+		if(dom.getDomName().length() > 100 || dom.getDomContent().length() > 1000
+		   || dom.getDomAddr().length() > 100) {
+			log.info("제한 글자수 보다 큰 값을 입력하여 추가할 수 없음"); // 예외처리
+		}
+		
+		int resultDom = mapper.insertDom(dom);
+		int resultAtt = 1;
 		
 		if(!("".equals(upfile.getOriginalFilename()))) {
 			
 			DomAttachment domAtt = new DomAttachment();
 			handleFileUpload(domAtt, upfile);
 			
-			mapper.insertDomFile(domAtt);
+			resultAtt = mapper.insertDomFile(domAtt);
+		}
+		
+		if((resultDom * resultAtt) < 1) {
+			log.info("등록 실패"); // 예외처리
 		}
 		
 	}
@@ -108,16 +110,52 @@ public class DomServiceImpl implements DomService {
 		Dom dom = mapper.selectId(id);
 		map.put("dom", dom);
 		
-		
 		return map;
 	}
 
 	@Override
 	public void updateDom(Dom dom, MultipartFile upfile) {
 		
+		if(dom.getDomNo() == null || dom.getDomNo() <= 0) {
+			log.info("유효하지 않은 구장 식별 번호"); // 예외처리
+		}
 		
+		Dom selectedDom = mapper.selectId(dom.getDomNo());
+		if(selectedDom == null) {
+			log.info("찾을 수 없는 구장"); // 예외처리
+		}
 		
+		if(dom.getDomName().length() > 100 || dom.getDomContent().length() > 3000 
+		   || dom.getDomAddr().length() > 100) {
+			log.info("제한 글자수 보다 큰 값을 입력하여 추가할 수 없음"); // 예외처리
+		}
 		
+		int resultAtt = 1;
+		DomAttachment domAtt = null;
+		
+		if(!("".equals(upfile.getOriginalFilename()))) {
+			
+			if(selectedDom.getImagePath() != null) {
+				
+				String imagePath = selectedDom.getImagePath();
+				
+				imagePath = imagePath.substring(imagePath.indexOf("/"));
+				
+				new File(context.getRealPath(imagePath)).delete();
+//				log.info("구장 파일 경로 : {}", selectedDom.getImagePath());
+			}
+			domAtt = new DomAttachment();
+			domAtt.setRefDno(selectedDom.getDomNo());
+			handleFileUpload(domAtt, upfile);
+			
+			resultAtt = mapper.updateDomFile(domAtt);
+		}
+		
+		int resultDom = mapper.updateDom(dom);
+		
+		if((resultDom * resultAtt) < 1) {
+			log.info("업데이트 실패"); // 예외처리
+		}
 	}
 
 	

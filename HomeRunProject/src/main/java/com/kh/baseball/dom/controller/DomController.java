@@ -48,7 +48,6 @@ public class DomController {
 	public ModelAndView save(Dom dom, MultipartFile upfile, HttpSession session) {
 		
 		log.info("구장 정보 : {}", dom);
-		
 		log.info("파일 정보 : {}", upfile);
 		
 		domService.insertDom(dom, upfile);
@@ -74,7 +73,7 @@ public class DomController {
 		return mv.setViewNameAndData("dom/update_form", map);
 	}
 	
-	@PostMapping("update")
+	@PostMapping("dom/update")
 	public ModelAndView updateDom(Dom dom, MultipartFile upfile) {
 		
 		log.info("수정할 구장 정보 : {}", dom);
@@ -86,13 +85,13 @@ public class DomController {
 	}
 	
 	
-//	@GetMapping("delete.dom")
-//	public ModelAndView delete(Dom dom, Long userId) {
-//		
-//		log.info("삭제할 구장 정보 : {}", dom);
-//		
-//		return mv.setViewNameAndData("redirect:/dom", null);
-//	}
+	@GetMapping("delete.dom")
+	public ModelAndView delete(Dom dom, Long userId) {
+		
+		log.info("삭제할 구장 정보 : {}", dom);
+		
+		return mv.setViewNameAndData("redirect:/dom", null);
+	}
 	
 	
 }

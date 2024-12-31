@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.dom.model.vo.Dom;
 import com.kh.baseball.dom.model.vo.DomAttachment;
@@ -23,8 +22,9 @@ public interface DomMapper {
 	int insertDom(Dom dom);
 	// 구장 파일 등록
 	int insertDomFile(DomAttachment domAtt);
-
-	
+	// 구장 정보 업데이트
+	int updateDom(Dom dom);
+	int updateDomFile(DomAttachment domAtt);
 	
 
 }

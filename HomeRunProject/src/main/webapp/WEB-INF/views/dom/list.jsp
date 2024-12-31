@@ -31,9 +31,12 @@
 <body>
 
 	<jsp:include page="../common/menubar.jsp" /> 
-	
-	
 	<br><br><br><br><br>
+	
+	<div align="center">
+		<a href="/baseball/saveForm">구장 등록</a>
+	</div>
+	<br><br>
 	
     <div class="list-area">
 		<br>        
@@ -58,22 +61,9 @@
 	    		location.href = `/baseball/dom/\${num}`;
 	    	}
     	</script>
-        
-	    <a href="/baseball/saveForm">구장 등록</a>
-		
 		<br><br><br><br><br>
 		
     </div>
     
-    
-    
-    
-    
-    
-    
-        
-
-
-
 </body>
 </html>
