@@ -10,10 +10,14 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.baseball.common.PageInfo;
+import com.kh.baseball.common.Pagination;
+import com.kh.baseball.exception.NoticeNoValueException;
+import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.notice.model.dao.NoticeMapper;
 import com.kh.baseball.notice.model.vo.Notice;
 
@@ -28,25 +32,57 @@ public class NoticeServiceImpl implements NoticeService {
 	private final NoticeMapper mapper;
 	private final ServletContext context;
 	
+	public int getTotalNoticeCount() {
+		int totalCount = mapper.selectTotalCount();
+		
+		if(totalCount == 0) {
+			throw new NoticeNotFoundException("없어~~");
+		} 
+		return totalCount;
+	}
+	
+	private PageInfo getPageInfo(int totalCount, int page) {
+		return Pagination.getPageInfo(totalCount, page, 5, 5);
+	}
+	
+	private List<Notice> getNoticeList(PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return mapper.selectAllNotices(rowBounds);
+	}
+	
+	private void validateNotice(Notice notice) {
+		if(notice == null ||
+				notice.getNoticeTitle() == null || notice.getNoticeTitle().trim().isEmpty() ||
+				notice.getNoticeContent() == null || notice.getNoticeContent().trim().isEmpty()) {
+			throw new NoticeNoValueException("부적절한 입력값");
+		}
+		
+		String noticeTitle = escapeHtml(notice.getNoticeTitle());
+		String noticeContent = escapeHtml(notice.getNoticeContent());
+		notice.setNoticeTitle(convertNewlineToBr(noticeTitle));
+		notice.setNoticeContent(convertNewlineToBr(noticeContent));
+	}
+	
 	@Override
-	public Map<String, Object> selectAllNotices(int currentPage) {
-		log.info("요청페이지 : {}", currentPage);
+	public Map<String, Object> selectAllNotices(PageInfo pi2) {
 		
-		Map<String, Object> result = new HashMap<String, Object>();
-		int pageSize = 10;
+		int totalCount = getTotalNoticeCount();
 		
-		List<Notice> notices = mapper.selectAllNotices();
-		result.put("notices", notices);
-		result.put("currentPage", currentPage);
-		result.put("pageSize", pageSize);
+		PageInfo pi = getPageInfo(totalCount, pi2);
 		
-		log.info("Fatched {} notices for page : {}", notices.size(), currentPage);
-		return result;
+		List<Notice> notices = selectAllNotices(pi);
+		
+		Map<String, Object> map = new HashMap();
+		map.put("notices", notices);
+		map.put("pageInfo", pi);
+		
+		return map;
 	}
 
 	@Override
 	public void addNotice(Notice notice, MultipartFile upfile) {
-		log.info("Adding new notice : {}", notice);
+
 		if(!("".equals(upfile.getOriginalFilename()))) {
 			String fileName = upfile.getOriginalFilename();
 			String ext = fileName.substring(fileName.lastIndexOf("."));
@@ -64,12 +100,14 @@ public class NoticeServiceImpl implements NoticeService {
 					e.printStackTrace();
 				}
 				
-				notice.setAttachMent("/baseball/resources/upload_files" + changeName);
+				notice.setAttachMent("/baseball/resources/upload_files/" + changeName);
 			
 		}
+		
+		
 		mapper.addNotice(notice);
 	}
-
+	
 	@Override
 	public void updateNotice(Notice notice) {
 		 log.info("Updating notice: {}", notice);
@@ -77,14 +115,30 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public void deleteNotice(int noticeNo) {
+	public void deleteNotice(Long noticeNo) {
 		mapper.deleteNotice(noticeNo);
 	}
 
 	@Override
-	public Map<String, Object> selectNoticeById(int noticeNo) {
-		return null;
+	public Map<String, Object> selectNoticeById(Long id) {
+		Notice notice = mapper.getNoticeById(id);
+		Map<String, Object> result = new HashMap<>();
+		result.put("notice", notice);
+		return result;
 	}
+
+	@Override
+	public Notice getNoticeById(long noticeNo) {
+		return mapper.getNoticeById(noticeNo);
+	}
+
+	
+
+	
+
+	
+
+	
 
 	
 

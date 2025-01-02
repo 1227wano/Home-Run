@@ -10,13 +10,21 @@ public interface NoticeService {
 
 	Map<String, Object> selectAllNotices(int currentPage);
 	
-	Map<String, Object> selectNoticeById(int noticeNo);
+	Map<String, Object> selectNoticeById(Long noticeNo);
 	
 	void addNotice(Notice notice, MultipartFile upfile);
 	
 	void updateNotice(Notice notice);
 	
-	void deleteNotice(int noticeNo);
+	void deleteNotice(Long noticeNo);
+
+	Notice getNoticeById(long noticeNo);
+
+	int getTotalNoticeCount();
+	
+
+
+
 	
 
 	

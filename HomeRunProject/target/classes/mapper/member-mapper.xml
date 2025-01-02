@@ -21,6 +21,69 @@
 	        STATUS = 'Y'
 </select>
 
+<insert id="join" parameterType="member">
+	INSERT
+	  INTO
+	        TB_USER
+	        (
+	        USER_NO,
+	        USER_ID,
+	        USER_PWD,
+	        USER_NAME,
+	        NICKNAME,
+	        PHONE, 
+	        EMAIL,
+	        ADDRESS
+	        )
+	 VALUES
+	        (
+	        SEQ_UNO.NEXTVAL,
+	        #{userId},
+	        #{userPwd},
+	        #{userName},
+	        #{nickName},
+	        #{phone},
+	        #{email},
+	        #{address}
+	        )
+
+</insert>
+
+<select id="checkId" parameterType="string" resultType="_int">
+	SELECT
+	        COUNT(*)
+	  FROM
+	        TB_USER
+	 WHERE
+	        USER_ID = #{userId}
+	  AND
+	  		STATUS = 'Y'
+</select>
+
+
+
+<select id="checkNickName" parameterType="string" resultType="_int">
+	SELECT
+			COUNT(*)
+	  FROM
+	  		TB_USER
+	 WHERE
+			NICKNAME = #{nickName}
+	  AND
+	  		STATUS = 'Y'
+</select>
+
+<select id="searchId" resultType="member" parameterType="member">
+	SELECT
+	        USER_ID AS userId
+	  FROM 
+	        TB_USER
+	 WHERE
+	        USER_NAME = #{userName}
+	   AND 
+	        PHONE = #{phone}
+</select>
+
 
 
 

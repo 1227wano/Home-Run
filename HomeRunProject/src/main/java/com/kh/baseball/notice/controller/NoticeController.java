@@ -1,5 +1,6 @@
 package com.kh.baseball.notice.controller;
 
+
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,16 @@ public class NoticeController {
 	@GetMapping("notices")
 	public ModelAndView selectNoticeList(@RequestParam(value="page", defaultValue="1") int page) {
 		Map<String, Object> map = noticeService.selectAllNotices(page);
-		return mv.setViewNameAndData("notice/list", map);
+		
+		int totalCount = noticeService.getTotalNoticeCount();
+		int pageSize = 10;
+		int totalPage = (int) Math.ceil((double) totalCount / pageSize);
+		
+		ModelAndView mv = new ModelAndView("notice/list");
+	    mv.addAllObjects(map);
+	    mv.addObject("totalCount", totalCount);
+	    mv.addObject("totalPage", totalPage);
+	    return mv;
 	}
 	
 	@GetMapping("insertForm")
@@ -38,25 +48,31 @@ public class NoticeController {
 	
 	@PostMapping("notices")
 	public String insertNotice(Notice notice, MultipartFile upfile) {
-		log.info("게시글 정보 : {}, 파일정보 : {}", notice, upfile );
+		log.info("공지사항 정보 : {}", notice);
 		noticeService.addNotice(notice, upfile);
 		return "redirect:notices";
 	}
 	
 	@GetMapping("notices/{id}")
-	public ModelAndView selectNoticeById(@PathVariable(name="id") int id) {
-		Map<String, Object> responseData = noticeService.selectNoticeById(id);
+	public ModelAndView selectNoticeById(@PathVariable(name="id") long id) {
+		Map<String, Object> responseData = noticeService.selectNoticeById((long) id);
 		return mv.setViewNameAndData("notice/detail", responseData);
 	}
 	
 	@PostMapping("notices/delete")
-	public String delteNotice(@RequestParam int noticeNo, @RequestParam(required = true) String attachMent) {
-		log.info("삭제할 공지사항 번호 : {}, 첨부파일 : {}", noticeNo, attachMent);
+	public String delteNotice(Long noticeNo, String attachMent) {
 		noticeService.deleteNotice(noticeNo);
 		return "redirect:notices";
 	}
 	
+	@PostMapping("notices/update-form")
+	public ModelAndView updateForm(Long noticeNo) {
+		Map<String, Object> responseData = noticeService.selectNoticeById(noticeNo);
+		return mv.setViewNameAndData("notice/update", responseData);
+	}
 	
 	
+
+
 	
 }

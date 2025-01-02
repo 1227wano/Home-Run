@@ -4,18 +4,24 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.notice.model.dao.NoticeMapper">
 
+	<select id="getTotalNoticeCount" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_NOTICE
+	</select>
+	
 	<select id="selectAllNotices" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
-				notice_no AS noticeNo,
-				title AS noticeTitle,
-				content AS noticeContent,
-				creation_date AS creationDate,
-				attachment AS attachMent
+				*
 		  FROM
 		  		TB_NOTICE
 		 ORDER
 		 	BY
 		 		NOTICE_NO DESC
+		 LIMIT
+		 		#{offset},
+		 		#{pageSize}
 	</select>
 	
 	<insert id="addNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
@@ -26,6 +32,7 @@
 		  		NOTICE_NO,
 		  		TITLE,
 		  		CONTENT,
+		  		CREATION_DATE,
 		  		ATTACHMENT
 		  		)
 		 VALUES
@@ -33,6 +40,7 @@
 		 		SEQ_NOTICE_NO.NEXTVAL,
 		 		#{noticeTitle},
 		 		#{noticeContent},
+		 		#{creation_Date},
 		 		#{attachMent}
 		 		)
 	</insert>
@@ -57,7 +65,7 @@
 		 		NOTICE_NO = #{noticeNo}
 	</delete>
 	
-	<select id="selectNoticeById" parameterType="_int" resultType="com.kh.baseball.notice.model.vo.Notice">
+	<select id="selectNoticeById" parameterType="long" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
 				notice_no AS noticeNo,
 				title AS Title,
@@ -70,6 +78,14 @@
 		 		NOTICE_NO = #{noticeNo}
 	</select>
 	
+	<select id="getNoticeById" parameterType="long" resultType="com.kh.baseball.notice.model.vo.Notice">
+		SELECT
+				*
+		   FROM
+		   		TB_NOTICE
+		  WHERE	
+		   		NOTICE_NO = #{noticeNo}
+	</select>
 	
 	
 
