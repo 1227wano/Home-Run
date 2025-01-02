@@ -2,9 +2,273 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kh.baseball.freeboard.model.dao.Freeboard">
-
-
-
-
-</mapper>
+ <mapper namespace="com.kh.baseball.freeBoard.model.dao.FreeBoardMapper">
+ 	
+ 	<sql id="boardColumn">
+ 		SELECT
+ 			   BOARD_NO boardNo,
+ 			   NICKNAME,
+ 			   BOARD_TITLE boardTitle,
+ 			   BOARD_CONTENT boardContent,
+ 			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate,
+ 			   SELECT_COUNT selectCount
+ 		  FROM
+ 		  	   TB_FREEBOARD
+ 		  JOIN
+ 		  	   TB_USER ON(BOARD_WRITER = USER_NO)
+ 		 WHERE
+ 		 	   TB_FREEBOARD.STATUS = 'Y'
+ 	</sql>
+ 	
+ 	<select id="selectTotalCount" resultType="int">
+ 		SELECT
+ 			   COUNT(*)
+ 		  FROM
+ 		  	   TB_FREEBOARD
+ 		 WHERE
+ 		 	   STATUS = 'Y'
+ 	</select>
+ 	
+ 	<select id="selectBoardList" resultType="freeBoard">
+ 		<include refid="boardColumn"/>
+ 		ORDER
+ 		   BY
+ 		   	  BOARD_NO DESC
+ 	</select>
+ 	
+ 	<update id="increaseCount" parameterType="long" >
+ 		UPDATE
+ 			   TB_FREEBOARD
+ 		   SET
+ 		   	   SELECT_COUNT = SELECT_COUNT + 1
+ 		 WHERE
+ 		 	   STATUS = 'Y'
+ 		   AND
+ 		   	   BOARD_NO = #{boardNo}
+ 	</update>
+ 
+ 	<select id="selectBoardById" parameterType="long" resultType="freeBoard">
+ 		<include refid="boardColumn"/>
+ 		   AND
+ 		   	   BOARD_NO = #{boardNo}
+ 	</select>
+ 	
+ 	<select id="selectBoardByTitle" parameterType="string" resultType="freeBoard">
+ 		<include refid="boardColumn"/>
+ 		   AND
+ 		   	   BOARD_TITLE = #{boardTitle}
+ 	</select>
+ 
+ 	<insert id="insertBoardFile" parameterType="freeBoardFile">
+ 		INSERT
+ 		  INTO
+ 		  	   TB_FREEBOARD_UPFILE
+ 		  	   (
+ 		  	   FILE_NO,
+ 		  	   FILE_TYPE,
+ 		  	   REF_BNO,
+ 		  	   ORIGIN_NAME,
+ 		  	   CHANGE_NAME,
+ 		  	   FILE_PATH
+ 		  	   )
+ 		VALUES
+ 			   (
+ 			   SEQ_FBFNO.NEXTVAL,
+ 			   #{fileType},
+ 			   SEQ_FBBNO.CURRVAL,
+ 			   #{originName},
+ 			   #{changeName},
+ 			   #{filePath}
+ 			   )
+ 	</insert>
+ 	
+ 	<insert id="insertBoard" parameterType="freeBoard">
+ 		INSERT
+ 		  INTO
+ 		  	   TB_FREEBOARD
+ 		  	   (
+ 		  	   BOARD_NO,
+ 		  	   BOARD_WRITER,
+ 		  	   BOARD_TITLE,
+ 		  	   BOARD_CONTENT
+ 		  	   )
+ 		VALUES
+ 			   (
+ 			   SEQ_FBBNO.NEXTVAL,
+ 			   #{boardWriter},
+ 			   #{boardTitle},
+ 			   #{boardContent}
+ 			   )
+ 	</insert>
+ 
+ 	<select id="selectBoardFile" parameterType="freeBoardFile" resultType="freeBoardFile">
+ 		SELECT
+ 			   FILE_NO fileNo,
+ 			   FILE_TYPE fileType,
+ 			   REF_BNO refBno,
+ 			   ORIGIN_NAME originName,
+ 			   CHANGE_NAME changeName,
+ 			   UPLOAD_DATE uploadDate,
+ 			   FILE_PATH filePath
+ 		  FROM
+ 		  	   TB_FREEBOARD_UPFILE
+ 		 WHERE
+ 		   	   REF_BNO = #{refBno}
+ 		   AND
+ 		   	   FILE_TYPE = #{fileType}
+ 	</select>
+	
+	<update id="deleteBoard" parameterType="long">
+		UPDATE
+			   TB_FREEBOARD
+		   SET
+		   	   STATUS = 'N'
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   BOARD_NO = #{boardNo}
+	</update>
+ 
+ 	<update id="updateBoard" parameterType="freeBoard">
+ 		UPDATE
+ 			   TB_FREEBOARD
+ 		   SET
+ 		   	   BOARD_TITLE = #{boardTitle},
+ 		   	   BOARD_CONTENT = #{boardContent}
+ 		 WHERE
+ 		 	   STATUS = 'Y'
+ 		   AND
+ 		   	   BOARD_NO = #{boardNo}
+ 	</update>
+ 
+  	<update id="updateBoardFile" parameterType="freeBoardFile">
+ 		UPDATE
+ 			   TB_FREEBOARD_UPFILE
+ 		  SET
+ 		  	   REF_BNO = #{refBno},
+ 		  	   ORIGIN_NAME = #{originName},
+ 		  	   CHANGE_NAME = #{changeName},
+ 		  	   FILE_PATH = #{filePath}
+ 		 WHERE
+ 		 	   REF_BNO = #{refBno}
+ 		   AND
+ 		   	   FILE_TYPE = #{fileType}
+ 	</update>
+ 	
+ 	<select id="searchListCount" parameterType="hashmap" resultType="int">
+ 		SELECT
+ 			   COUNT(*)
+ 		  FROM
+ 		  	   TB_FREEBOARD
+ 		  JOIN
+      		   TB_USER ON (BOARD_WRITER = USER_NO)
+ 		 WHERE
+ 		 	   TB_FREEBOARD.STATUS = 'Y'
+ 		<if test="condition == 'content'">
+ 		   AND
+ 		   	   BOARD_CONTENT
+ 		</if>
+ 		<if test="condition == 'writer'">
+ 		   AND
+ 		   	   NICKNAME
+ 		</if>
+ 		<if test="condition == 'title'">
+ 		   AND
+ 		   	   BOARD_TITLE
+ 		</if>
+ 		  LIKE '%' || #{keyword} || '%'
+ 	</select>
+ 
+ 	<select id="searchList" parameterType="hashmap" resultType="freeBoard">
+ 		<include refid="boardColumn"/>
+ 		<choose>
+ 			<when test="condition == 'writer'">
+ 		   AND
+ 			   NICKNAME
+ 			</when>
+ 			<when test="condition == 'title'">
+ 		   AND
+ 			   BOARD_TITLE
+ 			</when >
+ 			<otherwise>
+ 		   AND
+ 		   	   BOARD_CONTENT
+ 			</otherwise>
+ 		</choose>
+ 		  LIKE '%' || #{keyword} || '%'
+ 		 ORDER
+ 		 	BY
+ 		 	   BOARD_NO DESC
+ 	</select>
+ 
+ 	<insert id="insertReply" parameterType="freeBoardReply">
+ 		INSERT
+ 		  INTO
+ 		  	   TB_FREEBOARD_REPLY
+ 		 	   (
+ 		 	   REPLY_NO,
+ 		 	   REF_BNO,
+ 		 	   REPLY_WRITER,
+ 		 	   REPLY_CONTENT
+ 		 	   )
+ 		VALUES
+ 			   (
+ 			   SEQ_FBRNO.NEXTVAL,
+ 			   #{refBno},
+ 			   #{replyWriter},
+ 			   #{replyContent}
+ 			   )
+ 	</insert>
+ 
+ 	<select id="selectReply" parameterType="long" resultType="freeBoardReply">
+ 		SELECT
+ 			   REPLY_NO replyNo,
+ 			   NICKNAME replyNickName,
+ 			   REPLY_CONTENT replyContent,
+ 			   TO_CHAR(CREATE_DATE, 'YYYY"-"MM"-"DD" "HH24":"MI') AS createDate
+ 		  FROM
+ 		 	   TB_FREEBOARD_REPLY
+ 		  JOIN
+ 		  	   TB_USER ON(USER_NO = REPLY_WRITER)
+ 		 WHERE
+ 		 	   REF_BNO = #{boardNo}
+ 		   AND
+ 		   	   TB_FREEBOARD_REPLY.STATUS = 'Y'
+ 		 ORDER
+ 		 	BY
+ 		 	   REPLY_NO DESC
+ 	</select>
+ 	
+ 	 	<select id="selectReplyById" parameterType="_int" resultType="freeBoardReply">
+ 		SELECT
+ 			   REPLY_NO replyNo,
+ 			   NICKNAME replyNickName,
+ 			   REPLY_CONTENT replyContent,
+ 			   TO_CHAR(CREATE_DATE, 'YYYY"-"MM"-"DD" "HH24":"MI') AS createDate
+ 		  FROM
+ 		 	   TB_FREEBOARD_REPLY
+ 		  JOIN
+ 		  	   TB_USER ON(USER_NO = REPLY_WRITER)
+ 		 WHERE
+ 		 	   REPLY_NO = #{replyNo}
+ 		   AND
+ 		   	   TB_FREEBOARD_REPLY.STATUS = 'Y'
+ 		 ORDER
+ 		 	BY
+ 		 	   REPLY_NO DESC
+ 	</select>
+ 
+	<update id="deleteChat" parameterType="_int">
+		UPDATE
+			   TB_FREEBOARD_REPLY
+		   SET
+		   	   STATUS = 'N'
+		 WHERE
+		 	   REPLY_NO = #{replyNo}
+	</update>
+ 
+ 
+ 
+ 
+ 
+ </mapper>

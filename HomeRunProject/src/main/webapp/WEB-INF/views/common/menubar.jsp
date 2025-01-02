@@ -72,7 +72,7 @@
             <a class="nav-link js-scroll-trigger" href="#">굿즈</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">자유게시판</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/freeBoard">자유게시판</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#">소모임</a>
