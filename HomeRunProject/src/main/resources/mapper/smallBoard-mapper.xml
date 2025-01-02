@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.baseball.small.model.dao.SmallBoardMapper">
+
+	<select id="selectTotalCount" resultType="int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_SMALL_BOARD
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'Y'
+	</select>
+	
+	<select id="selectAdminListCount" resultType="int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_SMALL_BOARD
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = "N"
+	</select>
+	
+	<select id="selectBoardList" resultType="smallBoard">
+		SELECT
+			   BOARD_NO boardNo,
+			   TEAM_NAME teamName,
+			   NICKNAME,
+			   BOARD_TITLE boardTitle,
+			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   BOARD_CONTENT boardContent,
+			   SELECT_COUNT selectCount
+		  FROM
+		 	   TB_SMALL_BOARD
+		  JOIN
+		  	   TB_USER ON(BOARD_WRITER = USER_NO)
+		 WHERE
+		 	   TB_SMALL_BOARD.STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'Y'
+		 ORDER
+		 	BY
+		 	   CREATE_DATE DESC
+	</select>
+	
+	<select id="getTeamList" resultType="string">
+		SELECT
+			   TEAM_NAME
+		  FROM
+		  	   TB_TEAM
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
+	
+	<insert id="insertBoard" parameterType="smallBoard">
+		INSERT
+		  INTO
+			   TB_SMALL_BOARD
+			   (
+			   BOARD_NO,
+			   TEAM_NAME,
+			   BOARD_WRITER,
+			   BOARD_TITLE,
+			   CREATE_DATE,
+			   BOARD_CONTENT
+			   )
+	    VALUES
+			   (
+			   SEQ_SGBNO.NEXTVAL,
+			   #{teamName},
+			   #{boardWriter},
+			   #{boardTitle},
+			   DEFAULT,
+			   #{boardContent}
+			   )
+	</insert>
+	
+	<insert id="insertBoardFile" parameterType="smallBoardUpfile">
+		INSERT
+		  INTO
+			   TB_SMALL_UPFILE
+			   (
+			   FILE_NO,
+			   REF_BNO,
+			   ORIGIN_NAME,
+			   CHANGE_NAME,
+			   UPLOAD_DATE,
+			   FILE_PATH
+			   )
+		VALUES
+		  	   (
+		  	   SEQ_SGFNO.NEXTVAL,
+		  	   SEQ_SGBNO.CURRVAL,
+		  	   #{originName},
+		  	   #{changeName},
+		  	   DEFAULT,
+		  	   #{filePath}
+		  	   )
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

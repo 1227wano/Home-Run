@@ -14,6 +14,9 @@
 		<typeAlias type="com.kh.baseball.freeBoard.model.vo.FreeBoard" alias="freeBoard"/>
 		<typeAlias type="com.kh.baseball.freeBoard.model.vo.FreeBoardFile" alias="freeBoardFile"/>
 		<typeAlias type="com.kh.baseball.freeBoard.model.vo.FreeBoardReply" alias="freeBoardReply"/>
+		<typeAlias type="com.kh.baseball.small.model.vo.SmallBoard" alias="smallBoard"/>
+		<typeAlias type="com.kh.baseball.small.model.vo.SmallBoardUpfile" alias="smallBoardUpfile"/>
+		<typeAlias type="com.kh.baseball.small.model.vo.SmallBoardReply" alias="smallBoardReply"/>
 		<typeAlias type="com.kh.baseball.player.model.vo.Player" alias="player"/>
 		<typeAlias type="com.kh.baseball.notice.model.vo.Notice" alias="notice"/>
 	</typeAliases>
@@ -24,6 +27,7 @@
 		<mapper resource="/mapper/freeBoard-mapper.xml" />
 		<mapper resource="/mapper/player-mapper.xml" />
 		<mapper resource="/mapper/notice-mapper.xml" />
+		<mapper resource="/mapper/smallBoard-mapper.xml"/>
 	</mappers>
 
 
