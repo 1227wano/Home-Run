@@ -23,6 +23,7 @@ import com.kh.baseball.player.model.vo.PlayerAttachment;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Service
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
@@ -30,6 +31,7 @@ public class PlayerServiceImpl implements PlayerService {
 	private final PlayerMapper mapper;
 	private final ServletContext context;
 	
+	// get 총 player 수
 	private int getTotalCount() {
 		int totalCount = mapper.getTotalCount();
 
@@ -39,23 +41,26 @@ public class PlayerServiceImpl implements PlayerService {
 		return totalCount;
 	}
 	
+	// get 페이지 정보
 	private PageInfo getPageInfo(int totalCount, int page) {
 		return Pagination.getPageInfo(totalCount, page, 5, 5);
 	}
 	
+	// get 전체 player 정보
 	private List<Player> getPlayerList(PageInfo pi) {
+		pi.setCurrentPage(1/*getTotalCount()*/); // 왜 getTotalCount()(=3) 를 1로 하면 됨..?
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowbounds = new RowBounds(offset, pi.getBoardLimit()); 
+		System.out.println(pi);
 		return mapper.findAllPlayerKorean(rowbounds);
 	}
 	
 	
-	
+	// 선수 등록
 	@Override
 	public void savePlayer(Player player, MultipartFile upfile) {
 		
 		// 익셉션핸들러(handler) & 값 검증(validate) 해야됨
-		
 		mapper.savePlayer(player);
 		
 		// 파일 유무 체크 / 업로드
@@ -66,9 +71,9 @@ public class PlayerServiceImpl implements PlayerService {
 			
 			mapper.savePlayerFile(playerAtt);
 		}
-		
 	}
 
+	// 파일 업로드
 	private void handleFileUpload(PlayerAttachment playerAtt, MultipartFile upfile) {
 		
 		String fileName = upfile.getOriginalFilename();
@@ -77,7 +82,7 @@ public class PlayerServiceImpl implements PlayerService {
 		int randomNum = (int)(Math.random() * 90000) + 10000;
 		String changeName = currentTime + randomNum + ext;
 		
-		String savePath = context.getRealPath("/resources/upload_files/");
+		String savePath = context.getRealPath("resources/upload_files/");
 		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
@@ -87,9 +92,13 @@ public class PlayerServiceImpl implements PlayerService {
 			e.printStackTrace();
 			// throw new FailToFileUploadException("파일 이상해");	 이거 익셉션 만들어서 넣기..?
 		}
-		
+		// 첨부파일이 존재 => 업로드 + Player객체에 originName, changeName 
+		playerAtt.setOriginName(fileName);
+		playerAtt.setChangeName("/resources/upload_files/" + changeName);
 	}
 
+	
+	// 전체 선수 조회(not 팀별, 가나다순)
 	@Override
 	public Map<String, Object> findAllPlayerKorean(int currentPage) {
 		
@@ -101,7 +110,7 @@ public class PlayerServiceImpl implements PlayerService {
 		PageInfo pi = getPageInfo(currentPage, totalCount);
 		
 		List<Player> players = getPlayerList(pi);
-		
+		System.out.print(players);
 		Map<String, Object> map = new HashMap();
 		map.put("players", players);
 		map.put("PageInfo", pi);
@@ -109,11 +118,19 @@ public class PlayerServiceImpl implements PlayerService {
 		return map;
 	}
 
+	// 선수 더보기
 	@Override
-	public Map<String, Object> findAllPlayerCount(int currentPage) {
-		// TODO Auto-generated method stub
+	public List<Player> findMorePlayer(int moreNum) {
 		return null;
 	}
+	
+	// 전체 선수 조회(not 팀별, 선수 조회수순)
+	@Override
+	public Map<String, Object> findAllPlayerCount(int currentPage) {
+		return null;
+	}
+	
+	
 	
 	@Override
 	public Player selectPlayer(int userNo) {
@@ -129,6 +146,8 @@ public class PlayerServiceImpl implements PlayerService {
 	public int deletePlayer(int userNo) {
 		return 0;
 	}
+
+	
 
 	
 

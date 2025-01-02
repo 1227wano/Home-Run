@@ -19,8 +19,8 @@ public interface PlayerMapper {
 	void savePlayerFile(PlayerAttachment playerAtt);
 	
 	List<Player> findAllPlayerKorean(RowBounds rowbounds);
-
 	
+	List<Player> findMorePlayer(int moreNum);
 	
 	
 

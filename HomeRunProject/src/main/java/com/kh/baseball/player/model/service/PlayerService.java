@@ -15,7 +15,11 @@ public interface PlayerService {
 	void savePlayer(Player player, MultipartFile upfile);
 
 	// 선수 정보 일람 (가나다 순)
-	Map<String, Object> findAllPlayerKorean(int currentPage);			
+	Map<String, Object> findAllPlayerKorean(int currentPage);	
+	
+	// 선수 더보기
+	List<Player> findMorePlayer(int moreNum);
+	
 	// 선수 정보 일람 (조회수 순)
 	Map<String, Object> findAllPlayerCount(int currentPage);			
 
@@ -27,6 +31,8 @@ public interface PlayerService {
 	
 	// 선수 정보 삭제
 	int deletePlayer(int userNo);
+	
+	
 
 	
 

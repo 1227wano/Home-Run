@@ -20,25 +20,23 @@
 		<div class="playerLists">
 			<ul class="playerList">
 				<c:choose>
-					<c:when test="${ not empty map }"> 
-						
+					<c:when test="${ not empty players }">
+					<c:forEach items="${ players }" var="p" begin="0" end="4">
 						<li id="">
 							<a href="상세보기로 넘어가"> 
-								<img src="${ player.imagePath }" alt="선수사진" class="player-photo">
-								<strong class="name"> ${ player.playerName } </strong>
-								<span class="team"> ${ player.playerTeam } </span> 
-								<span class="position"> ${ player.playerPosition } </span> 
-								<span class="number"> ${ player.backNo } </span>
+								<img src="/baseball${ p.imagePath }" alt="선수사진" class="player-photo">
+								<strong class="name"> ${ p.userName } </strong>
+								<span class="team"> ${ p.playerTeam } </span> 
+								<span class="position"> ${ p.playerPosition } </span> 
+								<span class="number"> ${ p.backNo } </span>
 							</a>
-						</li>
-						
-						<!-- 15명까지 출력 -->
-						
-						<button id="show-more-btn" align="center" onclick="showMorePlayer();">'더보기' ajax로 선수 15명 더 보여주기</button>
+						 </li>
+						<!-- 일단 5명까지 출력 -->
+						</c:forEach>
+						<button id="show-more-btn" align="center" onclick="showMorePlayer();">더보기</button>
 					</c:when>
 					<c:otherwise>
-						등록된 첨부파일이 없습니다. 
-						show-more-btn { style  display:none 
+						등록된 정보가 없습니다. 
 					</c:otherwise>
 				</c:choose>
 			</ul>
@@ -46,34 +44,32 @@
         
         <script> 
         
-         $(function (){
-	        
-	        showMorePlayer(moreNum);
-         });
         
-        function showMorePlayer(moreNum){
+        
+        function showMorePlayer(){
         	
         	let moreNum = 1;
 
         	$.ajax({
-            	url : "/baseball/playerList.player",
+            	url : '/baseball/findMorePlayer.player',
             	type : 'get',
             	data : { 
             		currentPage : moreNum	
             	},
             	success : function(response){
             		const players = [...response.list];
-            		const resulrPlayersInfo = players.map(p =>
+            		const resultPlayersInfo = players.map(p =>
 							    			        		`<tr>
-							            						<td>\${p.player.imagePath}</td>
-							    			        			<td>\${p.player.playerName}</td>
-							    			        			<td>\${p.player.backNo}</td>
-							    			        			<td>\${p.player.playerPosition}</td>
-							    			        			<td>\${p.player.backNo}</td>
+							            						<td>\${p.imagePath}</td>
+							    			        			<td>\${p.userName}</td>
+							    			        			<td>\${p.playerTeam}</td>
+							    			        			<td>\${p.playerPosition}</td>
+							    			        			<td>\${p.backNo}</td>
 							    			        		</tr>`
 							    			        	).join('');
+            		// 더이상 선수정보가 없을때 조건문으로 $('#show-more-btn').style('display:none'); 근데 이코드 잘못됨
             		}
-    				$('#playerList li').html(resulrPlayersInfo);
+    				$('.playerList li').html(resultPlayersInfo);
     				moreNum++;
             	}
             })

@@ -62,21 +62,10 @@
                     <button type="submit" class="btn btn-primary disabled" id="enroll-btn">제출</button>
                     <button type="reset" class="btn btn-danger">초기화</button>
                 </div>
-            </form>
+            </form>		
         </div>
         <br><br>
     </div>
-    
-    <div>
-    <h1>여기 등록된 전체 선수 열람</h1>
-    </div>
-    
-    
-    
-    
-    
-    
-    
     
     
 

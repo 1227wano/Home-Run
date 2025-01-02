@@ -25,7 +25,9 @@ public class Player {
 	private String playerStatus;
 	private String playerTeam;
 	private int count;
-	
+	private String userName;
+	private String imagePath;
+
 	
 	/* 
 	 * 입력받을시
