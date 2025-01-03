@@ -4,9 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.player.model.dao.PlayerMapper">
 
-	<!-- 나중에 써야지 -->
-	
-	<sql id="playerColumn"> 
+	<sql id="playerColumn"> <!-- 나중에 써야지 -->
 		SELECT
 				PLAYER_NO playerNo,
 		        GRADE grade,
@@ -17,7 +15,6 @@
 		        USER_NAME userName,
 			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
 	</sql>
-	
 	<sql id="playerAttachmentColumn" > <!-- 나중에 써야지 -->
 		SELECT
 			   PLAYER_ATTACHMENT_NO playerAttachmentNo,
@@ -27,8 +24,6 @@
 			   TB_PLAYER_ATTACHMENT.STATUS status
 	</sql>
 
-	<!-- 나중에 써야지 -->
-	
 	<insert id="savePlayer" parameterType="player">
 	INSERT 
 	  INTO 
@@ -98,7 +93,7 @@
 		        PLAYER_STATUS playerStatus,
 		        PLAYER_TEAM playerTeam,
 		        USER_NAME userName,
-			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
+			    CHANGE_NAME AS imagePath
 		  FROM
 		  		TB_PLAYER
 		  JOIN
@@ -111,6 +106,7 @@
 		 	BY
 		 		USER_NAME ASC
 	</select>
+	
 	
 	
 	<!-- 조회수 순으로 보기 -->

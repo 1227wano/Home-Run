@@ -8,23 +8,28 @@
 <title>선수 등록용 화면</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+		
+        
+</style>
 </head>
 <body>
 <div class="content">
         <br><br>
-        <div class="innerOuter">
+
+		<div class="innerOuter">
             <h2>선수등록</h2>
             <br>
-
+            
             <form id="players" action="savePlayer.player" method="post" enctype="multipart/form-data">
                 <div class="form-group" id="player-enroll-form">
-                    <label for=""> 선수 등급 : </label> &nbsp;&nbsp;
+                    <label for="">선수 등급 : </label> &nbsp;&nbsp;
                     <input type="radio" id="pro" value="1" name="grade">
-                    <label for="Male">프로</label> &nbsp;&nbsp;
+                    <label for="">프로</label> &nbsp;&nbsp;
                     <input type="radio" id="amateur" value="2" name="grade">
-                    <label for="Female">아마추어</label> &nbsp;&nbsp;
+                    <label for="">아마추어</label> &nbsp;&nbsp;
                     <input type="radio" id="normal" value="3" name="grade" checked>
-                    <label for="Female">일반</label> &nbsp;&nbsp;
+                    <label for="">일반</label> &nbsp;&nbsp;
                     <br><br>
             
                     포지션:

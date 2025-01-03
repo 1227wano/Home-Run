@@ -17,7 +17,7 @@ public class Player {
 	
 	private int playerNo;
 	private int grade;
-	private int playerPosition;
+	private String playerPosition;
 	private Date playerDate;
 	private String playerIntro;
 	private int playerSalary;

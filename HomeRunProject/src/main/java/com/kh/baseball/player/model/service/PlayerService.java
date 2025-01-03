@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.player.model.vo.Player;
 
+
 public interface PlayerService {
 	
 	// 선수 등록 신청
@@ -18,7 +19,7 @@ public interface PlayerService {
 	Map<String, Object> findAllPlayerKorean(int currentPage);	
 	
 	// 선수 더보기
-	List<Player> findMorePlayer(int moreNum);
+	List<Player> findMorePlayer(int page);
 	
 	// 선수 정보 일람 (조회수 순)
 	Map<String, Object> findAllPlayerCount(int currentPage);			

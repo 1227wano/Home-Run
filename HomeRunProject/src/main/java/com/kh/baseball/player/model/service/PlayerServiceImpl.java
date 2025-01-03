@@ -48,13 +48,10 @@ public class PlayerServiceImpl implements PlayerService {
 	
 	// get 전체 player 정보
 	private List<Player> getPlayerList(PageInfo pi) {
-		pi.setCurrentPage(1/*getTotalCount()*/); // 왜 getTotalCount()(=3) 를 1로 하면 됨..?
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowbounds = new RowBounds(offset, pi.getBoardLimit()); 
-		System.out.println(pi);
 		return mapper.findAllPlayerKorean(rowbounds);
 	}
-	
 	
 	// 선수 등록
 	@Override
@@ -104,13 +101,13 @@ public class PlayerServiceImpl implements PlayerService {
 		
 		// 총 개수 == DB 조회
 		// 요청 페이지 == currentPage
-		// 첫 페이지에 선수 몇명? == 10명 -> 더보기버튼으로 10명씩 추가 셀렉
+		// 첫 페이지에 선수 5명 -> 더보기버튼으로 5명씩 추가 셀렉
 		int totalCount = getTotalCount();
 		
-		PageInfo pi = getPageInfo(currentPage, totalCount);
+		PageInfo pi = getPageInfo(totalCount, currentPage);
 		
 		List<Player> players = getPlayerList(pi);
-		System.out.print(players);
+		// System.out.print(players);
 		Map<String, Object> map = new HashMap();
 		map.put("players", players);
 		map.put("PageInfo", pi);
@@ -120,8 +117,15 @@ public class PlayerServiceImpl implements PlayerService {
 
 	// 선수 더보기
 	@Override
-	public List<Player> findMorePlayer(int moreNum) {
-		return null;
+	public List<Player> findMorePlayer(int page) {
+		
+		int totalCount = getTotalCount();
+		PageInfo pi = getPageInfo(totalCount, page);
+		
+		List<Player> players = getPlayerList(pi);
+		
+		return players;
+
 	}
 	
 	// 전체 선수 조회(not 팀별, 선수 조회수순)

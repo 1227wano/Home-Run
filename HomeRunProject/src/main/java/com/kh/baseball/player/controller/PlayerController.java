@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -61,31 +62,20 @@ public class PlayerController {
 	// 등록된 전체 선수 열람
 	@GetMapping("findAllPlayer.player")
 	public ModelAndView findAllPlayer(Player player, @RequestParam(value="page", defaultValue="1") int page) {
-		
+		// log.info("{}", page);
 		Map<String, Object> map = playerService.findAllPlayerKorean(page);
 		
 		return mv.setViewNameAndData("player/playerList", map); 
 	}
 	
 	
+	
+	
+	
+
 	@GetMapping("playerList.player")
 	public ModelAndView forwardPlayerList() {
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
-	
-	@GetMapping("findMorePlayer.player")
-	public ResponseEntity<ResponseData> ajaxFindMorePlayer(int moreNum){
-		List<Player> players = playerService.findMorePlayer(moreNum);
-		ResponseData response = ResponseData.builder()
-											.status(HttpStatus.OK.toString())
-											.data(players)
-											.build();
-				
-		return new ResponseEntity<ResponseData>(response, HttpStatus.OK);
-	}
-	
-	
-	
-
 }
