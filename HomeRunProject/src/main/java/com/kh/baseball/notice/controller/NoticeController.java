@@ -1,8 +1,11 @@
 package com.kh.baseball.notice.controller;
 
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,18 +31,24 @@ public class NoticeController {
 	
 	@GetMapping("notices")
 	public ModelAndView selectNoticeList(@RequestParam(value="page", defaultValue="1") int page) {
-		Map<String, Object> map = noticeService.selectAllNotices(page);
-		
-		int totalCount = noticeService.getTotalNoticeCount();
-		int pageSize = 10;
-		int totalPage = (int) Math.ceil((double) totalCount / pageSize);
-		
-		ModelAndView mv = new ModelAndView("notice/list");
-	    mv.addAllObjects(map);
-	    mv.addObject("totalCount", totalCount);
-	    mv.addObject("totalPage", totalPage);
+	    int totalCount = noticeService.getTotalNoticeCount(); 
+	    int pageSize = 10; 
+	    int totalPage = (int) Math.ceil((double) totalCount / pageSize); 
+
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("page", page);
+	    params.put("rowBounds", new RowBounds((page - 1) * pageSize, pageSize));
+
+	    List<Notice> noticeList = noticeService.selectAllNotices(params); 
+
+	    ModelAndView mv = new ModelAndView("notice/list");
+	    mv.addObject("noticeList", noticeList); 
+	    mv.addObject("totalCount", totalCount); 
+	    mv.addObject("totalPage", totalPage); 
+
 	    return mv;
 	}
+
 	
 	@GetMapping("insertForm")
 	public String insertForm() {

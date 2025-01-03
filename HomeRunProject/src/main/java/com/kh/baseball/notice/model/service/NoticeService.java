@@ -1,5 +1,6 @@
 package com.kh.baseball.notice.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -8,7 +9,7 @@ import com.kh.baseball.notice.model.vo.Notice;
 
 public interface NoticeService {
 
-	Map<String, Object> selectAllNotices(int currentPage);
+	List<Notice> selectAllNotices(Map<String, Object> params);
 	
 	Map<String, Object> selectNoticeById(Long noticeNo);
 	

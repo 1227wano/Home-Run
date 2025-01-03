@@ -87,24 +87,28 @@
 	                  </c:forEach>
 	                </tbody>
 	            </table>
+	            
 	            <br>
 	
 	            <div id="pagingArea">
                 <ul class="pagination">
                 
-					<li class="page-item"><a class="page-link" href="boards?page=${ pageInfo.currentPage - 1 }">이전</a>
+					<li class="page-item"><a class="page-link" href="notices?page=${ pageInfo.currentPage - 1 }">이전</a>
                 
                     <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
                     
                     <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
                     	<li class="page-item">
-                    		<a class="page-link" href="boards?page=${ num }">
+                    		<a class="page-link" href="notices?page=${ num }">
                     			${ num }
                     		</a>
                     	</li>
                     </c:forEach>
                     
                     <li class="page-item"><a class="page-link" href="#">다음</a></li>
+                    
+                    <li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+                    
                 </ul>
             </div>
 	

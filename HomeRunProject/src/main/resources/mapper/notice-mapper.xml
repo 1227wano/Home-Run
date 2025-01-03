@@ -11,7 +11,14 @@
 		  		TB_NOTICE
 	</select>
 	
-	<select id="selectAllNotices" resultType="com.kh.baseball.notice.model.vo.Notice">
+	<select id="selectTotalCount" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_NOTICE
+	</select>
+	
+	<select id="selectAllNotices" parameterType="java.util.Map" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
 				*
 		  FROM
@@ -19,9 +26,6 @@
 		 ORDER
 		 	BY
 		 		NOTICE_NO DESC
-		 LIMIT
-		 		#{offset},
-		 		#{pageSize}
 	</select>
 	
 	<insert id="addNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">

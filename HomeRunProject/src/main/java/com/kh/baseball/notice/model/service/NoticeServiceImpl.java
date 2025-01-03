@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
-import com.kh.baseball.exception.NoticeNoValueException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.notice.model.dao.NoticeMapper;
 import com.kh.baseball.notice.model.vo.Notice;
@@ -33,51 +32,16 @@ public class NoticeServiceImpl implements NoticeService {
 	private final ServletContext context;
 	
 	public int getTotalNoticeCount() {
-		int totalCount = mapper.selectTotalCount();
-		
-		if(totalCount == 0) {
-			throw new NoticeNotFoundException("없어~~");
-		} 
-		return totalCount;
+		return mapper.selectTotalCount();
 	}
 	
 	private PageInfo getPageInfo(int totalCount, int page) {
 		return Pagination.getPageInfo(totalCount, page, 5, 5);
 	}
 	
-	private List<Notice> getNoticeList(PageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return mapper.selectAllNotices(rowBounds);
-	}
-	
-	private void validateNotice(Notice notice) {
-		if(notice == null ||
-				notice.getNoticeTitle() == null || notice.getNoticeTitle().trim().isEmpty() ||
-				notice.getNoticeContent() == null || notice.getNoticeContent().trim().isEmpty()) {
-			throw new NoticeNoValueException("부적절한 입력값");
-		}
-		
-		String noticeTitle = escapeHtml(notice.getNoticeTitle());
-		String noticeContent = escapeHtml(notice.getNoticeContent());
-		notice.setNoticeTitle(convertNewlineToBr(noticeTitle));
-		notice.setNoticeContent(convertNewlineToBr(noticeContent));
-	}
-	
 	@Override
-	public Map<String, Object> selectAllNotices(PageInfo pi2) {
-		
-		int totalCount = getTotalNoticeCount();
-		
-		PageInfo pi = getPageInfo(totalCount, pi2);
-		
-		List<Notice> notices = selectAllNotices(pi);
-		
-		Map<String, Object> map = new HashMap();
-		map.put("notices", notices);
-		map.put("pageInfo", pi);
-		
-		return map;
+	public List<Notice> selectAllNotices(Map<String, Object> params) {
+		return mapper.selectAllNotices();
 	}
 
 	@Override

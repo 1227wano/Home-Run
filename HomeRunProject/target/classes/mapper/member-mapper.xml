@@ -6,6 +6,7 @@
 
  <select id="login" parameterType="member" resultType="member">
 	SELECT
+			USER_NO userNo,
 	        USER_ID userId,
 	        USER_PWD userPwd,
 	        USER_NAME userName,

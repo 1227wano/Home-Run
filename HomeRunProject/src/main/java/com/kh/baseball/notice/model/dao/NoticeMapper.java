@@ -12,11 +12,13 @@ public interface NoticeMapper {
 
 	List<Notice> selectAllNotices();
 	
+	int selectTotalCount();
+	
 	Notice selectNoticeById(int noticeNo);
 	
 	Notice getNoticeById(long noticeNo);
 	
-	void addNotice(Notice notice); // 두개를 넘길 수 없음 하나만 넘길수 있음
+	void addNotice(Notice notice); // 두개를 넘길 수 없음 하나만 넘길 수 있음
 	
 	void updateNotice(Notice notice);
 	
@@ -24,6 +26,5 @@ public interface NoticeMapper {
 
 	int getTotalNoticeCount();
 
-	int selectTotalCount();
 	
 }
