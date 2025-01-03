@@ -15,8 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
 import com.kh.baseball.exception.BoardNoValueException;
+import com.kh.baseball.exception.BoardNotFoundException;
 import com.kh.baseball.exception.FailToFileUploadException;
-import com.kh.baseball.freeBoard.model.vo.FreeBoardFile;
+import com.kh.baseball.exception.FileNotFoundException;
+import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.small.model.dao.SmallBoardMapper;
 import com.kh.baseball.small.model.vo.SmallBoard;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
@@ -56,6 +58,18 @@ public class SmallBoardValidator {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return mapper.selectBoardList(rowBounds);
+	}
+	
+	public List<SmallBoard> getadminBoardList(PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return mapper.selectAdminList(rowBounds);
+	}
+	
+	public List<SmallBoard> getBoardList(PageInfo pi, int boardWriter ){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return mapper.selectMyBoardList(rowBounds, boardWriter);
 	}
 	
 	public void validateBoard(SmallBoard smallBoard) {
@@ -106,16 +120,44 @@ public class SmallBoardValidator {
 		}
 		
 		return smallBoardUpfile;
-		
 	}
 	
+	public SmallBoard selectBoardByBoardNo(Long boardNo) {
+		
+		SmallBoard smallBoard = mapper.selectBoardByBoardNo(boardNo);
+		
+		if(smallBoard == null) {
+			throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
+		}
+		
+		return smallBoard;
+	}
 	
+	public void incrementViewCount(Long boardNo) {
+		
+		int result = mapper.increaseCount(boardNo);
+		if(result < 0) {
+			throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
+		}
+	}
 	
+	public void validateBoardNo(Long boardNo) {
+		if(boardNo == null || boardNo <= 0) {
+			throw new InvalidParameterException("파일을 찾을 수 없습니다.");
+		}
+	}
 	
+	public SmallBoardUpfile selectFileByBoardNo(Long boardNo) {
+		return mapper.selectUpfileByBoardNo(boardNo);
+	}
 	
-	
-	
-	
+	public void deleteFile(SmallBoardUpfile deleteFile) {
+		try {
+			new File(context.getRealPath(deleteFile.getChangeName())).delete();
+		} catch(RuntimeException e) {
+			throw new FileNotFoundException("파일을 삭제하지 못하였습니다.");
+		}
+	}
 	
 	
 	

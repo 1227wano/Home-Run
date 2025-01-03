@@ -44,6 +44,8 @@
         <div class="innerOuter">
             <h2>게시글 작성하기</h2>
             <br>
+            <a class="btn btn-secondary" style="float:right;" href="/baseball/small">목록으로</a>
+            <br><br>
 
             <form id="enrollForm" method="post" action="small" enctype="multipart/form-data">
                 <input type="hidden" name="boardWriter" value="${ sessionScope.loginUser.userNo }">
@@ -78,7 +80,7 @@
 
                 <div align="center">
                     <button type="submit" class="btn btn-primary">등록하기</button>
-                    <button type="reset" class="btn btn-danger">취소하기</button>
+                    <button type="reset" class="btn btn-danger">지우기</button>
                 </div>
             </form>
         </div>

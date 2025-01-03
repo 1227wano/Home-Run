@@ -15,6 +15,8 @@ public interface SmallBoardMapper {
 	
 	List<SmallBoard> selectBoardList(RowBounds rowBounds);
 	
+	List<SmallBoard> selectAdminList(RowBounds rowBounds);
+	
 	List<String> getTeamList();
 	
 	void insertBoard(SmallBoard smallBoard);
@@ -22,5 +24,23 @@ public interface SmallBoardMapper {
 	void insertBoardFile(SmallBoardUpfile smallBoardUpfile);
 	
 	int selectAdminListCount();
+	
+	SmallBoard adminBoardDetail(Long boardNo);
+	
+	SmallBoardUpfile adminUpfileDetail(Long boardNo);
+	
+	int adminPermit(Long boardNo);
+	
+	int selectMyBoardListCount(int loginUserNo);
+	
+	List<SmallBoard> selectMyBoardList(RowBounds rowBounds, int loginUserNo);
+	
+	SmallBoard selectBoardByBoardNo(Long boardNo);
+	
+	SmallBoardUpfile selectUpfileByBoardNo(Long boardNo);
+	
+	int increaseCount(Long boardNo);
+	
+	int deleteBoard(Long boardNo);
 	
 }

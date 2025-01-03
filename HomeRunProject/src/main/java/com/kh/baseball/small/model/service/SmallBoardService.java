@@ -16,4 +16,14 @@ public interface SmallBoardService {
 	void insertBoard(SmallBoard smallBoard, MultipartFile upfile);
 	
 	Map<String, Object> selectAdminList(int page);
+	
+	Map<String, Object> adminListDetail(Long boardNo);
+	
+	void adminPermit(Long boardNo);
+	
+	Map<String, Object> selectMyBoardList(int page, int loginUserNo);
+	
+	Map<String, Object> selectDetailByBoardNo(Long boardNo);
+	
+	void deleteBoard(Long boardNo);
 }
