@@ -69,7 +69,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		}
 	}
 	
-	
+	public FreeBoardFile selectBoardFile(FreeBoardFile freeBoardFile) {
+		return mapper.selectBoardFile(freeBoardFile);
+	}
 	
 	@Override
 	public Map<String, Object> selectDetailByBoardNo(Long boardNo) {
@@ -80,10 +82,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		Map<String, Object> map = new HashMap();
 		
 		for(int i = 1; i < 6; i++) {
-			FreeBoardFile freeBoardFile = new FreeBoardFile();
-			freeBoardFile.setRefBno(boardNo);
-			freeBoardFile.setFileType(i);
-			map.put("file"+i,mapper.selectBoardFile(freeBoardFile));
+			map.put("file"+i,selectBoardFile(FreeBoardFile.builder().refBno(boardNo).fileType(i).build()));
 		}
 		//log.info("{}", map);
 		map.put("freeBoard", freeBoard);
@@ -100,10 +99,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		Map<String, Object> map = new HashMap();
 		
 		for(int i = 1; i < 6; i++) {
-			FreeBoardFile freeBoardFile = new FreeBoardFile();
-			freeBoardFile.setRefBno(boardNo);
-			freeBoardFile.setFileType(i);
-			map.put("file"+i,mapper.selectBoardFile(freeBoardFile));
+			map.put("file"+i,selectBoardFile(FreeBoardFile.builder().refBno(boardNo).fileType(i).build()));
 		}
 		map.put("freeBoard", freeBoard);
 		return map;
