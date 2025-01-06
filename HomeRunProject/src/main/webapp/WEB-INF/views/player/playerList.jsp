@@ -31,7 +31,7 @@
 								<strong class="name"> 선수명 : ${ p.userName } </strong> <br>
 								<c:choose>
 									<c:when test="${ p.playerTeam eq 'null' || p.playerTeam eq 'N' }">
-										<span class="team"> 소속팀 : FA </span> <br>
+										<span class="team"> 소속팀 : FA(자유계약선수) </span> <br>
 									</c:when>
 									<c:otherwise>
 										<span class="team"> 소속팀 : ${ p.playerTeam } </span> <br>
@@ -54,7 +54,7 @@
         
         <script> 
         
-       	let moreNum = 2; // 여기서 선언안하면 아래의 펑션이 실행될때마다 2가 됨
+       	let moreNum = 2; // function안에서 선언하면 아래의 function이 실행될때마다 2가 됨
         
         function showMorePlayer(){
 
@@ -73,7 +73,7 @@
 															<strong class="name"> 선수명 : \${ p.userName } </strong> <br>
 															<c:choose>
 															<c:when test="${ p.playerTeam eq null }">
-																<span class="team"> 소속팀 : FA </span> <br>
+																<span class="team"> 소속팀 : FA(자유계약선수) </span> <br>
 															</c:when>
 															<c:otherwise>
 																<span class="team"> 소속팀 : ${ p.playerTeam } </span> <br>

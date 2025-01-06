@@ -42,7 +42,7 @@
 	        ) 
 	VALUES
 	        (
-	        SEQ_PNO.NEXTVAL,
+	        #{userNumber},
 	        #{grade},
 	        #{playerPosition},
 	        SYSDATE,

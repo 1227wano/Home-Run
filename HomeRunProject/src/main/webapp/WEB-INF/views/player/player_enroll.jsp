@@ -23,6 +23,12 @@
             
             <form id="players" action="savePlayer.player" method="post" enctype="multipart/form-data">
                 <div class="form-group" id="player-enroll-form">
+                
+                	회원번호를 입력해주세요 : 
+                	<input type="number" min="1" step="1" name="userNumber">
+                	(회원번호는 로그인한 후, 마이페이지에서 확인 가능합니다.)
+                	<br><br>                    
+                
                     <label for="">선수 등급 : </label> &nbsp;&nbsp;
                     <input type="radio" id="pro" value="1" name="grade">
                     <label for="">프로</label> &nbsp;&nbsp;
@@ -34,11 +40,11 @@
             
                     포지션:
                     <select name="playerPosition">
-                        <option value="1">감독</option>
-                        <option value="2">투수</option>
-                        <option value="3">포수</option>
-                        <option value="4">내야수</option>
-                        <option value="5">외야수</option>
+                        <option value="감독">감독</option>
+                        <option value="투수">투수</option>
+                        <option value="포수">포수</option>
+                        <option value="내야수">내야수</option>
+                        <option value="외야수">외야수</option>
                     </select>
                     <br><br>
             

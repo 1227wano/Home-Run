@@ -95,7 +95,7 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	
-	// 전체 선수 조회(not 팀별, 가나다순)
+	// 전체 선수 조회(가나다순)
 	@Override
 	public Map<String, Object> findAllPlayerKorean(int currentPage) {
 		
@@ -128,7 +128,7 @@ public class PlayerServiceImpl implements PlayerService {
 
 	}
 	
-	// 전체 선수 조회(not 팀별, 선수 조회수순)
+	// 전체 선수 조회(선수 조회수순)
 	@Override
 	public Map<String, Object> findAllPlayerCount(int currentPage) {
 		return null;
