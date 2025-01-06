@@ -74,7 +74,6 @@
 		<c:remove var="alertMsg" scope="session" />
 		</c:if>
 		
-		
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
@@ -95,8 +94,8 @@
           <li class="nav-item" id="PnT">
             <a class="nav-link js-scroll-trigger" href="#">선수 및 팀 정보</a>
 	            <ul id="playerAndTeam">
-					<li><a href="/baseball/savePlayerform.player">선수 등록</a></li>
-					<li><a href="/baseball/findAllPlayer.player">선수 조회</a></li>
+					<li><a href="/baseball/savePlayerform">선수 등록</a></li>
+					<li><a href="/baseball/findAllPlayer">선수 조회</a></li>
 					<li><a href="">팀 등록</a></li>
 					<li><a href="">팀 조회</a></li>
 				</ul>

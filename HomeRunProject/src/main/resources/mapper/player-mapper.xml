@@ -4,7 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.player.model.dao.PlayerMapper">
 
-	<sql id="playerColumn"> <!-- 나중에 써야지 -->
+	<!-- 나중에 써야지
+	<sql id="playerColumn">  
 		SELECT
 				PLAYER_NO playerNo,
 		        GRADE grade,
@@ -15,7 +16,7 @@
 		        USER_NAME userName,
 			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
 	</sql>
-	<sql id="playerAttachmentColumn" > <!-- 나중에 써야지 -->
+	<sql id="playerAttachmentColumn" >
 		SELECT
 			   PLAYER_ATTACHMENT_NO playerAttachmentNo,
 			   REF_PNO refPno,
@@ -23,6 +24,8 @@
 			   CREATE_DATE createDate
 			   TB_PLAYER_ATTACHMENT.STATUS status
 	</sql>
+	-->
+
 
 	<insert id="savePlayer" parameterType="player">
 	INSERT 
@@ -30,28 +33,22 @@
 	        TB_PLAYER
 	        (
 	        PLAYER_NO,
+	        USER_NO,
 	        GRADE,
 	        PLAYER_POSITION,
 	        PLAYER_DATE,
 	        PLAYER_INTRO,
-	        PLAYER_SALARY,
-	        BACK_NO,
-	        PLAYER_STATUS,
-	        PLAYER_TEAM,
-	        COUNT
+	        PLAYER_SALARY
 	        ) 
 	VALUES
 	        (
-	        #{userNumber},
+	        SEQ_PNO.NEXTVAL,
+	        #{userNo},
 	        #{grade},
 	        #{playerPosition},
 	        SYSDATE,
 	        #{playerIntro},
-	        #{playerSalary},
-	        0,
-	        'N',
-	        'null',
-	        0
+	        #{playerSalary}
 	        )
 	</insert>
 	
@@ -61,6 +58,7 @@
 		  	   TB_PLAYER_ATTACHMENT
 		  	   (
 		  	   PLAYER_ATTACHMENT_NO,
+		  	   REF_PNO,
 			   ORIGIN_NAME,
 			   CHANGE_NAME,
 			   FILE_PATH
@@ -68,6 +66,7 @@
 		VALUES
 				(
 				SEQ_PANO.NEXTVAL,
+				SEQ_PNO.CURRVAL,
 				#{originName},
 				#{changeName},
 				#{filePath}
@@ -97,42 +96,42 @@
 		  FROM
 		  		TB_PLAYER
 		  JOIN
-		  		TB_USER ON (USER_NO = PLAYER_NO)	
+		  		TB_USER USING (USER_NO)	
 		  JOIN
-		  		TB_PLAYER_ATTACHMENT ON (PLAYER_NO = PLAYER_ATTACHMENT_NO)
+		  		TB_PLAYER_ATTACHMENT ON (PLAYER_NO = REF_PNO)
 		 WHERE
 		 		PLAYER_STATUS = 'Y'
+		   AND
+		   		GRADE = 1
 		 ORDER
 		 	BY
 		 		USER_NAME ASC
 	</select>
 	
 	
-	
-	<!-- 조회수 순으로 보기 -->
-	<select id="findAllPlayerCount" resultType="player">
+	<select id="findPlayerDetail" resultType="player">
 		SELECT
-				PLAYER_NO playerNo,
-		        GRADE grade,
-		        PLAYER_POSITION playerPosition,
 		        PLAYER_NO playerNo,
-		        PLAYER_STATUS playerStatus,
-		        PLAYER_TEAM playerTeam,
+		        USER_NAME userName,				
+				BACK_NO backNo,
+				PLAYER_TEAM playerTeam,
+				PLAYER_POSITION playerPosition,									
+				PLAYER_DATE playerDate,
+				PLAYER_INTRO playerIntro,
+				PLAYER_SALARY playerSalary,
+			    CHANGE_NAME AS imagePath
 		  FROM
 		  		TB_PLAYER
-		 WHERE
-		 		PLAYER_TEAM = #{playerTeam}
-		   AND
-		 		PLAYER_STATUS = 'Y'
 		  JOIN
-		  		TB_USER ON (USER_NO = PLAYER_NO)
-		 ORDER
-		 	BY
-		 		COUNT ASC
-	</select>
-	
-	<select id="findPlayerDetail" resultType="player">
-		
+		  		TB_USER ON (USER_NO = PLAYER_NO)	
+		  JOIN
+		  		TB_PLAYER_ATTACHMENT ON (PLAYER_NO = PLAYER_ATTACHMENT_NO)
+		 WHERE
+		 		PLAYER_STATUS = 'Y'
+		   AND
+		   		GRADE = 1
+		   AND
+		   		PLAYER_NO = #{playerNo}
 	</select>
 
 

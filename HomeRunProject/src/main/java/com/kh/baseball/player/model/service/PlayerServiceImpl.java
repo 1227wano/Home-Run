@@ -22,8 +22,9 @@ import com.kh.baseball.player.model.vo.Player;
 import com.kh.baseball.player.model.vo.PlayerAttachment;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
@@ -40,18 +41,17 @@ public class PlayerServiceImpl implements PlayerService {
 		}
 		return totalCount;
 	}
-	
 	// get 페이지 정보
 	private PageInfo getPageInfo(int totalCount, int page) {
 		return Pagination.getPageInfo(totalCount, page, 5, 5);
 	}
-	
 	// get 전체 player 정보
 	private List<Player> getPlayerList(PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowbounds = new RowBounds(offset, pi.getBoardLimit()); 
 		return mapper.findAllPlayerKorean(rowbounds);
 	}
+	
 	
 	// 선수 등록
 	@Override
@@ -70,6 +70,7 @@ public class PlayerServiceImpl implements PlayerService {
 		}
 	}
 
+	
 	// 파일 업로드
 	private void handleFileUpload(PlayerAttachment playerAtt, MultipartFile upfile) {
 		
@@ -89,7 +90,7 @@ public class PlayerServiceImpl implements PlayerService {
 			e.printStackTrace();
 			// throw new FailToFileUploadException("파일 이상해");	 이거 익셉션 만들어서 넣기..?
 		}
-		// 첨부파일이 존재 => 업로드 + Player객체에 originName, changeName 
+		// 첨부파일이 존재 => 업로드 + PlayerAttachment객체에 originName, changeName 
 		playerAtt.setOriginName(fileName);
 		playerAtt.setChangeName("/resources/upload_files/" + changeName);
 	}
@@ -115,6 +116,7 @@ public class PlayerServiceImpl implements PlayerService {
 		return map;
 	}
 
+	
 	// 선수 더보기
 	@Override
 	public List<Player> findMorePlayer(int page) {
@@ -125,22 +127,37 @@ public class PlayerServiceImpl implements PlayerService {
 		List<Player> players = getPlayerList(pi);
 		
 		return players;
-
 	}
 	
-	// 전체 선수 조회(선수 조회수순)
+	/* 전체 선수 조회(선수 조회수순)
 	@Override
 	public Map<String, Object> findAllPlayerCount(int currentPage) {
 		return null;
 	}
+	*/
 	
-	
-	
+	// 선수 상세보기
 	@Override
-	public Player selectPlayer(int userNo) {
-		return null;
+	public Map<String, Object> selectPlayer(int playerNo) {
+		
+		Player player = findPlayerDetail(playerNo);
+		// log.info("{}", player);
+		Map<String, Object> responseData = new HashMap();
+		responseData.put("player", player);
+		
+		return responseData;
+	}
+	private Player findPlayerDetail(int playerNo) {
+		Player player = mapper.findPlayerDetail(playerNo);
+		// log.info("{}", player);
+
+		if(player == null) {
+			throw new PlayerNotFoundException("선수를 찾을 수 없습니다.");
+		}
+		return player;
 	}
 
+	
 	@Override
 	public int updatePlayer(Player player) {
 		return 0;
@@ -150,6 +167,7 @@ public class PlayerServiceImpl implements PlayerService {
 	public int deletePlayer(int userNo) {
 		return 0;
 	}
+
 
 	
 

@@ -21,13 +21,10 @@
             <h2>선수등록</h2>
             <br>
             
-            <form id="players" action="savePlayer.player" method="post" enctype="multipart/form-data">
+            <form id="players" action="savePlayer" method="post" enctype="multipart/form-data">
                 <div class="form-group" id="player-enroll-form">
                 
-                	회원번호를 입력해주세요 : 
-                	<input type="number" min="1" step="1" name="userNumber">
-                	(회원번호는 로그인한 후, 마이페이지에서 확인 가능합니다.)
-                	<br><br>                    
+                	<input type="hidden" name="userNo" value="${ loginUser.userNo }" />
                 
                     <label for="">선수 등급 : </label> &nbsp;&nbsp;
                     <input type="radio" id="pro" value="1" name="grade">
@@ -78,10 +75,6 @@
         <br><br>
     </div>
     
-
-    <div>
-    <h1>여기 등록된 전체 선수 열람</h1>
-    </div>
 
     <script>
         $(function(){

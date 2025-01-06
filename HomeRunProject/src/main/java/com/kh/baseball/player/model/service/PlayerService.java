@@ -21,11 +21,13 @@ public interface PlayerService {
 	// 선수 더보기
 	List<Player> findMorePlayer(int page);
 	
-	// 선수 정보 일람 (조회수 순)
+	/* 선수 정보 일람 (조회수 순) => 보류
 	Map<String, Object> findAllPlayerCount(int currentPage);			
+	*/
 
 	// 선수 정보 상세조회
-	Player selectPlayer(int userNo);
+	Map<String, Object> selectPlayer(int playerNo);
+	
 	
 	// 선수 정보 수정
 	int updatePlayer(Player player);

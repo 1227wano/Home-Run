@@ -20,6 +20,6 @@ public class PlayerAttachment {
 	private String changeName;
 	private String filePath;
 	private String uploadDate;
-	private int userNo;
+	private int playerNo;
 
 }
