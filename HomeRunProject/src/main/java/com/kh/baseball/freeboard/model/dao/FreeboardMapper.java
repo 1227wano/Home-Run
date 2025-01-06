@@ -1,4 +1,4 @@
-package com.kh.baseball.freeBoard.model.dao;
+package com.kh.baseball.freeboard.model.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -6,9 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
-import com.kh.baseball.freeBoard.model.vo.FreeBoard;
-import com.kh.baseball.freeBoard.model.vo.FreeBoardFile;
-import com.kh.baseball.freeBoard.model.vo.FreeBoardReply;
+import com.kh.baseball.freeboard.model.vo.FreeBoard;
+import com.kh.baseball.freeboard.model.vo.FreeBoardFile;
+import com.kh.baseball.freeboard.model.vo.FreeBoardReply;
 
 @Mapper
 public interface FreeBoardMapper {

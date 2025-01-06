@@ -1,4 +1,4 @@
-package com.kh.baseball.freeBoard.controller;
+package com.kh.baseball.freeboard.controller;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.baseball.common.model.vo.ResponseData;
-import com.kh.baseball.freeBoard.model.service.FreeBoardService;
-import com.kh.baseball.freeBoard.model.vo.FreeBoardReply;
+import com.kh.baseball.freeboard.model.service.FreeBoardService;
+import com.kh.baseball.freeboard.model.vo.FreeBoardReply;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

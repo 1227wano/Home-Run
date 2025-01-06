@@ -1,4 +1,4 @@
-package com.kh.baseball.freeBoard.model.service;
+package com.kh.baseball.freeboard.model.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,9 +19,9 @@ import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.BoardNotFoundException;
 import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FileNotFoundException;
-import com.kh.baseball.freeBoard.model.dao.FreeBoardMapper;
-import com.kh.baseball.freeBoard.model.vo.FreeBoard;
-import com.kh.baseball.freeBoard.model.vo.FreeBoardFile;
+import com.kh.baseball.freeboard.model.dao.FreeBoardMapper;
+import com.kh.baseball.freeboard.model.vo.FreeBoard;
+import com.kh.baseball.freeboard.model.vo.FreeBoardFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

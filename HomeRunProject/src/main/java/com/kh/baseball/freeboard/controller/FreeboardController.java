@@ -1,4 +1,4 @@
-package com.kh.baseball.freeBoard.controller;
+package com.kh.baseball.freeboard.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.baseball.common.ModelAndViewUtil;
-import com.kh.baseball.freeBoard.model.service.FreeBoardService;
-import com.kh.baseball.freeBoard.model.vo.FreeBoard;
+import com.kh.baseball.freeboard.model.service.FreeBoardService;
+import com.kh.baseball.freeboard.model.vo.FreeBoard;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
