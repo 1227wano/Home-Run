@@ -1,11 +1,18 @@
 package com.kh.baseball.notice.model.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
@@ -20,13 +27,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class NoticeServiceImpl implements NoticeService {
-
-	private final NoticeMapper mapper;
 	
-	private int getTotalCount() {
+	private final NoticeMapper mapper;
+	private final ServletContext context;
+	
+	public int getTotalCount() {
 		int totalCount = mapper.selectTotalCount();
+		
 		if(totalCount == 0) {
-			throw new NoticeNotFoundException("게시글이 없습니다.");
+			throw new NoticeNotFoundException("없어~~~");
 		}
 		return totalCount;
 	}
@@ -36,34 +45,19 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 	
 	private List<Notice> getNoticeList(PageInfo pi) {
-		int offset = (pi.getCurrentPage() - 1) * pi.getPageLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getPageLimit());
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return mapper.selectNoticeList(rowBounds);
 	}
 	
 	@Override
 	public Map<String, Object> selectNoticeList(int currentPage) {
-		/*
-		int totalCount = mapper.selectTotalCount();
-		
-		if(totalCount == 0) {
-			throw new NoticeNotFoundException("게시글이 없습니다.");
-		}
-		*/
+		 
 		int totalCount = getTotalCount();
 		
-		// log.info("게시글 개수 : {}", totalCount);
-		// log.info("요청 페이지 : {}", currentPage);
-		// PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, currentPage, 5);
 		PageInfo pi = getPageInfo(totalCount, currentPage);
-		/*
-		int offset = (pi.getCurrentPage() - 1) * pi.getPageLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getPageLimit());
-		List<Notice> notices = mapper.selectNoticeList(rowBounds);
-		*/
 		
 		List<Notice> notices = getNoticeList(pi);
-		// log.info("게시글목록 : {}", notices);
 		
 		Map<String, Object> map = new HashMap();
 		map.put("notices", notices);
@@ -71,26 +65,74 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		return map;
 	}
+	
 
 	@Override
-	public void insertNotice(Notice notice) {
+	public void insertNotice(Notice notice, MultipartFile upfile) {
 
+		if(!("".equals(upfile.getOriginalFilename()))) {
+			String fileName = upfile.getOriginalFilename();
+			String ext = fileName.substring(fileName.lastIndexOf("."));
+			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			int randomNum = (int)(Math.random() * 9000) + 1000;
+			String changeName = currentTime + randomNum + ext;
+			
+			String savePath = context.getRealPath("/resources/upload_files/");
+			
+				try {
+					upfile.transferTo(new File(savePath + changeName));
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				notice.setAttachMent("/baseball/resources/upload_files/" + changeName);
+			
+		}
+		
+		
+		mapper.insertNotice(notice);
+	}
+	
+	@Override
+	public Map<String, Object> selectNoticeById(Long noticeNo) {
+		Notice notice = mapper.getNoticeById(noticeNo);
+		Map<String, Object> result = new HashMap<>();
+		result.put("notice", notice);
+		return result;
+	}
+	
+	@Override
+	public void updateNotice(Notice notice, MultipartFile upfile) {
+		 log.info("Updating notice: {}", notice);
+	     mapper.updateNotice(notice);
 	}
 
 	@Override
-	public Notice selectNotice(int noticeNo) {
-		return null;
+	public void deleteNotice(Long noticeNo, String attachMent) {
+		mapper.deleteNotice(noticeNo);
 	}
+
 
 	@Override
-	public void updateNotice(Notice notice) {
-
+	public Notice getNoticeById(long noticeNo) {
+		return mapper.getNoticeById(noticeNo);
 	}
 
-	@Override
-	public void delecteNotice(int noticeNo) {
+	
 
-	}
+	
+
+	
+
+	
+
+	
+
+	
+
+	
 
 }
 

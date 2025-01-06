@@ -4,30 +4,94 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.notice.model.dao.NoticeMapper">
 
+	<select id="getTotalCount" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_NOTICE
+	</select>
+	
 	<select id="selectTotalCount" resultType="_int">
 		SELECT
 				COUNT(*)
 		  FROM
 		  		TB_NOTICE
-		 WHERE
-		 		STATUS = 'Y'
 	</select>
 	
-	<select id="selectNoticeList" resultType="notice">
+	<select id="selectNoticeList" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
-				NOTICE_NO noticeNo,
-				NOTICE_TITLE noticeTitle,
-				NOTICE_CONTENT noticeContent,
-				TO_CHAR(CREATION_DATE, 'YYYY-MM-DD') as creationDate,
-				ORIGIN_NAME originName
-	 	  FORM
-	 	  		NOTICE
-	 	 WHERE
-	 	 		STATUS = 'Y'
-	 	 ORDER
-	 	 	BY
-	 	 		NOTICE_NO DESC
+				*
+		  FROM
+		  		TB_NOTICE
+		 ORDER
+		 	BY
+		 		NOTICE_NO DESC
 	</select>
+	
+	<insert id="insertNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
+		INSERT
+		  INTO
+		  		TB_NOTICE
+		  		(
+		  		NOTICE_NO,
+		  		TITLE,
+		  		CONTENT,
+		  		CREATION_DATE,
+		  		ATTACHMENT
+		  		)
+		 VALUES
+		 		(
+		 		SEQ_NOTICE_NO.NEXTVAL,
+		 		#{noticeTitle},
+		 		#{noticeContent},
+		 		#{creation_Date},
+		 		#{attachMent}
+		 		)
+	</insert>
+	
+	<update id="updateNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
+		UPDATE
+				TB_NOTICE
+		   SET
+		   		TITLE = #{Title},
+		   		CONTENT = #{Content},
+		   		CREATION_DATE = #{creationDate},
+		   		ATTACHMENT = #{attachMent}
+		  WHERE
+		  		NOTICE_NO = #{noticeNo}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="_int">
+		DELETE
+		  FROM
+		  		TB_NOTICE
+		 WHERE
+		 		NOTICE_NO = #{noticeNo}
+	</delete>
+	
+	<select id="selectNoticeById" parameterType="long" resultType="com.kh.baseball.notice.model.vo.Notice">
+		SELECT
+				notice_no AS noticeNo,
+				title AS Title,
+				content AS Content,
+				creation_date AS creationDate,
+				attachment AS attachMent
+		  FROM
+		  		TB_NOTICE
+		 WHERE
+		 		NOTICE_NO = #{noticeNo}
+	</select>
+	
+	<select id="getNoticeById" parameterType="long" resultType="com.kh.baseball.notice.model.vo.Notice">
+		SELECT
+				*
+		   FROM
+		   		TB_NOTICE
+		  WHERE	
+		   		NOTICE_NO = #{noticeNo}
+	</select>
+	
+	
 
 
 </mapper>
