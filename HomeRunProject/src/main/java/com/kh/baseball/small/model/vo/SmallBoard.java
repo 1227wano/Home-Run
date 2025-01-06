@@ -1,4 +1,6 @@
-package com.kh.baseball.freeBoard.model.vo;
+package com.kh.baseball.small.model.vo;
+
+import com.kh.baseball.freeBoard.model.vo.FreeBoard;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,14 +15,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class FreeBoard {
+public class SmallBoard {
 
 	private Long boardNo;
+	private String teamName;
 	private int boardWriter;
-	private String nickName;
 	private String boardTitle;
-	private String boardContent;
 	private String createDate;
+	private String boardContent;
 	private int selectCount;
 	private String status;
+	private String adminStatus;
+	private String nickName;
 }

@@ -13,14 +13,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class FreeBoard {
+public class FreeBoardReply {
 
-	private Long boardNo;
-	private int boardWriter;
-	private String nickName;
-	private String boardTitle;
-	private String boardContent;
+	private int replyNo;
+	private int replyWriter;
+	private Long refBno;
+	private String replyContent;
 	private String createDate;
-	private int selectCount;
 	private String status;
+	private String replyNickName;
+	
 }

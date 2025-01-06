@@ -13,14 +13,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class FreeBoard {
+public class FreeBoardFile {
 
-	private Long boardNo;
-	private int boardWriter;
-	private String nickName;
-	private String boardTitle;
-	private String boardContent;
-	private String createDate;
-	private int selectCount;
-	private String status;
+	private int fileNo;
+	private int fileType;
+	private Long refBno;
+	private String originName;
+	private String changeName;
+	private String uploadDate;
+	private String filePath;
 }

@@ -47,32 +47,29 @@
 
     <div class="content">
         <br><br>
-        <div class="innerOuter" style="padding:5% 10%;">
-            <h2>게시판</h2>
             <br>
-            <c:if test="${ not empty sessionScope.loginUser }">
-            	<a class="btn btn-secondary" style="float:right;" href="insertForm.free">글쓰기</a>
-            </c:if>
+            <h2>게시글 관리</h2>
             <br>
-            <br>
-            <table id="boardList" class="table table-hover" align="center">
+            <a class="btn btn-secondary" style="float:right;" href="/baseball/small">목록으로</a>
+            <br><br>
+            <table id="adminBoardList" class="table table-hover" align="center">
                 <thead>
                     <tr>
                         <th>글번호</th>
+                        <th>팀명</th>
                         <th>제목</th>
                         <th>작성자</th>
-                        <th>조회수</th>
                         <th>작성일</th>
                     </tr>
                 </thead>
                 <tbody>
-                	<c:forEach items="${ freeBoard }" var="freeBoard">
-	                    <tr onclick="detail('${freeBoard.boardNo}')">
-	                        <td>${ freeBoard.boardNo }</td>
-	                        <td>${ freeBoard.boardTitle }</td>
-	                        <td>${ freeBoard.nickName }</td>
-	                        <td>${ freeBoard.selectCount }</td>
-	                        <td>${ freeBoard.createDate }</td>
+                	<c:forEach items="${ adminList }" var="adminList">
+	                    <tr onclick="detail('${adminList.boardNo}')">
+	                        <td>${ adminList.boardNo }</td>
+	                        <td>${ adminList.teamName }</td>
+	                        <td>${ adminList.boardTitle }</td>
+	                        <td>${ adminList.nickName }</td>
+	                        <td>${ adminList.createDate }</td>
 	                    </tr>
                     </c:forEach>
                 </tbody>
@@ -80,9 +77,7 @@
             <br>
 			<script>
 				function detail(num){
-					//console.log(num);
-									//    boards/게시글번호 이렇게 감
-					location.href = `freeBoard/\${num}`;
+					location.href = `adminListDetail.small/\${num}`;
 				}
 			
 			</script>
@@ -96,12 +91,12 @@
                    			<li class="page-item disabled"><a class="page-link" >이전</a></li>
                    		</c:when>
                    		<c:otherwise>
-                   			<li class="page-item"><a class="page-link" href="freeBoard?page=${ pageInfo.currentPage - 1}">이전</a></li>
+                   			<li class="page-item"><a class="page-link" href="adminList.small?page=${ pageInfo.currentPage - 1}">이전</a></li>
                     	</c:otherwise>
                     </c:choose>
                     <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
                     	<li class="page-item">
-	                    	<a class="page-link" href="freeBoard?page=${ num }">
+	                    	<a class="page-link" href="adminList.small?page=${ num }">
 	                    		${ num }
 	                    	</a>
                     	</li>
@@ -111,7 +106,7 @@
                     		<li class="page-item disabled"><a class="page-link" >다음</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="freeBoard?page=${ pageInfo.currentPage + 1}">다음</a></li>
+                    		<li class="page-item"><a class="page-link" href="adminList.small?page=${ pageInfo.currentPage + 1}">다음</a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>
@@ -119,19 +114,6 @@
 
             <br clear="both"><br>
 
-            <form id="searchForm" action="searchList.free" method="get" align="center">
-                <div class="select">
-                    <select class="custom-select" name="condition">
-                        <option value="writer">작성자</option>
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
-                    </select>
-                </div>
-                <div class="text">
-                    <input type="text" class="form-control" name="keyword">
-                </div>
-                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
-            </form>
             <br><br>
         </div>
         <br><br>

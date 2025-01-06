@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.baseball.small.model.dao.SmallBoardMapper">
+
+	<select id="selectTotalCount" resultType="int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_SMALL_BOARD
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'Y'
+	</select>
+	
+
+	
+	<select id="selectBoardList" resultType="smallBoard">
+		SELECT
+			   BOARD_NO boardNo,
+			   TEAM_NAME teamName,
+			   NICKNAME,
+			   BOARD_TITLE boardTitle,
+			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   BOARD_CONTENT boardContent,
+			   SELECT_COUNT selectCount
+		  FROM
+		 	   TB_SMALL_BOARD
+		  JOIN
+		  	   TB_USER ON(BOARD_WRITER = USER_NO)
+		 WHERE
+		 	   TB_SMALL_BOARD.STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'Y'
+		 ORDER
+		 	BY
+		 	   CREATE_DATE DESC
+	</select>
+
+	<select id="getTeamList" resultType="string">
+		SELECT
+			   TEAM_NAME
+		  FROM
+		  	   TB_TEAM
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
+	
+	<insert id="insertBoard" parameterType="smallBoard">
+		INSERT
+		  INTO
+			   TB_SMALL_BOARD
+			   (
+			   BOARD_NO,
+			   TEAM_NAME,
+			   BOARD_WRITER,
+			   BOARD_TITLE,
+			   CREATE_DATE,
+			   BOARD_CONTENT
+			   )
+	    VALUES
+			   (
+			   SEQ_SGBNO.NEXTVAL,
+			   #{teamName},
+			   #{boardWriter},
+			   #{boardTitle},
+			   DEFAULT,
+			   #{boardContent}
+			   )
+	</insert>
+	
+	<insert id="insertBoardFile" parameterType="smallBoardUpfile">
+		INSERT
+		  INTO
+			   TB_SMALL_UPFILE
+			   (
+			   FILE_NO,
+			   REF_BNO,
+			   ORIGIN_NAME,
+			   CHANGE_NAME,
+			   UPLOAD_DATE,
+			   FILE_PATH
+			   )
+		VALUES
+		  	   (
+		  	   SEQ_SGFNO.NEXTVAL,
+		  	   SEQ_SGBNO.CURRVAL,
+		  	   #{originName},
+		  	   #{changeName},
+		  	   DEFAULT,
+		  	   #{filePath}
+		  	   )
+	</insert>
+	
+	<!-- 관리자 기능 -->
+	
+	<select id="selectAdminListCount" resultType="int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_SMALL_BOARD
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'N'
+	</select>
+	
+	<select id="selectAdminList" resultType="smallBoard">
+		SELECT
+			   BOARD_NO boardNo,
+			   TEAM_NAME teamName,
+			   NICKNAME,
+			   BOARD_TITLE boardTitle,
+			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   BOARD_CONTENT boardContent,
+			   SELECT_COUNT selectCount
+		  FROM
+		 	   TB_SMALL_BOARD
+		  JOIN
+		  	   TB_USER ON(BOARD_WRITER = USER_NO)
+		 WHERE
+		 	   TB_SMALL_BOARD.STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'N'
+		 ORDER
+		 	BY
+		 	   CREATE_DATE DESC
+	</select>
+	
+	<select id="adminBoardDetail" parameterType="long" resultType="smallBoard">
+		SELECT
+			   BOARD_NO boardNo,
+			   TEAM_NAME teamName,
+			   NICKNAME nickName,
+			   BOARD_TITLE boardTitle,
+			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   BOARD_CONTENT boardContent
+		  FROM
+		  	   TB_SMALL_BOARD
+		  JOIN
+		  	   TB_USER ON (USER_NO = BOARD_WRITER)
+		 WHERE
+		 	   BOARD_NO = #{boardNo}
+		   AND
+		   	   TB_SMALL_BOARD.STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'N'
+	</select>
+	
+	<select id="adminUpfileDetail" parameterType="long" resultType="smallBoardUpfile">
+		SELECT
+			   FILE_NO fileNo,
+			   REF_BNO refBno,
+			   ORIGIN_NAME originName,
+			   CHANGE_NAME changeName,
+			   UPLOAD_DATE uploadDate,
+			   FILE_PATH filePath
+		  FROM
+		  	   TB_SMALL_UPFILE
+		 WHERE
+		 	   REF_BNO = #{boardNo}
+	</select>
+	
+	<update id="adminPermit" parameterType="long">
+		UPDATE
+			   TB_SMALL_BOARD
+		   SET
+		   	   ADMIN_STATUS = 'Y'
+		 WHERE
+		 	   BOARD_NO = #{boardNo}
+	</update>
+	
+	<!-- 유저 본인 작성 게시글 조회 -->
+	<select id="selectMyBoardListCount" parameterType="int" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_SMALL_BOARD
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   BOARD_WRITER = #{loginUserNo}
+	</select>
+	
+	<select id="selectMyBoardList" parameterType="int" resultType="smallBoard">
+		SELECT
+			   BOARD_NO boardNo,
+			   TEAM_NAME teamName,
+			   NICKNAME,
+			   BOARD_TITLE boardTitle,
+			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   BOARD_CONTENT boardContent,
+			   SELECT_COUNT selectCount,
+			   ADMIN_STATUS adminStatus
+		  FROM
+		 	   TB_SMALL_BOARD
+		  JOIN
+		  	   TB_USER ON(BOARD_WRITER = USER_NO)
+		 WHERE
+		 	   TB_SMALL_BOARD.STATUS = 'Y'
+		   AND
+			   BOARD_WRITER = #{boardWriter}
+		 ORDER
+		 	BY
+		 	   CREATE_DATE DESC
+	</select>
+	
+	<!-- 게시글 조회 -->
+	<select id="selectBoardByBoardNo" parameterType="long" resultType="smallBoard">
+		SELECT
+			   BOARD_NO boardNo,
+			   TEAM_NAME teamName,
+			   BOARD_TITLE boardTitle,
+			   NICKNAME,
+			   BOARD_CONTENT boardContent,
+			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   SELECT_COUNT selectCount
+		  FROM
+		  	   TB_SMALL_BOARD
+		  JOIN
+		  	   TB_USER ON(BOARD_WRITER = USER_NO)
+		 WHERE
+		 	   TB_SMALL_BOARD.STATUS = 'Y'
+		   AND
+		   	   TB_SMALL_BOARD.ADMIN_STATUS = 'Y'
+		   AND
+		   	   BOARD_NO = #{boardNo}
+		 ORDER
+		 	BY
+		 	   CREATE_DATE DESC
+	</select>
+	
+	<update id="increaseCount" parameterType="long">
+		UPDATE
+			   TB_SMALL_BOARD
+		   SET
+		   	   SELECT_COUNT = SELECT_COUNT + 1
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'Y'
+		   AND
+		   	   BOARD_NO = #{boardNo}
+	</update>
+	
+	<select id="selectUpfileByBoardNo" parameterType="long" resultType="smallBoardUpfile">
+		SELECT
+			   FILE_NO fileNo,
+			   REF_BNO refBno,
+			   ORIGIN_NAME originName,
+			   CHANGE_NAME changeName,
+			   UPLOAD_DATE uploadDate,
+			   FILE_PATH filePath
+		  FROM
+		 	   TB_SMALL_UPFILE
+		 WHERE
+		 	   REF_BNO = #{refBno}
+	</select>
+	
+	<update id="deleteBoard" parameterType="long">
+		UPDATE
+			   TB_SMALL_BOARD
+		   SET
+		   	   STATUS = 'N'
+		 WHERE
+		 	   BOARD_NO = #{boardNo}
+	</update>
+	
+</mapper>
