@@ -181,7 +181,7 @@
 				
 					<a href="searchId" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px; "> 아이디 찾기 </a> |
 			
-					<a href="#" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 변경</a>
+					<a href="searchPwd" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 찾기</a>
 				
 			</div>
 		

@@ -1,5 +1,6 @@
 package com.kh.baseball.member.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -95,7 +96,7 @@ public class MemberController {
 	@PostMapping("update.me")
 	public ModelAndView updateMember(Member member, HttpSession session) {
 		
-		log.info("{}", member);
+		//log.info("{}", member);
 		
 		// session.setAttribute("loginUser", memberService.login(member));
 		memberService.updateMember(member,session);
@@ -113,5 +114,43 @@ public class MemberController {
 		
 		return mv.setViewNameAndData("redirect:/", null);
 	}
+	
+	@PostMapping("updatePwd.me")
+	public String searchPw() {
+		return "member/update_pwd";
+	}
+	
+	
+	@PostMapping("changePwd.me")
+	public ModelAndView newPwd(String userId, String userPwd, String changePwd, HttpSession session) {
+		
+		log.info("{}", userId);
+		log.info("{}", changePwd);
+		
+		
+		Map<String, String> map = new HashMap();
+		
+		map.put("userId", userId);
+		map.put("userPwd", userPwd);
+		map.put("changePwd", changePwd);
+		
+		
+		memberService.changePwd(map, session); 
+		
+		
+		session.setAttribute("alertMsg", "비밀번호 변경 완료");
+		session.removeAttribute("loginUser");
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	@ResponseBody
+	@PostMapping("/pwdcheck")
+	public Boolean pwdcheck(String userPwd, String checkPwd)
+	{
+		return memberService.pwdcheck(userPwd, checkPwd);
+	}
+	
+	
+	
 
 }

@@ -75,11 +75,6 @@ public class MemberServiceImpl implements MemberService {
 	
 	}
 
-	@Override
-	public String findByPassword(Member member) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void updateMember(Member member, HttpSession session) {
@@ -89,6 +84,7 @@ public class MemberServiceImpl implements MemberService {
 		mapper.updateMember(member);
 		session.setAttribute("loginUser", mapper.login(member)); //여기서 넘기는것으로 수정
 	}
+	
 
 	@Override
 	public void deleteMember(String userPwd, HttpSession session) {
@@ -108,6 +104,46 @@ public class MemberServiceImpl implements MemberService {
 		mapper.deleteMember(userInfo);
 		
 	}
+
+	
+	@Override
+	public void changePwd(Map<String, String> map, HttpSession session) {
+		
+		// 새로운 값이 넘어옴
+		// 존재하는 회원인지 확인
+		 Member member = validator.validateMemberExists(map.get("userId"));
+		
+		// 비밀번호 확인
+		if(!!!passwordEncoder.matches(map.get("userPwd"), member.getUserPwd())) {
+			throw new ComparePasswordException("비밀번호가 일치하지 않습니다.");
+		}
+		
+		// 새로운 비밀번호 암호화
+		String userPwd = passwordEncoder.encode(map.get("changePwd"));
+		
+		member.setUserPwd(userPwd);
+		
+		int result = mapper.changePwd(member);
+		
+		if(result > 0) {
+			session.setAttribute("loginUser", result);
+		}
+		
+	}
+
+	@Override
+	public Boolean pwdcheck(String userPwd, String checkPwd) {
+		
+		return userPwd.equals(checkPwd);
+		
+	}
+	
+	
+	
+	
+	
+
+	
 	
 	
 

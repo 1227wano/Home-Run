@@ -97,6 +97,39 @@
             		}
             	}
             
+            function pwdcheck(){
+            	
+            	const $userPwd = $('#userPwd');
+          		const $checkPwd = $('#checkPwd');
+          		const $checkPwdResult = $('#checkPwdResult');
+          	
+              	if(($userPwd.val().length >= 4) && ($checkPwd.val().length >= 4 )){
+              		
+              		$.ajax({
+              			
+              			url : 'pwdcheck',
+              			type : 'post',
+              			data : {
+              				userPwd : $userPwd.val(),
+              				checkPwd : $checkPwd.val()
+              			},
+              			success: function(result){
+              				 console.log('AJAX 요청 성공:', result);
+              				if(result == true){
+              					$checkPwdResult.show().css('color','blue').text('확인되었습니다.');
+              				}else{
+              					$checkPwdResult.show().css('color','red').text('동일한 비밀번호를 작성해주세요.');
+              				}
+              			}
+              });
+            }
+            	
+         }
+            
+            $(document).ready(function(){ $('#checkPwd').on('keyup', pwdcheck); });
+             
+            
+        	
             
             
             
@@ -106,32 +139,33 @@
                     <label for="userId"> 아이디 </label>
                     <input type="text" class="form-control" id="userId" placeholder="아이디를 입력해주세요" name="userId" required> 
                     <button type="button" onclick="idcheck()">중복확인</button> <br>
-                    <div id="check-result" style="fonst-size:0.7em; display:none;"></div> <br>
+                    <div id="check-result" style="font-size:0.7em; display:none;"></div> <br>
 
                     <label for="userPwd"> 비밀번호 </label>
                     <input type="password" class="form-control" id="userPwd" placeholder="비밀번호를 입력해주세요" name="userPwd" required> <br>
 
                     <label for="checkPwd"> 비밀번호 재확인 </label>
-                    <input type="password" class="form-control" id="checkPwd" placeholder="비밀번호 재확인" required> <br>
+                    <input type="password" class="form-control" id="checkPwd" placeholder="비밀번호 재확인" name="checkPwd" keyup="pwdcheck()" required > 
+                    <div id="checkPwdResult" style="font-size:0.7em; display:none;"></div> <br>
 
                     <label for="userName"> 이름 </label>
                     <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요" name="userName" required> <br>
 
                     <label for="nickName"> 닉네임 </label>
-                    <input type="text" class="form-control" id="nickName" placeholder="닉네임을 입력해주세요" name="nickName">
+                    <input type="text" class="form-control" id="nickName" placeholder="닉네임을 입력해주세요" name="nickName" required>
                     <button type="button" onclick="nicknamecheck()" >중복확인</button> <br>
-                    <div id="nickNameCheckResult" style="fonst-size:0.7em; display:none;"></div> <br>
+                    <div id="nickNameCheckResult" style="font-size:0.7em; display:none;"></div> <br>
 
                     <label for="phone"> 전화번호 </label>
-                    <input type="number" class="form-control" id="age" placeholder="전화번호를 입력해주세요" name="phone"> <br>
+                    <input type="tel" class="form-control" id="age" placeholder="전화번호를 입력해주세요" name="phone" required> <br>
 
                     <label for="email"> 이메일 </label>
-                    <input type="tel" class="form-control" id="phone" placeholder="이메일을 입력해주세요" name="email"> <br>
+                    <input type="text" class="form-control" id="phone" placeholder="이메일을 입력해주세요" name="email"> <br>
                     
                     <label for="address"> 주소 </label>
                     <input type="text" class="form-control" id="address" placeholder="주소를 입력해주세요" name="address"> <br>
                     
-                    <input type="checkbox" class="form-control" id="agreement" name="agreement"> 
+                    <input type="checkbox" class="form-control" id="agreement" name="agreement" required> 
                     <label for="agreement"> 인증 약관 전체동의 [필수] </label>
                     <div style="width:730px; height:100px; resize: none; overflow-x: hidden; overflow-y:auto; ">
 						개인정보보호법에 따라 네이버에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및
@@ -185,8 +219,10 @@
                 </div> 
                 <br> 
                 <div class="btns" align="center">
-                    <button type="submit" class="btn btn-primary disabled" id="join-btn" >회원가입</button>
+                    <button type="submit" class="btn btn-primary" id="join-btn" disabled >회원가입</button>
                 </div>
+                
+              
             </form>
         </div>
         <br><br>

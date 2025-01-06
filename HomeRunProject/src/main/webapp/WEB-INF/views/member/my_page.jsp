@@ -95,6 +95,10 @@
                 </div>
             </form>
             <br><br>
+            <form action="updatePwd.me" method="post">
+                <button type="submit" class="btn btn-primary" style="background-color:green;">비밀번호 변경</button>
+            </form>
+            <br><br>
 
         </div>
 

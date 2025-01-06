@@ -1,5 +1,9 @@
 package com.kh.baseball.member.model.dao;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.kh.baseball.member.model.vo.Member;
@@ -19,7 +23,12 @@ public interface MemberMapper {
 
 	void updateMember(Member member);
 
-	void deleteMember(Member userInfo); 
+	void deleteMember(Member userInfo);
+
+	Member checkToChangePwd(String userId);
+	
+	int changePwd(Member member);
+	
 	
 	
 	
