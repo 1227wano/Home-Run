@@ -4,35 +4,136 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.player.model.dao.PlayerMapper">
 
+	<sql id="playerColumn"> <!-- 나중에 써야지 -->
+		SELECT
+				PLAYER_NO playerNo,
+		        GRADE grade,
+		        PLAYER_POSITION playerPosition,
+		        BACK_NO backNo,
+		        PLAYER_STATUS playerStatus,
+		        PLAYER_TEAM playerTeam,
+		        USER_NAME userName,
+			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
+	</sql>
+	<sql id="playerAttachmentColumn" > <!-- 나중에 써야지 -->
+		SELECT
+			   PLAYER_ATTACHMENT_NO playerAttachmentNo,
+			   REF_PNO refPno,
+			   ORIGIN_NAME originName,
+			   CREATE_DATE createDate
+			   TB_PLAYER_ATTACHMENT.STATUS status
+	</sql>
+
 	<insert id="savePlayer" parameterType="player">
 	INSERT 
 	  INTO 
 	        TB_PLAYER
 	        (
-	        USER_NO,
+	        PLAYER_NO,
 	        GRADE,
 	        PLAYER_POSITION,
 	        PLAYER_DATE,
 	        PLAYER_INTRO,
 	        PLAYER_SALARY,
-	        PLAYER_NO,
+	        BACK_NO,
 	        PLAYER_STATUS,
-	        PLAYER_TEAM
+	        PLAYER_TEAM,
+	        COUNT
 	        ) 
 	VALUES
 	        (
-	        2,
+	        #{userNumber},
 	        #{grade},
 	        #{playerPosition},
 	        SYSDATE,
 	        #{playerIntro},
 	        #{playerSalary},
-	        27,
+	        0,
 	        'N',
-	        'N'
+	        'null',
+	        0
 	        )
 	</insert>
 	
+	<insert id="savePlayerFile" parameterType="com.kh.baseball.player.model.vo.PlayerAttachment">
+		INSERT
+		  INTO
+		  	   TB_PLAYER_ATTACHMENT
+		  	   (
+		  	   PLAYER_ATTACHMENT_NO,
+			   ORIGIN_NAME,
+			   CHANGE_NAME,
+			   FILE_PATH
+			   )
+		VALUES
+				(
+				SEQ_PANO.NEXTVAL,
+				#{originName},
+				#{changeName},
+				#{filePath}
+				)
+	</insert>
+	
+	<select id="getTotalCount" resultType="_int">
+		SELECT
+				COUNT(*)
+		 FROM	
+		 		TB_PLAYER
+		WHERE
+				PLAYER_STATUS = 'Y'
+	</select>
+	
+	<!-- 가나다순으로 보기 -->
+	<select id="findAllPlayerKorean" resultType="player">
+		  SELECT
+				PLAYER_NO playerNo,
+		        GRADE grade,
+		        PLAYER_POSITION playerPosition,
+		        BACK_NO backNo,
+		        PLAYER_STATUS playerStatus,
+		        PLAYER_TEAM playerTeam,
+		        USER_NAME userName,
+			    CHANGE_NAME AS imagePath
+		  FROM
+		  		TB_PLAYER
+		  JOIN
+		  		TB_USER ON (USER_NO = PLAYER_NO)	
+		  JOIN
+		  		TB_PLAYER_ATTACHMENT ON (PLAYER_NO = PLAYER_ATTACHMENT_NO)
+		 WHERE
+		 		PLAYER_STATUS = 'Y'
+		 ORDER
+		 	BY
+		 		USER_NAME ASC
+	</select>
+	
+	
+	
+	<!-- 조회수 순으로 보기 -->
+	<select id="findAllPlayerCount" resultType="player">
+		SELECT
+				PLAYER_NO playerNo,
+		        GRADE grade,
+		        PLAYER_POSITION playerPosition,
+		        PLAYER_NO playerNo,
+		        PLAYER_STATUS playerStatus,
+		        PLAYER_TEAM playerTeam,
+		  FROM
+		  		TB_PLAYER
+		 WHERE
+		 		PLAYER_TEAM = #{playerTeam}
+		   AND
+		 		PLAYER_STATUS = 'Y'
+		  JOIN
+		  		TB_USER ON (USER_NO = PLAYER_NO)
+		 ORDER
+		 	BY
+		 		COUNT ASC
+	</select>
+	
+	<select id="findPlayerDetail" resultType="player">
+		
+	</select>
 
 
 

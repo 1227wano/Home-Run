@@ -1,6 +1,4 @@
-package com.kh.baseball.dom.model.vo;
-
-import java.util.List;
+package com.kh.baseball.player.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,13 +13,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class Dom {
+public class PlayerAttachment {
 	
-	private Long domNo;
-	private String domName;
-	private String domContent;
-	private String domAddr;
-	private String status;
-	private String imagePath;
-	
+	private int playerAttachmentNo;
+	private String originName;
+	private String changeName;
+	private String filePath;
+	private String uploadDate;
+	private int userNo;
+
 }
