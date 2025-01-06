@@ -26,4 +26,6 @@ public interface SmallBoardService {
 	Map<String, Object> selectDetailByBoardNo(Long boardNo);
 	
 	void deleteBoard(Long boardNo);
+	
+	Map<String, Object> selectUpdateByBoardNo(Long boardNo);
 }

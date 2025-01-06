@@ -155,6 +155,21 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 			validator.deleteFile(deleteBoard);
 		}
 	}
+
+	@Override
+	public Map<String, Object> selectUpdateByBoardNo(Long boardNo) {
+
+		Map<String, Object> map = new HashMap();
+		
+		SmallBoard smallBoard = validator.selectBoardByBoardNo(boardNo);
+		map.put("smallBoard", smallBoard);
+		SmallBoardUpfile file = validator.selectFileByBoardNo(boardNo);
+		if(file != null) {
+			map.put("file", file);
+		}
+		
+		return map;
+	}
 	
 	
 	

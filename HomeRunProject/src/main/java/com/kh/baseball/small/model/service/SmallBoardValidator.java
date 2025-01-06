@@ -143,7 +143,7 @@ public class SmallBoardValidator {
 	
 	public void validateBoardNo(Long boardNo) {
 		if(boardNo == null || boardNo <= 0) {
-			throw new InvalidParameterException("파일을 찾을 수 없습니다.");
+			throw new InvalidParameterException("게시물을 찾을 수 없습니다.");
 		}
 	}
 	

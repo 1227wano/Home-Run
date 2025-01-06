@@ -109,4 +109,11 @@ public class SmallBoardController {
 		return mv.setViewNameAndData("redirect:/small", null);
 	}
 	
+	@PostMapping("update-form.small")
+	public ModelAndView updateForm(Long boardNo) {
+		Map<String, Object> responseData = smallBoardService.selectUpdateByBoardNo(boardNo);
+		log.info("{}",responseData);
+		return mv.setViewNameAndData("small/smallBoard_update", responseData);
+	}
+	
 }
