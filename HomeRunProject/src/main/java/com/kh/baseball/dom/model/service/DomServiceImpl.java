@@ -158,7 +158,9 @@ public class DomServiceImpl implements DomService {
 		}
 	}
 
-	
+	public void deleteDom() {
+		
+	}
 	
 	
 }

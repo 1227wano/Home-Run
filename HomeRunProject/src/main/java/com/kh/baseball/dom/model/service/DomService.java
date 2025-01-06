@@ -17,5 +17,5 @@ public interface DomService {
 
 	void updateDom(Dom dom, MultipartFile upfile);
 	
-	
+	void deleteDom();
 }
