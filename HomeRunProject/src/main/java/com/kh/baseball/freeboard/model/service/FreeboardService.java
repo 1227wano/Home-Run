@@ -1,4 +1,4 @@
-package com.kh.baseball.freeBoard.model.service;
+package com.kh.baseball.freeboard.model.service;
 
 import java.util.List;
 import java.util.Map;
@@ -7,8 +7,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.baseball.freeBoard.model.vo.FreeBoard;
-import com.kh.baseball.freeBoard.model.vo.FreeBoardReply;
+import com.kh.baseball.freeboard.model.vo.FreeBoard;
+import com.kh.baseball.freeboard.model.vo.FreeBoardReply;
 
 public interface FreeBoardService {
 	

@@ -1,4 +1,4 @@
-package com.kh.baseball.freeBoard.model.vo;
+package com.kh.baseball.freeboard.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

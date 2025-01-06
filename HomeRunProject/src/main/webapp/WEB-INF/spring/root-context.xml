@@ -26,7 +26,7 @@
 	</bean>
 	
 	<mybatis-spring:scan base-package="com.kh.baseball.dom.model.dao"/>
-	<mybatis-spring:scan base-package="com.kh.baseball.freeBoard.model.dao"/>
+	<mybatis-spring:scan base-package="com.kh.baseball.freeboard.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.baseball.member.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.baseball.player.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.baseball.notice.model.dao"/>

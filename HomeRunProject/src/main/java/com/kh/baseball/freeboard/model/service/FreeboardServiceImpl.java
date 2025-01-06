@@ -1,4 +1,4 @@
-package com.kh.baseball.freeBoard.model.service;
+package com.kh.baseball.freeboard.model.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.exception.BoardNotFoundException;
 import com.kh.baseball.exception.FailToReplyInsertException;
-import com.kh.baseball.freeBoard.model.dao.FreeBoardMapper;
-import com.kh.baseball.freeBoard.model.vo.FreeBoard;
-import com.kh.baseball.freeBoard.model.vo.FreeBoardFile;
-import com.kh.baseball.freeBoard.model.vo.FreeBoardReply;
+import com.kh.baseball.freeboard.model.dao.FreeBoardMapper;
+import com.kh.baseball.freeboard.model.vo.FreeBoard;
+import com.kh.baseball.freeboard.model.vo.FreeBoardFile;
+import com.kh.baseball.freeboard.model.vo.FreeBoardReply;
 import com.kh.baseball.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
