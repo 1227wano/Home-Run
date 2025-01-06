@@ -1,5 +1,7 @@
 package com.kh.baseball.member.model.service;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 import com.kh.baseball.exception.IdNotFoundException;
@@ -17,13 +19,14 @@ public class MemberValidator {
 	
 	private final MemberMapper mapper ;
 	
+	// Login 
 	public Member validateMemberExists(Member member) {
 		Member existingMember = mapper.login(member);
 		
 		if(existingMember != null) {
 			return existingMember;
 		}
-		throw new UserIdNotFoundException("존재하지 않는 아이디입니다.");
+		throw new UserIdNotFoundException("존재하지 않는 사용자입니다.");
 	}
 	
 	public void validateDuplicateMember(Member member) {
@@ -44,6 +47,7 @@ public class MemberValidator {
 		validateIdLength(member);
 	}
 	
+	// ID변경에서 사용
 	public Member validateIdExists(Member member) {
 		
 		System.out.println(member);
@@ -53,6 +57,25 @@ public class MemberValidator {
 		}
 		throw new IdNotFoundException("아이디가 존재하지 않습니다.");
 	}
+
+	
+	
+	public Member validateMemberExists(String userId) {
+		
+		Member existingMember = mapper.checkToChangePwd(userId);
+		
+		if(existingMember != null) {
+			return existingMember;
+		}
+		throw new UserIdNotFoundException("존재하지 않는 사용자입니다.");
+	}
+	
+	
+
+	
+
+	
+
 	
 
 }

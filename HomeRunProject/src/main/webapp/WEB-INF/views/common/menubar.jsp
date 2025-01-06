@@ -29,6 +29,7 @@
 
     #mainNav .navbar-nav .nav-item .nav-link {
         font-weight: 600;
+       
     }
     
     #search {
@@ -46,11 +47,20 @@
 
 <body id="page-top">
 
+		<c:if test="${ not empty alertMsg }">
+		<script>
+			alert('${ alertMsg }');
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+		</c:if>
+		
+		
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="#">
-      	<img class="img-fluid" src="" alt="로고없음" style="width:130px; height:50px;" />
+      <a class="navbar-brand" href="/baseball/">
+      	<img class="img-fluid" src="" alt="로고없음" 
+      	style="width:130px; height:50px;" />
       </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         메뉴
@@ -99,7 +109,7 @@
           	<c:otherwise>
           	  <label>${ sessionScope.loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
 	          <li class="nav-item">
-	          <a class="nav-link js-scroll-trigger" href="myPage">마이페이지</a>
+	          <a class="nav-link js-scroll-trigger" href="/baseball/mypage.me">마이페이지</a>
 	          </li>
 	          <li class="nav-item">
 	          <a class="nav-link js-scroll-trigger" href="/baseball/logout.me" >로그아웃</a>
@@ -171,7 +181,7 @@
 				
 					<a href="searchId" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px; "> 아이디 찾기 </a> |
 			
-					<a href="#" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 찾기</a>
+					<a href="searchPwd" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 찾기</a>
 				
 			</div>
 		

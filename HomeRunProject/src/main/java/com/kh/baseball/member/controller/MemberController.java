@@ -1,5 +1,6 @@
 package com.kh.baseball.member.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -30,8 +31,8 @@ public class MemberController {
 		
 		Member loginMember = memberService.login(member);
 		
-		log.info("{}" , member);
-		log.info("{}" , loginMember);
+		//log.info("{}" , member);
+		//log.info("{}" , loginMember);
 		
 		//return null;
 		session.setAttribute("loginUser", loginMember);
@@ -56,7 +57,7 @@ public class MemberController {
 	@PostMapping("sign_up.me")
 	public ModelAndView signUp(Member member, HttpSession session) {
 		memberService.join(member);
-		session.setAttribute("alert", "회원가입 완료");
+		session.setAttribute("alertMsg", "회원가입 완료");
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
@@ -84,5 +85,72 @@ public class MemberController {
 		
 		return mv.setViewNameAndData("member/searchIdSuccess", successId);
 	}
+	
+	
+	@GetMapping("mypage.me")
+	public String mypage() {
+		
+		return "member/my_page";
+	}
+	
+	@PostMapping("update.me")
+	public ModelAndView updateMember(Member member, HttpSession session) {
+		
+		//log.info("{}", member);
+		
+		// session.setAttribute("loginUser", memberService.login(member));
+		memberService.updateMember(member,session);
+		session.setAttribute("alertMsg", "정보 수정 완료");
+		return mv.setViewNameAndData("redirect:mypage.me", null);
+		
+	}
+	
+	@PostMapping("delete.me")
+	public ModelAndView delete(String userPwd, HttpSession session ) {
+		memberService.deleteMember(userPwd, session);
+		
+		session.removeAttribute("loginUser");
+		session.setAttribute("alertMsg", "탈퇴 완료");
+		
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	@PostMapping("updatePwd.me")
+	public String searchPw() {
+		return "member/update_pwd";
+	}
+	
+	
+	@PostMapping("changePwd.me")
+	public ModelAndView newPwd(String userId, String userPwd, String changePwd, HttpSession session) {
+		
+		log.info("{}", userId);
+		log.info("{}", changePwd);
+		
+		
+		Map<String, String> map = new HashMap();
+		
+		map.put("userId", userId);
+		map.put("userPwd", userPwd);
+		map.put("changePwd", changePwd);
+		
+		
+		memberService.changePwd(map, session); 
+		
+		
+		session.setAttribute("alertMsg", "비밀번호 변경 완료");
+		session.removeAttribute("loginUser");
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	@ResponseBody
+	@PostMapping("/pwdcheck")
+	public Boolean pwdcheck(String userPwd, String checkPwd)
+	{
+		return memberService.pwdcheck(userPwd, checkPwd);
+	}
+	
+	
+	
 
 }
