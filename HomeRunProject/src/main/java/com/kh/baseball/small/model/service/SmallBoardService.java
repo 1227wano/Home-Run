@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.small.model.vo.SmallBoard;
+import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 public interface SmallBoardService {
 
@@ -29,5 +30,5 @@ public interface SmallBoardService {
 	
 	Map<String, Object> selectUpdateByBoardNo(Long boardNo);
 	
-	void update(SmallBoard smallBoard, MultipartFile upfile);
+	void update(SmallBoard smallBoard, MultipartFile upfile, SmallBoardUpfile file);
 }

@@ -1,8 +1,11 @@
 package com.kh.baseball.small.model.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.exception.BoardNotFoundException;
+import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.small.model.dao.SmallBoardMapper;
 import com.kh.baseball.small.model.vo.SmallBoard;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
@@ -24,6 +28,7 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 
 	private final SmallBoardMapper mapper;
 	private final SmallBoardValidator validator;
+	private final ServletContext context;
 	
 	@Override
 	public Map<String, Object> selectBoardList(int Page, int boardLimit) {
@@ -83,10 +88,10 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 
 		SmallBoard adminDetail = mapper.adminBoardDetail(boardNo);
 		SmallBoardUpfile upfile = mapper.adminUpfileDetail(boardNo);
-		
+		SmallBoard validateAdminDetail = validator.convertOriginLine(adminDetail);
 		
 		Map<String, Object> map = new HashMap();
-		map.put("adminDetail", adminDetail);
+		map.put("adminDetail", validateAdminDetail);
 		map.put("file", upfile);
 		
 		return map;
@@ -172,15 +177,25 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 	}
 
 	@Override
-	public void update(SmallBoard smallBoard, MultipartFile upfile) {
+	public void update(SmallBoard smallBoard, MultipartFile upfile, SmallBoardUpfile file) {
 
 		validator.validateBoard(smallBoard);
-		
+		// log.info("{}", smallBoard);
 		validator.selectBoardByBoardNo(smallBoard.getBoardNo());
 		
 		int boardResult = mapper.updateBoard(smallBoard);
-		validator.
+		validator.validateUpdateBoard(boardResult);
 		
+		if(!!!("").equals(upfile.getOriginalFilename())) {
+			if(file.getChangeName() != null) {
+				new File(context.getRealPath(file.getChangeName())).delete();
+			}
+			SmallBoardUpfile smallBoardUpfile = validator.handleFileUpload(upfile, smallBoard.getBoardNo());
+			int result = mapper.updateBoardUpfile(smallBoardUpfile);
+			if(result < 1) {
+				throw new FailToFileUploadException("파일업로드를 실패했습니다.");
+			}
+		}
 	}
 	
 	

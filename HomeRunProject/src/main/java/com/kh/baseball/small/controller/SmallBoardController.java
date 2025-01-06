@@ -17,6 +17,7 @@ import com.kh.baseball.common.ModelAndViewUtil;
 import com.kh.baseball.member.model.vo.Member;
 import com.kh.baseball.small.model.service.SmallBoardService;
 import com.kh.baseball.small.model.vo.SmallBoard;
+import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -117,10 +118,19 @@ public class SmallBoardController {
 	}
 	
 	@PostMapping("update.small")
-	public ModelAndView update(SmallBoard smallBoard, MultipartFile upfile) {
-		smallBoardService.update(smallBoard, upfile);
+	public ModelAndView update(SmallBoard smallBoard, MultipartFile upfile, SmallBoardUpfile file) {
+		// log.info("{}", file);
+		
+		smallBoardService.update(smallBoard, upfile, file);
 		
 		return mv.setViewNameAndData("redirect:/small", null);
+	}
+	
+	// 마이리스트에서 디테일정보 보면서 사람 전체조회하는 
+	@GetMapping("myListDetail/{boardNo}")
+	public ModelAndView myListDetail(@PathVariable(name="boardNo") Long boardNo) {
+		Map<String, Object> responseData = smallBoardService.selectDetailByBoardNo(boardNo);
+		return mv.setViewNameAndData("small/smallBoardMyList_detail", responseData);
 	}
 	
 }

@@ -77,6 +77,12 @@
                 </tbody>
             </table>
             <br>
+            <script>
+            	function detail(num){
+            		location.href = `myListDetail/\${num}`;
+            	}
+            
+            </script>
             <div id="pagingArea">
                 <ul class="pagination">
 

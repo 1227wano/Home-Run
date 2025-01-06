@@ -48,7 +48,8 @@
             <br><br>
 
             <form id="enrollForm" method="post" action="update.small" enctype="multipart/form-data">
-                <input type="hidden" name="boardWriter" value="${ sessionScope.loginUser.userNo }">
+                <input type="hidden" name="boardWriter" value="${ sessionScope.loginUser.userNo }"/>
+                <input type="hidden" name="boardNo" value="${ smallBoard.boardNo }"/>
                 <table align="center">
                     <tr>
                         <th><label for="title">제목</label></th>

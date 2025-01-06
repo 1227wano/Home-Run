@@ -16,6 +16,7 @@ import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
 import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.BoardNotFoundException;
+import com.kh.baseball.exception.FailToBoardUpdateException;
 import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FileNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
@@ -82,11 +83,15 @@ public class SmallBoardValidator {
 		String boardTitle = escapeHtml(smallBoard.getBoardTitle());
 		String boardContent = escapeHtml(smallBoard.getBoardContent());
 		
-		convertNewLineToBr(boardTitle);
-		convertNewLineToBr(boardContent);
+		smallBoard.setBoardTitle(convertNewLineToBr(boardTitle));
+		smallBoard.setBoardContent(convertNewLineToBr(boardContent));
+	}
+	
+	public SmallBoard convertOriginLine(SmallBoard smallBoard) {
+		smallBoard.setBoardTitle(convertOriginLineToN(smallBoard.getBoardTitle()));
+		smallBoard.setBoardContent(convertOriginLineToN(smallBoard.getBoardContent()));
 		
-		smallBoard.setBoardTitle(boardTitle);
-		smallBoard.setBoardContent(boardContent);
+		return smallBoard;
 	}
 	
 	public String escapeHtml(String value) {
@@ -95,6 +100,10 @@ public class SmallBoardValidator {
 	
 	public String convertNewLineToBr(String value) {
 		return value.replaceAll("\n","<br>");
+	}
+	
+	public String convertOriginLineToN(String value) {
+		return value.replaceAll("<br>", "\n");
 	}
 	
 	public SmallBoardUpfile handleFileUpload(MultipartFile upfile) {
@@ -122,6 +131,32 @@ public class SmallBoardValidator {
 		return smallBoardUpfile;
 	}
 	
+public SmallBoardUpfile handleFileUpload(MultipartFile upfile, Long boardNo) {
+		
+		String fileName = upfile.getOriginalFilename();
+		
+		String ext = fileName.substring(fileName.lastIndexOf("."));
+		int randomNo = (int)(Math.random() * 90000) + 10000;
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmsss").format(new Date());
+		String changeName = currentTime + randomNo + ext;
+		
+		String savePath = context.getRealPath("/resources/upload_files/");
+		
+		SmallBoardUpfile smallBoardUpfile = SmallBoardUpfile.builder().originName(fileName)
+															.refBno(boardNo)
+															.changeName(changeName)
+															.filePath(savePath)
+															.build();
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch(IllegalStateException | IOException e) {
+			throw new FailToFileUploadException("파일 이상");
+		}
+		
+		return smallBoardUpfile;
+	}
+	
 	public SmallBoard selectBoardByBoardNo(Long boardNo) {
 		
 		SmallBoard smallBoard = mapper.selectBoardByBoardNo(boardNo);
@@ -129,7 +164,8 @@ public class SmallBoardValidator {
 		if(smallBoard == null) {
 			throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
 		}
-		
+		smallBoard.setBoardTitle(convertOriginLineToN(smallBoard.getBoardTitle()));
+		smallBoard.setBoardContent(convertOriginLineToN(smallBoard.getBoardContent()));
 		return smallBoard;
 	}
 	

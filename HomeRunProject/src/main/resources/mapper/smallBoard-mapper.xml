@@ -272,7 +272,7 @@
 		UPDATE
 			   TB_SMALL_BOARD
 		   SET
-		   	   BOARD_TITLE = #{boardTitle},S
+		   	   BOARD_TITLE = #{boardTitle},
 		   	   BOARD_CONTENT = #{boardContent}
 		 WHERE
 		 	   BOARD_NO = #{boardNo}
@@ -282,6 +282,19 @@
 		   	   STATUS = 'Y'
 		   AND
 		   	   ADMIN_STATUS = 'Y'
+	</update>
+	
+	<update id="updateBoardUpfile" parameterType="smallBoardUpfile">
+		UPDATE
+			   TB_SMALL_UPFILE
+		   SET
+		   	   REF_BNO = #{refBno},
+		   	   ORIGIN_NAME = #{originName},
+		   	   CHANGE_NAME = #{changeName},
+		   	   UPLOAD_DATE = DEFAULT,
+		   	   FILE_PATH  = #{filePath}
+		 WHERE
+		 	   REF_BNO = #{refBno}
 	</update>
 	
 	

@@ -45,4 +45,6 @@ public interface SmallBoardMapper {
 	
 	int updateBoard(SmallBoard smallBoard);
 	
+	int updateBoardUpfile(SmallBoardUpfile smallBoardUpfile);
+	
 }
