@@ -76,13 +76,32 @@ public class FreeBoardValidator {
 	}
 	
 	public void validateBoard(FreeBoard freeBoard) {
-		log.info("{}", freeBoard);
+		//log.info("{}", freeBoard);
 		if(freeBoard == null || freeBoard.getBoardTitle() == null || freeBoard.getBoardTitle().trim().isEmpty() ||
 								freeBoard.getBoardContent() == null || freeBoard.getBoardContent().trim().isEmpty() ||
 								freeBoard.getBoardWriter() == 0 ) {
 			throw new BoardNoValueException("부적절한 입력값입니다.");
 		}
+		
+		String boardTitle = escapeHtml(freeBoard.getBoardTitle());
+		String boardContent = escapeHtml(freeBoard.getBoardContent());
+		
+		convertNewLineToBr(boardTitle);
+		convertNewLineToBr(boardContent);
+		
+		freeBoard.setBoardTitle(boardTitle);
+		freeBoard.setBoardContent(boardContent);
 	}
+	
+	public String escapeHtml(String value) {
+		return value.replaceAll("<", "&lt;").replaceAll(">","&gt;");
+	}
+	
+	public String convertNewLineToBr(String value) {
+		return value.replaceAll("\n","<br>");
+	}
+	
+	
 	
 	public FreeBoardFile handleFileUpload(MultipartFile upfile, int num) {
 		
