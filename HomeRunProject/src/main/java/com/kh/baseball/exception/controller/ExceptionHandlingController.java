@@ -29,7 +29,7 @@ public class ExceptionHandlingController {
 	//-----Member Exception
 	@ExceptionHandler(UserIdNotFoundException.class)
 	protected ModelAndView NoSuchUserIdError(DuplicateKeyException e) {
-		return createErrorResponse("아이디가 존재하지 않습니다.", e);
+		return createErrorResponse("존재하지 않는 사용자입니다.", e);
 	}
 	
 	@ExceptionHandler(ComparePasswordException.class)

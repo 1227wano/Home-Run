@@ -26,6 +26,7 @@ public class Member {
 	private int count;
 	private Date enrollDate;
 	private String status;
+	private Date modifyDate;
 	
 
 }

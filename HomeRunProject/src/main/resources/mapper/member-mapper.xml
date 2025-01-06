@@ -44,7 +44,7 @@
 	        #{userName},
 	        #{nickName},
 	        #{phone},
-	        #{email},
+	        #{email},  
 	        #{address}
 	        )
 
@@ -83,6 +83,56 @@
 	        USER_NAME = #{userName}
 	   AND 
 	        PHONE = #{phone}
+</select>
+
+<update id="updateMember" parameterType="member">
+	UPDATE
+			TB_USER
+	 SET
+	 		USER_NAME = #{userName},
+	        NICKNAME = #{nickName},
+	        PHONE = #{phone}, 
+	        EMAIL = #{email},
+	        ADDRESS = #{address}
+	WHERE
+			USER_ID = #{userId}
+</update>
+
+<update id="deleteMember" parameterType="member">
+	UPDATE
+			TB_USER
+	  SET
+	  		STATUS = 'N',
+	  		MODIFY_DATE = SYSDATE
+	WHERE
+			USER_ID = #{ userId }
+</update>
+
+<update id="changePwd" parameterType="member">
+	UPDATE
+			TB_USER
+	   SET
+	   		USER_PWD = #{ userPwd }
+	 WHERE
+			USER_ID = #{ userId }
+	   AND
+	 		STATUS = 'Y'
+
+</update>
+
+<select id ="checkToChangePwd" parameterType="String" resultType="member">
+SELECT
+		USER_ID userId,
+		USER_PWD userPwd,
+	    USER_NAME userName,
+	    NICKNAME nickName,
+	    PHONE phone,
+	    EMAIL email,
+	    ADDRESS address
+FROM
+		TB_USER
+WHERE
+		USER_ID = #{ userId }
 </select>
 
 

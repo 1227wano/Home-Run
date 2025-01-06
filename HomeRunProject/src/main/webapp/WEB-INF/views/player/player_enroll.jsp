@@ -78,7 +78,10 @@
         <br><br>
     </div>
     
-    
+
+    <div>
+    <h1>여기 등록된 전체 선수 열람</h1>
+    </div>
 
     <script>
         $(function(){

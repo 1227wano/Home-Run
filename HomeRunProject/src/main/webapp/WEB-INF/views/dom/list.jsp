@@ -30,6 +30,14 @@
 </head>
 <body>
 
+	<jsp:include page="../common/menubar.jsp" /> 
+	<br><br><br><br><br>
+	
+	<div align="center">
+		<a href="/baseball/saveForm">구장 등록</a>
+	</div>
+	<br><br>
+	
     <div class="list-area">
 		<br>        
         <div align="center">
@@ -41,7 +49,7 @@
 		            <c:forEach items="${ domList }" var="dom">
 			            <div class="dom-list" onclick="detail('${dom.domNo}')" align="center">
 				            <img src="/baseball${ dom.imagePath }" alt="이미지">
-			                <label>No. ${ dom.domNo } / ${ dom.domName }</label>
+			                <label>${ dom.domName }</label>
 			            </div>
 		            </c:forEach>
 				</c:otherwise>
@@ -53,19 +61,9 @@
 	    		location.href = `/baseball/dom/\${num}`;
 	    	}
     	</script>
-        
-	    <a href="saveForm.dom">구장 등록 폼으로 이동</a>
+		<br><br><br><br><br>
+		
     </div>
     
-    
-    
-    
-    
-    
-    
-        
-
-
-
 </body>
 </html>
