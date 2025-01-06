@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,24 +33,9 @@ public class NoticeController {
 	
 	@GetMapping("notices")
 	public ModelAndView selectNoticeList(@RequestParam(value="page", defaultValue="1") int page) {
-	    int totalCount = noticeService.getTotalNoticeCount(); 
-	    int pageSize = 10; 
-	    int totalPage = (int) Math.ceil((double) totalCount / pageSize); 
-
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("page", page);
-	    params.put("rowBounds", new RowBounds((page - 1) * pageSize, pageSize));
-
-	    List<Notice> noticeList = noticeService.selectAllNotices(params); 
-
-	    ModelAndView mv = new ModelAndView("notice/list");
-	    mv.addObject("noticeList", noticeList); 
-	    mv.addObject("totalCount", totalCount); 
-	    mv.addObject("totalPage", totalPage); 
-
-	    return mv;
+		Map<String, Object> map = noticeService.selectNoticeList(page);
+		return mv.setViewNameAndData("notice/list", map);
 	}
-
 	
 	@GetMapping("insertForm")
 	public String insertForm() {
@@ -56,10 +43,10 @@ public class NoticeController {
 	}
 	
 	@PostMapping("notices")
-	public String insertNotice(Notice notice, MultipartFile upfile) {
-		log.info("공지사항 정보 : {}", notice);
-		noticeService.addNotice(notice, upfile);
-		return "redirect:notices";
+	public ModelAndView insertNotice(Notice notice, MultipartFile upfile, HttpSession session) {
+		noticeService.insertNotice(notice, upfile);
+		session.setAttribute("alertMsg", "게시글 등록 성공");
+		return mv.setViewNameAndData("redirect:notices", null);
 	}
 	
 	@GetMapping("notices/{id}")
@@ -70,7 +57,7 @@ public class NoticeController {
 	
 	@PostMapping("notices/delete")
 	public String delteNotice(Long noticeNo, String attachMent) {
-		noticeService.deleteNotice(noticeNo);
+		noticeService.deleteNotice(noticeNo, attachMent);
 		return "redirect:notices";
 	}
 	

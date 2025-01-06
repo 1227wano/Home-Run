@@ -31,21 +31,44 @@ public class NoticeServiceImpl implements NoticeService {
 	private final NoticeMapper mapper;
 	private final ServletContext context;
 	
-	public int getTotalNoticeCount() {
-		return mapper.selectTotalCount();
+	public int getTotalCount() {
+		int totalCount = mapper.selectTotalCount();
+		
+		if(totalCount == 0) {
+			throw new NoticeNotFoundException("없어~~~");
+		}
+		return totalCount;
 	}
 	
 	private PageInfo getPageInfo(int totalCount, int page) {
 		return Pagination.getPageInfo(totalCount, page, 5, 5);
 	}
 	
-	@Override
-	public List<Notice> selectAllNotices(Map<String, Object> params) {
-		return mapper.selectAllNotices();
+	private List<Notice> getNoticeList(PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return mapper.selectNoticeList(rowBounds);
 	}
+	
+	@Override
+	public Map<String, Object> selectNoticeList(int currentPage) {
+		 
+		int totalCount = getTotalCount();
+		
+		PageInfo pi = getPageInfo(totalCount, currentPage);
+		
+		List<Notice> notices = getNoticeList(pi);
+		
+		Map<String, Object> map = new HashMap();
+		map.put("notices", notices);
+		map.put("pageInfo", pi);
+		
+		return map;
+	}
+	
 
 	@Override
-	public void addNotice(Notice notice, MultipartFile upfile) {
+	public void insertNotice(Notice notice, MultipartFile upfile) {
 
 		if(!("".equals(upfile.getOriginalFilename()))) {
 			String fileName = upfile.getOriginalFilename();
@@ -69,27 +92,28 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 		
 		
-		mapper.addNotice(notice);
+		mapper.insertNotice(notice);
 	}
 	
 	@Override
-	public void updateNotice(Notice notice) {
+	public Map<String, Object> selectNoticeById(Long noticeNo) {
+		Notice notice = mapper.getNoticeById(noticeNo);
+		Map<String, Object> result = new HashMap<>();
+		result.put("notice", notice);
+		return result;
+	}
+	
+	@Override
+	public void updateNotice(Notice notice, MultipartFile upfile) {
 		 log.info("Updating notice: {}", notice);
 	     mapper.updateNotice(notice);
 	}
 
 	@Override
-	public void deleteNotice(Long noticeNo) {
+	public void deleteNotice(Long noticeNo, String attachMent) {
 		mapper.deleteNotice(noticeNo);
 	}
 
-	@Override
-	public Map<String, Object> selectNoticeById(Long id) {
-		Notice notice = mapper.getNoticeById(id);
-		Map<String, Object> result = new HashMap<>();
-		result.put("notice", notice);
-		return result;
-	}
 
 	@Override
 	public Notice getNoticeById(long noticeNo) {

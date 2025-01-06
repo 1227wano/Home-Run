@@ -9,19 +9,19 @@ import com.kh.baseball.notice.model.vo.Notice;
 
 public interface NoticeService {
 
-	List<Notice> selectAllNotices(Map<String, Object> params);
+	Map<String, Object> selectNoticeList(int currentPage);
+	
+	void insertNotice(Notice notice, MultipartFile upfile);
 	
 	Map<String, Object> selectNoticeById(Long noticeNo);
 	
-	void addNotice(Notice notice, MultipartFile upfile);
+	void updateNotice(Notice notice, MultipartFile upfile);
 	
-	void updateNotice(Notice notice);
-	
-	void deleteNotice(Long noticeNo);
+	void deleteNotice(Long noticeNo, String attachMent);
 
 	Notice getNoticeById(long noticeNo);
 
-	int getTotalNoticeCount();
+	int getTotalCount();
 	
 
 

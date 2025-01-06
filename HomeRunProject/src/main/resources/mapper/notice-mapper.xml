@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.notice.model.dao.NoticeMapper">
 
-	<select id="getTotalNoticeCount" resultType="_int">
+	<select id="getTotalCount" resultType="_int">
 		SELECT
 				COUNT(*)
 		  FROM
@@ -18,7 +18,7 @@
 		  		TB_NOTICE
 	</select>
 	
-	<select id="selectAllNotices" parameterType="java.util.Map" resultType="com.kh.baseball.notice.model.vo.Notice">
+	<select id="selectNoticeList" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
 				*
 		  FROM
@@ -28,7 +28,7 @@
 		 		NOTICE_NO DESC
 	</select>
 	
-	<insert id="addNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
+	<insert id="insertNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
 		INSERT
 		  INTO
 		  		TB_NOTICE
