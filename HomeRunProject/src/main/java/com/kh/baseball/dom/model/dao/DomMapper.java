@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.dom.model.vo.Dom;
 import com.kh.baseball.dom.model.vo.DomAttachment;
@@ -13,18 +12,19 @@ import com.kh.baseball.dom.model.vo.DomAttachment;
 public interface DomMapper {
 	
 	// 현재 등록된 구장의 총 개수
-	int findTotalCount();
+	int selectTotalCount();
 	// 등록된 구장 조회
-	List<Dom> findAll(RowBounds rowBounds);
-	List<DomAttachment> findAttachment();
+	List<Dom> selectDomList(RowBounds rowBounds);
+	List<DomAttachment> selectAttachmentList();
 	// 구장 세부 조회
-	Dom findById(Long domNo);
+	Dom selectId(Long domNo);
 	// 구장 등록
-	int save(Dom dom);
+	int insertDom(Dom dom);
 	// 구장 파일 등록
-	int saveDomFile(DomAttachment domAtt);
-
-	
+	int insertDomFile(DomAttachment domAtt);
+	// 구장 정보 업데이트
+	int updateDom(Dom dom);
+	int updateDomFile(DomAttachment domAtt);
 	
 
 }

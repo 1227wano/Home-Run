@@ -10,27 +10,62 @@
 </head>
 <body>
 
-	<div>
-		<label>구장명</label>
-		<input type="text" name="domName" value="${ requestScope.dom.domName }">
-	</div>
+	<jsp:include page="../common/menubar.jsp" /> 
+	
+	<br><br><br><br><br>
+	
 	<!-- <input type="hidden" name="userNo" value="${ loginUser.userNo }" /> -->
-	<div>
-		<label>구장 세부 내용</label>
-		<input type="text" name="domContent" value="${ requestScope.dom.domContent }">
+	<div align="center">
+	
+		<h2>구장 상세 정보</h2>
+		
+		<div>
+			<label>구장명</label>
+			<input type="text" name="domName" value="${ requestScope.dom.domName }">
+		</div>
+		<div>
+			<label>구장 세부 내용</label>
+			<textarea name="domContent">${ requestScope.dom.domContent }</textarea>
+		</div>
+		<div>
+			<label>구장 주소</label>
+			<textarea name="domAddr">${ requestScope.dom.domAddr }</textarea>
+		</div>
+		<div>
+			<label>구장 이미지 첨부</label>
+			<img width="300" height="180" name="${ requestScope.dom.imagePath }" 
+			src="/baseball${ requestScope.dom.imagePath }" alt="대표이미지">
+		</div>
+		
+		<div align="center">
+            <!-- Application > Session > Request > Page -->
+        	<c:if test="${ not empty sessionScope.loginUser.userId }"></c:if>
+        	
+        	<div>
+            	<button onclick="postSubmit(1);">수정하기</button>
+            	<button onclick="">삭제하기</button>
+        	</div>
+        </div>
+		
+		<form action="" method="post" id="postForm">
+	      	<input type="hidden" name="domNo" value="${ dom.domNo }" />
+	      	<input type="hidden" name="imagePath" value="${ dom.imagePath }" />
+        </form>
+        
+        <script>
+           	function postSubmit(num){
+           		if(num == 1){
+           			$('#postForm').attr('action', "/baseball/dom/updateForm").submit();
+           		} else {
+           			$('#postForm').attr('action', "/baseball/dom/delete").submit();
+           		}
+           	}
+        </script>
+		
 	</div>
-	<div>
-		<label>구장위치</label>
-		<input type="text" name="domAddr" value="${ requestScope.dom.domAddr }">
-	</div>
-	<div>
-		<label>구장이미지 첨부</label>
-		<img width="300" height="180" name="${ requestScope.dom.imagePath }" 
-		src="/baseball${ requestScope.dom.imagePath }" alt="대표이미지">
-		<input type="file" id="" class="form-control-file border" name="upfile">
-	</div>
+    <br>
 
-
-
+	
+	
 </body>
 </html>

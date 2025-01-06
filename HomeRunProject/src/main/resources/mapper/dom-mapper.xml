@@ -10,7 +10,7 @@
 			   DOM_NAME AS domName,
 			   DOM_CONTENT AS domContent,
 			   DOM_ADDR AS domAddr,
-			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
+			   (FILE_PATH || CHANGE_NAME) AS imagePath
 	</sql>
 	
 	<sql id="domAttachmentColumn" >
@@ -18,11 +18,12 @@
 			   DOM_ATTACHMENT_NO domAttachmentNo,
 			   REF_DNO refDno,
 			   ORIGIN_NAME originName,
+			   CHANGE_NAME changeName,
 			   CREATE_DATE createDate,
 			   TB_DOM_ATTACHMENT.STATUS status
 	</sql>
 
-	<select id="findTotalCount" resultType="_int">
+	<select id="selectTotalCount" resultType="_int">
 		SELECT
 			   COUNT(*)
 		  FROM
@@ -31,7 +32,7 @@
 		 	   STATUS = 'Y'
 	</select>
 	
-	<select id="findAll" resultType="dom">
+	<select id="selectDomList" resultType="dom">
 		<include refid="domColumn" />
 		  FROM
 		  	   TB_DOM
@@ -46,7 +47,7 @@
 		       DOM_NO DESC
 	</select>
 	
-	<select id="findById" resultType="dom" parameterType="long">
+	<select id="selectId" resultType="dom" parameterType="long">
 		<include refid="domColumn" />
 		  FROM
 		  	   TB_DOM
@@ -60,7 +61,7 @@
 		   	   DOM_NO = #{domNo}
 	</select>
 	
-	<select id="findAttachment" resultType="com.kh.baseball.dom.model.vo.DomAttachment">
+	<select id="selectAttachmentList" resultType="com.kh.baseball.dom.model.vo.DomAttachment">
 		<include refid="domAttachmentColumn" />
 		  FROM
 		  	   TB_DOM_ATTACHMENT
@@ -70,7 +71,7 @@
 		 	   TB_DOM_ATTACHMENT.STATUS = 'Y'
 	</select>
  
-	<insert id="save" parameterType="dom">
+	<insert id="insertDom" parameterType="dom">
 		INSERT 
 		  INTO 
 		  	   TB_DOM 
@@ -89,7 +90,7 @@
 			   )
 	</insert>
 	
-	<insert id="saveDomFile" parameterType="com.kh.baseball.dom.model.vo.DomAttachment">
+	<insert id="insertDomFile" parameterType="com.kh.baseball.dom.model.vo.DomAttachment">
 		INSERT
 		  INTO
 		  	   TB_DOM_ATTACHMENT
@@ -110,5 +111,29 @@
 		  	   )
 	</insert>
 	
+	<update id="updateDom" parameterType="dom">
+		UPDATE
+			   TB_DOM
+		   SET
+		   	   DOM_NAME = #{domName},
+		   	   DOM_CONTENT = #{domContent},
+		   	   DOM_ADDR = #{domAddr}
+		 WHERE
+		 	   DOM_NO = #{domNo}
+		   AND
+		   	   STATUS = 'Y'  	   
+	</update>
+	
+	<update id="updateDomFile" parameterType="com.kh.baseball.dom.model.vo.DomAttachment">
+		UPDATE
+			   TB_DOM_ATTACHMENT
+		   SET
+		   	   ORIGIN_NAME = #{originName},
+		   	   CHANGE_NAME = #{changeName}
+		 WHERE
+		 	   REF_DNO = #{refDno}
+		   AND
+		   	   STATUS = 'Y'
+	</update>
 
 </mapper>
