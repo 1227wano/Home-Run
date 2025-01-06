@@ -19,7 +19,7 @@ public interface FreeBoardMapper {
 	
 	int increaseCount(long boardNo);
 	
-	FreeBoard selectBoardById(long boardNo);
+	FreeBoard selectFreeBoardByBoardNo(long boardNo);
 	
 	FreeBoard selectBoardByTitle(String boardTitle);
 	

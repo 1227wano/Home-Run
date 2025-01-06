@@ -159,6 +159,12 @@ public class SmallBoardValidator {
 		}
 	}
 	
+	public void validateUpdateBoard(int boardUpdateResult) {
+		if(boardUpdateResult < 1) {
+			throw new FailToBoardUpdateException("게시글을 수정하지 못하였습니다.");
+		}
+	}
+	
 	
 	
 	

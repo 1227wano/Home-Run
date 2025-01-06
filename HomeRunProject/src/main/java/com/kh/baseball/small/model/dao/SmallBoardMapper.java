@@ -43,4 +43,6 @@ public interface SmallBoardMapper {
 	
 	int deleteBoard(Long boardNo);
 	
+	int updateBoard(SmallBoard smallBoard);
+	
 }

@@ -28,4 +28,6 @@ public interface SmallBoardService {
 	void deleteBoard(Long boardNo);
 	
 	Map<String, Object> selectUpdateByBoardNo(Long boardNo);
+	
+	void update(SmallBoard smallBoard, MultipartFile upfile);
 }

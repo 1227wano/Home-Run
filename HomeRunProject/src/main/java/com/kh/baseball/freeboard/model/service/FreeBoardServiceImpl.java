@@ -52,6 +52,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Transactional
 	public void insertBoard(FreeBoard freeBoard, MultipartFile[] upfile) {
 		validator.validateBoard(freeBoard);
+		validator.validateBoardLength(freeBoard);
 		
 		mapper.insertBoard(freeBoard);
 		
@@ -76,7 +77,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public Map<String, Object> selectDetailByBoardNo(Long boardNo) {
 				
-		FreeBoard freeBoard = validator.selectBoardById(boardNo);
+		FreeBoard freeBoard = validator.selectFreeBoardByBoardNo(boardNo);
 		//log.info("{}", freeBoard);
 		
 		Map<String, Object> map = new HashMap();
@@ -94,7 +95,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public Map<String, Object> selectUpdateByBoardNo(Long boardNo) {
 				
-		FreeBoard freeBoard = validator.selectBoardById(boardNo);
+		FreeBoard freeBoard = validator.selectFreeBoardByBoardNo(boardNo);
 		
 		Map<String, Object> map = new HashMap();
 		
@@ -114,7 +115,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 											, String file5ChangeName) {
 		
 		validator.validateBoardNo(boardNo);
-		FreeBoard freeBoard = validator.selectBoardByFreeBoardNo(boardNo);
+		FreeBoard freeBoard = validator.selectFreeBoardByBoardNo(boardNo);
 		//log.info("{}",file1ChangeName);
 		//log.info("{}",file2ChangeName);
 		
@@ -139,7 +140,8 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	public void updateBoard(FreeBoard freeBoard, MultipartFile[] upfile) {
 
 		validator.validateBoardNo(freeBoard.getBoardNo());
-		validator.selectBoardByFreeBoardNo(freeBoard.getBoardNo());
+		validator.validateBoardLength(freeBoard);
+		validator.selectFreeBoardByBoardNo(freeBoard.getBoardNo());
 		
 		
 		
@@ -201,6 +203,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public int insertReply(FreeBoardReply reply) {
 		
+		validator.validateChatLength(reply);
 		int result = mapper.insertReply(reply);
 		
 		if(result < 1) {

@@ -268,4 +268,38 @@
 		 	   BOARD_NO = #{boardNo}
 	</update>
 	
+	<update id="updateBoard" parameterType="smallBoard">
+		UPDATE
+			   TB_SMALL_BOARD
+		   SET
+		   	   BOARD_TITLE = #{boardTitle},S
+		   	   BOARD_CONTENT = #{boardContent}
+		 WHERE
+		 	   BOARD_NO = #{boardNo}
+		   AND
+		   	   BOARD_WRITER = #{boardWriter}
+		   AND
+		   	   STATUS = 'Y'
+		   AND
+		   	   ADMIN_STATUS = 'Y'
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

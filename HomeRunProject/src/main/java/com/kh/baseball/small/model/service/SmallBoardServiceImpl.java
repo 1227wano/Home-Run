@@ -170,6 +170,18 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 		
 		return map;
 	}
+
+	@Override
+	public void update(SmallBoard smallBoard, MultipartFile upfile) {
+
+		validator.validateBoard(smallBoard);
+		
+		validator.selectBoardByBoardNo(smallBoard.getBoardNo());
+		
+		int boardResult = mapper.updateBoard(smallBoard);
+		validator.
+		
+	}
 	
 	
 	

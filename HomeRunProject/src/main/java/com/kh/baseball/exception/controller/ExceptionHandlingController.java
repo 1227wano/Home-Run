@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.BoardNotFoundException;
 import com.kh.baseball.exception.ComparePasswordException;
+import com.kh.baseball.exception.FailToBoardUpdateException;
 import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FailToReplyDeleteException;
 import com.kh.baseball.exception.FailToReplyInsertException;
@@ -17,6 +18,7 @@ import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.PlayerNotFoundException;
+import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -94,6 +96,16 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(FailToReplyDeleteException.class)
 	protected ModelAndView failToReplyDeleteException(FailToReplyDeleteException e) {
 		return createErrorResponse("댓글 삭제에 실패했습니다.", e);
+	}
+	
+	@ExceptionHandler(FailToBoardUpdateException.class)
+	protected ModelAndView failToBoardUpdateException(FailToBoardUpdateException e) {
+		return createErrorResponse("게시물을 수정하지 못했습니다.", e);
+	}
+	
+	@ExceptionHandler(TooLargeValueException.class)
+	protected ModelAndView tooLargeValueException(TooLargeValueException e) {
+		return createErrorResponse("해당 내용의 길이가 범위를 넘었습니다.", e);
 	}
 	
 }

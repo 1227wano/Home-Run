@@ -116,4 +116,11 @@ public class SmallBoardController {
 		return mv.setViewNameAndData("small/smallBoard_update", responseData);
 	}
 	
+	@PostMapping("update.small")
+	public ModelAndView update(SmallBoard smallBoard, MultipartFile upfile) {
+		smallBoardService.update(smallBoard, upfile);
+		
+		return mv.setViewNameAndData("redirect:/small", null);
+	}
+	
 }

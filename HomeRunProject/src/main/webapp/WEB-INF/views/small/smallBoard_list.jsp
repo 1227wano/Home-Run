@@ -56,7 +56,9 @@
             <c:if test="${ not empty sessionScope.loginUser }">
             	<a class="btn btn-secondary" style="float:right;" href="insertForm.small">글쓰기</a>
             </c:if>
+            <c:if test="${ not empty sessionScope.loginUser }">
             	<a class="btn btn-secondary" style="float:right;" href="myList.small">나의 게시글 리스트</a>
+           	</c:if>
             <form id="searchForm" action="small" method="get" align="left" style="float:right">
                 <div class="select">
                     <select class="custom-select" name="boardLimit">
