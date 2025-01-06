@@ -79,7 +79,7 @@
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
       <a class="navbar-brand" href="#">
-      	<img class="img-fluid" src="/webapp/resources/upload_files/logo.png" alt="임시로고" style="width:50px; height:50px;" />
+      	<img class="img-fluid" src="/baseball/resources/upload_files/logo.png" alt="임시로고" style="width:100px; height:100px;" />
       </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         메뉴

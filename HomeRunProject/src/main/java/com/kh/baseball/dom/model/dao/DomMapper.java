@@ -25,6 +25,8 @@ public interface DomMapper {
 	// 구장 정보 업데이트
 	int updateDom(Dom dom);
 	int updateDomFile(DomAttachment domAtt);
-	
+	// 구장 정보 삭제처리
+	int deleteDom(Dom dom);
+	int deleteDomFile(Long domNo);
 
 }

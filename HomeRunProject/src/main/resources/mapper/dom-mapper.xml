@@ -135,5 +135,27 @@
 		   AND
 		   	   STATUS = 'Y'
 	</update>
+	
+	<update id="deleteDom" parameterType="dom">
+		UPDATE
+			   TB_DOM
+		   SET
+		   	   STATUS = 'N'
+		 WHERE
+		 	   DOM_NO = #{domNo}
+		   AND
+		   	   STATUS = 'Y'
+	</update>
+
+	<update id="deleteDomFile" parameterType="long">
+		UPDATE
+			   TB_DOM_ATTACHMENT
+		   SET
+		   	   STATUS = 'N'
+		 WHERE
+		 	   REF_DNO = #{domNo}
+		   AND
+		   	   STATUS = 'Y'
+	</update>
 
 </mapper>

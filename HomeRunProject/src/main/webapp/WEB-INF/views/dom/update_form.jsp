@@ -23,23 +23,22 @@
 	<br><br><br><br><br>
 	
 	<div class="domEnroll-area">
-		<form id="" method="post" action="update" enctype="multipart/form-data" >
-			
+		
+		<h2>구장 정보 수정</h2>
+		
+		<form method="post" action="update" enctype="multipart/form-data" >
 			<input type="hidden" name="domNo" value="${ dom.domNo }" />
-			
-			<h2>구장 정보 수정</h2>
-			
 			<div>
 				<label>구장명</label>
-				<input type="text" name="domName" value="${ dom.domName }">
+				<input style="width: 500px;" type="text" name="domName" value="${ dom.domName }">
 			</div>
 			<div>
 				<label>구장 세부 내용</label>
-				<textarea name="domContent">${ dom.domContent }</textarea>
+				<textarea style="width: 500px; height: 500px;" name="domContent">${ dom.domContent }</textarea>
 			</div>
 			<div>
 				<label>구장 주소</label>
-				<textarea name="domAddr">${ dom.domAddr }</textarea>
+				<textarea style="width: 200px; height: 50px;" name="domAddr">${ dom.domAddr }</textarea>
 			</div>
 			<div>
 				<label>구장 이미지 첨부</label>
@@ -51,11 +50,10 @@
 			<br>
 			<div align="center">
 				<button type="submit">정보 수정</button>
-                <button type="reset">취소하기</button>
+                <button onclick="window.location.href='/baseball/dom'">취소하기</button>
 			</div>
-			<br>
 			
-			<br><br><br>
+			<br><br><br><br>
 			
 			<script>
 				function loadImg(inputFile){

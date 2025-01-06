@@ -21,15 +21,15 @@
 		
 		<div>
 			<label>구장명</label>
-			<input type="text" name="domName" value="${ requestScope.dom.domName }">
+			<input style="width: 500px;" type="text" name="domName" value="${ requestScope.dom.domName }">
 		</div>
 		<div>
 			<label>구장 세부 내용</label>
-			<textarea name="domContent">${ requestScope.dom.domContent }</textarea>
+			<textarea style="width: 500px; height: 500px;" name="domContent">${ requestScope.dom.domContent }</textarea>
 		</div>
 		<div>
 			<label>구장 주소</label>
-			<textarea name="domAddr">${ requestScope.dom.domAddr }</textarea>
+			<textarea style="width: 200px; height: 50px;" name="domAddr">${ requestScope.dom.domAddr }</textarea>
 		</div>
 		<div>
 			<label>구장 이미지 첨부</label>
@@ -39,11 +39,12 @@
 		
 		<div align="center">
             <!-- Application > Session > Request > Page -->
-        	<c:if test="${ not empty sessionScope.loginUser.userId }"></c:if>
         	
         	<div>
-            	<button onclick="postSubmit(1);">수정하기</button>
-            	<button onclick="">삭제하기</button>
+	        	<c:if test="${ sessionScope.loginUser.userId eq 'admin' }">
+	            	<button onclick="postSubmit(1);">수정하기</button>
+	            	<button onclick="postSubmit(2);">삭제하기</button>
+	        	</c:if>
         	</div>
         </div>
 		
@@ -57,14 +58,18 @@
            		if(num == 1){
            			$('#postForm').attr('action', "/baseball/dom/updateForm").submit();
            		} else {
-           			$('#postForm').attr('action', "/baseball/dom/delete").submit();
+           			$('#postForm').attr('action', "/baseball/dom/delete.dom").submit();
            		}
            	}
         </script>
 		
 	</div>
-    <br>
-
+    <br><br><br>
+    
+    <div>
+    	
+    </div>
+	
 	
 	
 </body>

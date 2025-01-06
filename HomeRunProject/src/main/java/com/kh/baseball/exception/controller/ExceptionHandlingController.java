@@ -17,6 +17,8 @@ import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.PlayerNotFoundException;
+import com.kh.baseball.exception.RequestFailedException;
+import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -97,4 +99,14 @@ public class ExceptionHandlingController {
 		return createErrorResponse("댓글 삭제에 실패했습니다.", e);
 	}
 	
+	@ExceptionHandler(TooLargeValueException.class)
+	protected ModelAndView valueLengthOverException(TooLargeValueException e) {
+		return createErrorResponse("유효하지 않은 길이의 값을 입력하였습니다.", e);
+	}
+	
+	@ExceptionHandler(RequestFailedException.class)
+	protected ModelAndView requestFailErr(RequestFailedException e) {
+		return createErrorResponse("요청 처리에 실패했습니다.", e);
+	}
 }
+
