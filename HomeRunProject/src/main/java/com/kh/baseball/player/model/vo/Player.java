@@ -15,9 +15,9 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Player {
 	
-	private int userNo;
+	private int playerNo;
 	private int grade;
-	private int playerPosition;
+	private String playerPosition;
 	private Date playerDate;
 	private String playerIntro;
 	private int playerSalary;
@@ -25,7 +25,9 @@ public class Player {
 	private String playerStatus;
 	private String playerTeam;
 	private int count;
-	
+	private String userName;
+	private String imagePath;
+
 	
 	/* 
 	 * 입력받을시

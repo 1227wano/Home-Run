@@ -43,16 +43,15 @@
 </head>
 <body>
     
-	<!-- <jsp:include page="" /> --> 
+    <jsp:include page="../common/menubar.jsp" />
 
     <div class="content">
         <br><br>
         <div class="innerOuter" style="padding:5% 10%;">
             <h2>게시판</h2>
             <br>
-            <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
             <c:if test="${ not empty sessionScope.loginUser }">
-            	<a class="btn btn-secondary" style="float:right;" href="insertForm">글쓰기</a>
+            	<a class="btn btn-secondary" style="float:right;" href="insertForm.free">글쓰기</a>
             </c:if>
             <br>
             <br>
@@ -64,22 +63,16 @@
                         <th>작성자</th>
                         <th>조회수</th>
                         <th>작성일</th>
-                        <th>첨부파일</th>
                     </tr>
                 </thead>
                 <tbody>
-                	<c:forEach items="${ board }" var="board">
-	                    <tr onclick="detail('${board.boardNo}')">
-	                        <td>${ board.boardNo }</td>
-	                        <td>${ board.boardTitle }</td>
-	                        <td>${ board.boardWriter }</td>
-	                        <td>${ board.count }</td>
-	                        <td>${ board.createDate }</td>
-	                        <td>
-	                        	<c:if test="${ not empty board.originName }">
-	                        		💌
-	                        	</c:if>
-	                        </td>
+                	<c:forEach items="${ freeBoard }" var="freeBoard">
+	                    <tr onclick="detail('${freeBoard.boardNo}')">
+	                        <td>${ freeBoard.boardNo }</td>
+	                        <td>${ freeBoard.boardTitle }</td>
+	                        <td>${ freeBoard.nickName }</td>
+	                        <td>${ freeBoard.selectCount }</td>
+	                        <td>${ freeBoard.createDate }</td>
 	                    </tr>
                     </c:forEach>
                 </tbody>
@@ -88,8 +81,8 @@
 			<script>
 				function detail(num){
 					//console.log(num);
-									// boards/게시글번호 이렇게 감
-					location.href = `boards/\${num}`;
+									//    boards/게시글번호 이렇게 감
+					location.href = `freeBoard/\${num}`;
 				}
 			
 			</script>
@@ -103,12 +96,12 @@
                    			<li class="page-item disabled"><a class="page-link" >이전</a></li>
                    		</c:when>
                    		<c:otherwise>
-                   			<li class="page-item"><a class="page-link" href="boards?page=${ pageInfo.currentPage - 1}">이전</a></li>
+                   			<li class="page-item"><a class="page-link" href="freeBoard?page=${ pageInfo.currentPage - 1}">이전</a></li>
                     	</c:otherwise>
                     </c:choose>
                     <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
                     	<li class="page-item">
-	                    	<a class="page-link" href="boards?page=${ num }">
+	                    	<a class="page-link" href="freeBoard?page=${ num }">
 	                    		${ num }
 	                    	</a>
                     	</li>
@@ -118,7 +111,7 @@
                     		<li class="page-item disabled"><a class="page-link" >다음</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="boards?page=${ pageInfo.currentPage + 1}">다음</a></li>
+                    		<li class="page-item"><a class="page-link" href="freeBoard?page=${ pageInfo.currentPage + 1}">다음</a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>
@@ -126,7 +119,7 @@
 
             <br clear="both"><br>
 
-            <form id="searchForm" action="" method="get" align="center">
+            <form id="searchForm" action="searchList.free" method="get" align="center">
                 <div class="select">
                     <select class="custom-select" name="condition">
                         <option value="writer">작성자</option>
@@ -144,8 +137,6 @@
         <br><br>
 
     </div>
-
-   <!-- <jsp:include page="" /> --> 
 
 </body>
 </html>

@@ -1,18 +1,26 @@
-package com.kh.baseball.freeboard.model.vo;
+package com.kh.baseball.freeBoard.model.vo;
 
-import java.sql.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import lombok.Data;
-
-@Data
-public class Freeboard {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+public class FreeBoard {
 
 	private Long boardNo;
-	private Long boardWriter;
+	private int boardWriter;
+	private String nickName;
 	private String boardTitle;
 	private String boardContent;
-	private Date createDate;
-	private Long selectCount;
+	private String createDate;
+	private int selectCount;
 	private String status;
-	
 }

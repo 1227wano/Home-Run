@@ -29,6 +29,7 @@
 
     #mainNav .navbar-nav .nav-item .nav-link {
         font-weight: 600;
+       
     }
     
     #search {
@@ -37,8 +38,28 @@
 		margin-bottom: 2%;
 	}
     
+    <!-- 선수 정보 내브바 -->
+	#PnT{
+        height : 50px;
+        margin : 0%;
+    }
+    #playerAndTeam{
+    	margin-top : 0px;
+    	height : 50px;
+    }
+	#navbar > li > ul {
+        list-style : none;
+        padding-inline: 0;
+        display: none;
+    }
+    #navbar > li > a:hover + ul {
+        display: block;
+    }
 
-  
+    #navbar > li > ul:hover{
+        display: block;
+    }
+ 
 </style>
 
 
@@ -46,11 +67,19 @@
 
 <body id="page-top">
 
+		<c:if test="${ not empty alertMsg }">
+		<script>
+			alert('${ alertMsg }');
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+		</c:if>
+		
+		
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
       <a class="navbar-brand" href="#">
-      	<img class="img-fluid" src="" alt="로고없음" style="width:130px; height:50px;" />
+      	<img class="img-fluid" src="/webapp/resources/upload_files/logo.png" alt="임시로고" style="width:50px; height:50px;" />
       </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         메뉴
@@ -58,13 +87,21 @@
       </button>
       
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav text-uppercase ml-auto">
+        <ul class="navbar-nav text-uppercase ml-auto" id="navbar">
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">구장</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/dom">구장</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="savePlayerform.player">팀 및 선수</a> <!-- 임시 -->
+          
+          <li class="nav-item" id="PnT">
+            <a class="nav-link js-scroll-trigger" href="#">선수 및 팀 정보</a>
+	            <ul id="playerAndTeam">
+					<li><a href="/baseball/savePlayerform.player">선수 등록</a></li>
+					<li><a href="/baseball/findAllPlayer.player">선수 조회</a></li>
+					<li><a href="">팀 등록</a></li>
+					<li><a href="">팀 조회</a></li>
+				</ul>
           </li>
+          
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#">야구교실</a>
           </li>
@@ -72,10 +109,10 @@
             <a class="nav-link js-scroll-trigger" href="#">굿즈</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">자유게시판</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/freeBoard">자유게시판</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">소모임</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/small">소모임</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#">주변먹거리</a>
@@ -99,7 +136,7 @@
           	<c:otherwise>
           	  <label>${ sessionScope.loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
 	          <li class="nav-item">
-	          <a class="nav-link js-scroll-trigger" href="myPage">마이페이지</a>
+	          <a class="nav-link js-scroll-trigger" href="/baseball/mypage.me">마이페이지</a>
 	          </li>
 	          <li class="nav-item">
 	          <a class="nav-link js-scroll-trigger" href="/baseball/logout.me" >로그아웃</a>
@@ -171,7 +208,7 @@
 				
 					<a href="searchId" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px; "> 아이디 찾기 </a> |
 			
-					<a href="#" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 찾기</a>
+					<a href="searchPwd" style="text-decoration : none; color: rgb(68, 68, 68); font-size : 15px; margin: 5px;"> 비밀번호 찾기</a>
 				
 			</div>
 		
