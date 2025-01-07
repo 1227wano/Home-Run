@@ -43,7 +43,7 @@ public class NoticeController {
 	@PostMapping("notices")
 	public ModelAndView insertNotice(Notice notice, MultipartFile upfile, HttpSession session) {
 		noticeService.insertNotice(notice, upfile);
-		session.setAttribute("alertMsg", "게시글 등록 성공");
+		session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
 		return mv.setViewNameAndData("redirect:notices", null);
 	}
 	
@@ -67,8 +67,9 @@ public class NoticeController {
 	}
 	
 	@PostMapping("notices/update")
-	public ModelAndView updateNotice(Notice notice, MultipartFile upfile) {
+	public ModelAndView updateNotice(Notice notice, MultipartFile upfile, HttpSession session) {
 		noticeService.updateNotice(notice, upfile);
+		session.setAttribute("alertMsg", "게시글이 수정되었습니다.");
 		return mv.setViewNameAndData("redirect:/notices", null);
 	}
 

@@ -24,15 +24,6 @@
 		 		NOTICE_NO DESC
 	</select>
 	
-	<select id="findNoticesByTitle" resultType="Notice">
-	    SELECT * FROM TB_NOTICE WHERE notice_title LIKE #{keyword}
-	</select>
-	
-	<select id="findNoticesByContent" resultType="Notice">
-	    SELECT * FROM TB_NOTICE WHERE notice_content LIKE #{keyword}
-	</select>
-	
-	
 	<insert id="insertNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
 		INSERT
 		  INTO

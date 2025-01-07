@@ -63,6 +63,7 @@
 	                    <c:otherwise>
 		                    <td colspan="3">
 		                        <a href="${ notice.attachMent }" download="${ notice.attachMent }">${ notice.attachMent }</a>
+		                        <img src="${ notice.attachMent }" height="150" width="15%" >
 		                    </td>
 	                    </c:otherwise>
                     </c:choose>

@@ -120,6 +120,9 @@
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="notices">공지사항</a>
           </li>
+          <li class="nav-item">
+          	<a class="nav-link js-scroll-trigger" href="#">Q&A</a>
+          </li>
           
           
           <c:choose>
