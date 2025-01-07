@@ -1,5 +1,6 @@
 package com.kh.baseball.small.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.baseball.common.ModelAndViewUtil;
+import com.kh.baseball.exception.NeedToLoginException;
+import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.member.model.vo.Member;
 import com.kh.baseball.small.model.service.SmallBoardService;
 import com.kh.baseball.small.model.vo.SmallBoard;
+import com.kh.baseball.small.model.vo.SmallBoardList;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 import lombok.RequiredArgsConstructor;
@@ -98,8 +102,8 @@ public class SmallBoardController {
 	}
 	
 	@GetMapping("small/{boardNo}")
-	public ModelAndView boardListDetail(@PathVariable(name="boardNo") Long boardNo) {
-		Map<String, Object> responseData = smallBoardService.selectDetailByBoardNo(boardNo);
+	public ModelAndView boardListDetail(@PathVariable(name="boardNo") Long boardNo, HttpSession session) {
+		Map<String, Object> responseData = smallBoardService.selectDetailByBoardNo(boardNo, session);
 		return mv.setViewNameAndData("small/smallBoard_detail", responseData);
 	}
 	
@@ -128,9 +132,66 @@ public class SmallBoardController {
 	
 	// 마이리스트에서 디테일정보 보면서 사람 전체조회하는 
 	@GetMapping("myListDetail/{boardNo}")
-	public ModelAndView myListDetail(@PathVariable(name="boardNo") Long boardNo) {
-		Map<String, Object> responseData = smallBoardService.selectDetailByBoardNo(boardNo);
-		return mv.setViewNameAndData("small/smallBoardMyList_detail", responseData);
+	public ModelAndView myListDetail(@PathVariable(name="boardNo") Long boardNo,
+									 @RequestParam(value="page", defaultValue="1") int Page,
+									 @RequestParam(value="boardLimit", defaultValue="3") int boardLimit) {
+
+		Map<String, Object> responseData = smallBoardService.selectParticipantList(boardNo, Page, boardLimit);
+		return mv.setViewNameAndData("small/smallBoard_myListDetail", responseData);
 	}
+	
+	@GetMapping("writerPermission.small/{listNo}")
+	public ModelAndView writerPermission(@PathVariable(name="listNo") int listNo) {
+		smallBoardService.writerPermission(listNo);
+		
+		return mv.setViewNameAndData("redirect:/small", null);
+	}
+	
+	@GetMapping("ban-form.small/{listNo}")
+	public ModelAndView banForm(@PathVariable(name="listNo") int listNo) {
+		if(listNo < 1) {
+			throw new NotFoundListNoException("리스트 번호를 찾을 수 없습니다.");
+		}
+		Map<String, Object> map = new HashMap();
+		map.put("listNo", listNo);
+		
+		return mv.setViewNameAndData("small/smallBoard_banForm", map);
+	}
+	
+	@PostMapping("ban.small")
+	public String updateBanReason(SmallBoardList smallBoardList) {
+		smallBoardService.updateBanReason(smallBoardList);
+		return "redirect:/small";
+	}
+	
+	@GetMapping("participate-form.small/{boardNo}")
+	public ModelAndView participateForm(@PathVariable(name="boardNo") Long boardNo, HttpSession session) {
+		Member member = (Member)session.getAttribute("loginUser");
+		if(member == null) {
+			throw new NeedToLoginException("로그인해주셔야 합니다.");
+		}
+		SmallBoardList smallBoardList = smallBoardService.validateParticipateForm(boardNo, member);
+		Map<String, Object> map = new HashMap();
+		map.put("smallBoardList", smallBoardList);
+		return mv.setViewNameAndData("small/smallBoard_participateForm", map);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

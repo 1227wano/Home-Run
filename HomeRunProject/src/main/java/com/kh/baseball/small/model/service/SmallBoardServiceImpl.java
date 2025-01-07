@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.exception.BoardNotFoundException;
+import com.kh.baseball.exception.FailToBanParticipant;
 import com.kh.baseball.exception.FailToFileUploadException;
+import com.kh.baseball.exception.ParticipantNotAllowException;
+import com.kh.baseball.member.model.vo.Member;
 import com.kh.baseball.small.model.dao.SmallBoardMapper;
 import com.kh.baseball.small.model.vo.SmallBoard;
+import com.kh.baseball.small.model.vo.SmallBoardList;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 import lombok.RequiredArgsConstructor;
@@ -105,6 +110,8 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 		if(num <= 0) {
 			throw new BoardNotFoundException("게시글을 허가하지 못했습니다.");
 		}
+		SmallBoard smallBoard = mapper.selectBoardByBoardNo(boardNo);
+		mapper.insertWriterAllow(smallBoard);
 	}
 
 	@Override
@@ -125,9 +132,14 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 
 	@Override
 	@Transactional
-	public Map<String, Object> selectDetailByBoardNo(Long boardNo) {
+	public Map<String, Object> selectDetailByBoardNo(Long boardNo, HttpSession session) {
 
 		SmallBoard smallBoard = validator.selectBoardByBoardNo(boardNo);
+		Member member = (Member)session.getAttribute("loginUser");
+		int loginUserNo = member.getUserNo();
+		smallBoard.setLoginUserNo(loginUserNo);
+		
+		validator.checkWriterPermission(smallBoard);
 		
 		validator.incrementViewCount(boardNo);
 		
@@ -190,15 +202,61 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 			if(file.getChangeName() != null) {
 				new File(context.getRealPath(file.getChangeName())).delete();
 			}
-			SmallBoardUpfile smallBoardUpfile = validator.handleFileUpload(upfile, smallBoard.getBoardNo());
+			SmallBoardUpfile smallBoardUpfile = validator.handleFileUpload(upfile);
+			smallBoardUpfile.setRefBno(smallBoard.getBoardNo());
 			int result = mapper.updateBoardUpfile(smallBoardUpfile);
 			if(result < 1) {
 				throw new FailToFileUploadException("파일업로드를 실패했습니다.");
 			}
 		}
 	}
+
+	@Override
+	public Map<String, Object> selectParticipantList(Long boardNo, int Page, int boardLimit) {
+
+		int totalCount = validator.getParticipantListCount(boardNo);
+		
+		PageInfo pi = validator.getPageInfo(totalCount, Page);
+		
+		List<SmallBoardList> lists = validator.getParticipantList(pi, boardNo);
+		Map<String, Object> map = new HashMap();
+		map.put("participantList", lists);
+		map.put("pageInfo", pi);
+		return map;
+	}
+
+	@Override
+	public void writerPermission(int listNo) {
+
+		int allowResult = mapper.writerAllow(listNo);
+		if(allowResult < 1) {
+			throw new ParticipantNotAllowException("참가자를 수락이 불가합니다..");
+		}
+	}
+
+	@Override
+	public void updateBanReason(SmallBoardList smallBoardList) {
+		// listNo 랑 BanReason을 validate해야됨
+		
+		validator.validateListNo(smallBoardList.getListNo());
+		
+		SmallBoardList updateSmallBoardList = validator.validateBanReason(smallBoardList);
+		
+		int updateResult = mapper.updateBanReason(updateSmallBoardList);
+		
+		if(updateResult < 1) {
+			throw new FailToBanParticipant("참여자를 강퇴하지 못했습니다.");
+		}
+	}
 	
-	
+	public SmallBoardList validateParticipateForm(Long boardNo, Member member) {
+		SmallBoardList smallBoardList = new SmallBoardList();
+		smallBoardList.setRefBno(boardNo);
+		smallBoardList.setLoginUserNo(member.getUserNo());
+		
+		validator.validateParticipateForm(smallBoardList);
+		return smallBoardList;
+	}
 	
 	
 	

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.baseball.small.model.vo.SmallBoard;
+import com.kh.baseball.small.model.vo.SmallBoardList;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 @Mapper
@@ -47,4 +48,21 @@ public interface SmallBoardMapper {
 	
 	int updateBoardUpfile(SmallBoardUpfile smallBoardUpfile);
 	
+	// 작성자 참가 리스트 관리 부분
+	
+	int selectMyParticipantListCount(Long boardNo);
+	
+	List<SmallBoardList> selectParticipantList(RowBounds rowBounds, Long boardNo);
+	
+	int writerAllow(int listNo);
+	
+	SmallBoardList selectListByListNo(int listNo);
+	
+	int updateBanReason(SmallBoardList updateSmallBoardList);
+	
+	int selectPosssibleDetail(SmallBoard smallBoard);
+	
+	void insertWriterAllow(SmallBoard smallBoard);
+	
+	int validateParticipateForm(SmallBoardList smallBoardList);
 }

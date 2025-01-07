@@ -16,12 +16,16 @@ import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
 import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.BoardNotFoundException;
+import com.kh.baseball.exception.ExistParticipateListException;
+import com.kh.baseball.exception.FailToBoardDetailException;
 import com.kh.baseball.exception.FailToBoardUpdateException;
 import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FileNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
+import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.small.model.dao.SmallBoardMapper;
 import com.kh.baseball.small.model.vo.SmallBoard;
+import com.kh.baseball.small.model.vo.SmallBoardList;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 import lombok.RequiredArgsConstructor;
@@ -130,33 +134,7 @@ public class SmallBoardValidator {
 		
 		return smallBoardUpfile;
 	}
-	
-public SmallBoardUpfile handleFileUpload(MultipartFile upfile, Long boardNo) {
 		
-		String fileName = upfile.getOriginalFilename();
-		
-		String ext = fileName.substring(fileName.lastIndexOf("."));
-		int randomNo = (int)(Math.random() * 90000) + 10000;
-		String currentTime = new SimpleDateFormat("yyyyMMddHHmmsss").format(new Date());
-		String changeName = currentTime + randomNo + ext;
-		
-		String savePath = context.getRealPath("/resources/upload_files/");
-		
-		SmallBoardUpfile smallBoardUpfile = SmallBoardUpfile.builder().originName(fileName)
-															.refBno(boardNo)
-															.changeName(changeName)
-															.filePath(savePath)
-															.build();
-		
-		try {
-			upfile.transferTo(new File(savePath + changeName));
-		} catch(IllegalStateException | IOException e) {
-			throw new FailToFileUploadException("파일 이상");
-		}
-		
-		return smallBoardUpfile;
-	}
-	
 	public SmallBoard selectBoardByBoardNo(Long boardNo) {
 		
 		SmallBoard smallBoard = mapper.selectBoardByBoardNo(boardNo);
@@ -167,6 +145,16 @@ public SmallBoardUpfile handleFileUpload(MultipartFile upfile, Long boardNo) {
 		smallBoard.setBoardTitle(convertOriginLineToN(smallBoard.getBoardTitle()));
 		smallBoard.setBoardContent(convertOriginLineToN(smallBoard.getBoardContent()));
 		return smallBoard;
+	}
+	
+	public void checkWriterPermission(SmallBoard smallBoard) {
+		log.info("{}", smallBoard);
+		
+		int result = mapper.selectPosssibleDetail(smallBoard);
+		log.info("{}",result);
+		if(result < 1) {
+			throw new FailToBoardDetailException("게시물 참가신청 후 조회하실 수 있습니다.");
+		}
 	}
 	
 	public void incrementViewCount(Long boardNo) {
@@ -201,14 +189,51 @@ public SmallBoardUpfile handleFileUpload(MultipartFile upfile, Long boardNo) {
 		}
 	}
 	
+	// --------- 나의 게시글 관리 ---------------------
 	
+	public int getParticipantListCount(Long boardNo) {
+		return mapper.selectMyParticipantListCount(boardNo);
+	}
 	
+	public List<SmallBoardList> getParticipantList(PageInfo pi, Long boardNo){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return mapper.selectParticipantList(rowBounds, boardNo);
+	}
 	
+	public void validateListNo(int listNo) {
+		if(listNo < 1) {
+			throw new NotFoundListNoException("리스트 번호를 찾을 수 없습니다.");
+		}
+		
+		SmallBoardList smallBoardList = mapper.selectListByListNo(listNo);
+		if(smallBoardList.getListNo() == 0) {
+			throw new NotFoundListNoException("리스트 번호를 찾을 수 없습니다.");
+		}
+	}
 	
+	public SmallBoardList validateBanReason(SmallBoardList smallBoardList) {
+		if(smallBoardList == null || smallBoardList.getBanReason() == null || smallBoardList.getBanReason().trim().isEmpty()) {
+			throw new BoardNoValueException("부적절한 입력값");
+		}
+		
+		String banReason = escapeHtml(smallBoardList.getBanReason());
+		
+		smallBoardList.setBanReason(convertNewLineToBr(banReason));
+		
+		return smallBoardList;
+	}
 	
-	
-	
-	
+	public void validateParticipateForm(SmallBoardList smallBoardList) {
+		if(smallBoardList.getRefBno() == 0) {
+			throw new BoardNotFoundException("게시물을 찾을 수 없습니다.");
+		}
+		
+		int result = mapper.validateParticipateForm(smallBoardList);
+		if(result == 1) {
+			throw new ExistParticipateListException("이미 해당 게시글 참가 요청이 있습니다.");
+		}
+	}
 	
 	
 	

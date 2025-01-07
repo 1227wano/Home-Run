@@ -15,13 +15,15 @@ import lombok.ToString;
 @ToString
 public class SmallBoardList {
 
-	private int ListNo;
+	private int listNo;
 	private Long refBno;
 	private int participantNo;
 	private String writerPermission;
 	private String banReason;
 	private String userEscape;
-	private String participantionContent;
+	private String participationContent;
 	private String participationStatus;
 	private String participationDate;
+	private String nickName;
+	private int loginUserNo;
 }

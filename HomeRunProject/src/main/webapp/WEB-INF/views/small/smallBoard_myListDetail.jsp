@@ -48,53 +48,38 @@
     <div class="content">
         <br><br>
         <div class="innerOuter" style="padding:5% 10%;">
-            <h2>소모임 게시판</h2>
+            <h2>게시글 참여자 리스트</h2>
             <br>
-            <c:if test="${ sessionScope.loginUser.userId eq 'admin' }">
-            	<a class="btn btn-secondary" style="float:right;" href="adminList.small">허가리스트</a>
-            </c:if>
-            <c:if test="${ not empty sessionScope.loginUser }">
-            	<a class="btn btn-secondary" style="float:right;" href="insertForm.small">글쓰기</a>
-            </c:if>
-            <c:if test="${ not empty sessionScope.loginUser }">
-            	<a class="btn btn-secondary" style="float:right;" href="myList.small">나의 게시글 리스트</a>
-           	</c:if>
-            <form id="searchForm" action="small" method="get" align="left" style="float:right">
-                <div class="select">
-                    <select class="custom-select" name="boardLimit">
-                        <option value="5">5개씩</option>
-                        <option value="10">10개씩</option>
-                        <option value="15">15개씩</option>
-                        <option value="20">20개씩</option>
-                    </select>
-                </div>
-                <button type="submit" class="searchBtn btn btn-secondary">적용</button>
-            </form>
+            <a class="btn btn-secondary" style="float:right;" href="/baseball/small">목록으로</a>
             <br>
             <br>
-            <table id="boardList" class="table table-hover" align="center">
+            <table id="participantList" class="table table-hover" align="center">
                 <thead>
                     <tr>
-                        <th>글번호</th>
-                        <th>팀명</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>작성일</th>
-                        <th>조회수</th>
-                        <th>참가</th>
+                        <th>리스트번호</th>
+                        <th>닉네임</th>
+                        <th>신청내용</th>
+                        <th>신청날짜</th>
+                        <th>작성자허가</th>
+                        <th>퇴출사유</th>
+                        <th>자진퇴출</th>
                     </tr>
                 </thead>
                 <tbody>
-                	<c:forEach items="${ smallBoard }" var="smallBoard">
+                	<c:forEach items="${ participantList }" var="participantList">
 	                    <tr>
-	                        <td>${ smallBoard.boardNo }</td>
-	                        <td>${ smallBoard.teamName }</td>
-	                        <td onclick="detail('${smallBoard.boardNo}')">${ smallBoard.boardTitle }</td>
-	                        <td>${ smallBoard.nickName }</td>
-	                        <td>${ smallBoard.createDate }</td>
-	                        <td>${ smallBoard.selectCount }</td>
+	                        <td>${ participantList.listNo }</td>
+	                        <td>${ participantList.nickName }</td>
+	                        <td>${ participantList.participationContent }</td>
+	                        <td>${ participantList.participationDate }</td>
+	                        <td>${ participantList.writerPermission }
+	                        <td>${ participantList.banReason }</td>
+	                        <td>${ participantList.userEscape }</td>
 	                        <td>
-	                        	<button onclick="participate('${smallBoard.boardNo}')">신청</button>
+	                        	<button onclick="writerPermission('${participantList.listNo}')">수락</button>
+	                        </td>
+	                        <td>
+	                        	<button onclick="banParticipant('${participantList.listNo}')">추방</button>
 	                        </td>
 	                    </tr>
                     </c:forEach>
@@ -102,20 +87,17 @@
             </table>
             <br>
 			<script>
-				function detail(boardNo){
-					
-					location.href = `/baseball/small/\${boardNo}`
+				function writerPermission(listNo){
+					location.href = `../writerPermission.small/\${listNo}`
 				}
-			
-				function participate(boardNo){
-					location.href = `/baseball/participate-form.small/\${boardNo}`
+				
+				function banParticipant(listNo){
+					location.href = `../ban-form.small/\${listNo}`
 				}
 			</script>
+
             <div id="pagingArea">
                 <ul class="pagination">
-                
-
-
 					<c:choose>
 						<c:when test="${ pageInfo.currentPage eq 1 }">                
                    			<li class="page-item disabled"><a class="page-link" >이전</a></li>
@@ -142,22 +124,6 @@
                 </ul>
             </div>
 
-            <br clear="both"><br>
-
-            <form id="searchForm" action="searchList.free" method="get" align="center">
-                <div class="select">
-                    <select class="custom-select" name="condition">
-                        <option value="writer">작성자</option>
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
-                        <option value="team">팀</option>
-                    </select>
-                </div>
-                <div class="text">
-                    <input type="text" class="form-control" name="keyword">
-                </div>
-                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
-            </form>
             <br><br>
         </div>
         <br><br>

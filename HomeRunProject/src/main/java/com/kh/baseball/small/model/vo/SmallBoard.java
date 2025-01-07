@@ -25,4 +25,6 @@ public class SmallBoard {
 	private String status;
 	private String adminStatus;
 	private String nickName;
+	private String writerPermission;
+	private int loginUserNo;
 }

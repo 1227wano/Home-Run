@@ -213,6 +213,7 @@
 			   BOARD_NO boardNo,
 			   TEAM_NAME teamName,
 			   BOARD_TITLE boardTitle,
+			   BOARD_WRITER boardWriter,
 			   NICKNAME,
 			   BOARD_CONTENT boardContent,
 			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate,
@@ -297,16 +298,119 @@
 		 	   REF_BNO = #{refBno}
 	</update>
 	
+	<!-- 개인게시글 참가자 리스트 관리 -->
 	
+	<sql id="listColumn">
+		SELECT
+			   LIST_NO listNo,
+			   REF_BNO refBno,
+			   PARTICIPANT_NO participantNo,
+			   NICKNAME nickName,
+			   WRITER_PERMISSION writerPermission,
+			   BAN_REASON banReason,
+			   USER_ESCAPE userEscape,
+			   PARTICIPATION_CONTENT participationContent,
+			   PARTICIPATION_STATUS participationStatus,
+			   PARTICIPATION_DATE participationDate
+		  FROM
+		  	   TB_SMALL_LIST
+		  JOIN
+		  	   TB_USER ON(PARTICIPANT_NO = USER_NO)
+		 WHERE
+		 	   PARTICIPATION_STATUS = 'Y'
+	</sql>
 	
+	<select id="selectMyParticipantListCount" parameterType="long" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_SMALL_LIST
+		 WHERE
+		 	   REF_BNO = #{boardNo}
+		   AND
+		   	   PARTICIPATION_STATUS = 'Y'
+	</select>
 	
+	<select id="selectParticipantList" parameterType="long" resultType="smallBoardList">
+		<include refid="listColumn"/>
+		   AND
+		   	   TB_SMALL_LIST.REF_BNO = #{boardNo}
+	</select>
 	
+	<update id="writerAllow" parameterType="int">
+		UPDATE
+			   TB_SMALL_LIST
+		   SET
+		   	   WRITER_PERMISSION = 'Y',
+		   	   BAN_REASON = 'EMPTY'
+		 WHERE
+		 	   PARTICIPATION_STATUS = 'Y'
+		   AND
+		   	   LIST_NO = #{listNo}
+		   AND
+		   	   WRITER_PERMISSION = 'N'
+	</update>
 	
+	<select id="selectListByListNo" parameterType="int" resultType="smallBoardList">
+		<include refid="listColumn"/>
+		   AND
+		   	   TB_SMALL_LIST.LIST_NO = #{listNo}
+		   AND
+		   	   WRITER_PERMISSION = 'Y'
+	</select>
 	
+	<update id="updateBanReason" parameterType="smallBoardList">
+		UPDATE
+			   TB_SMALL_LIST
+		   SET
+		   	   WRITER_PERMISSION = 'N',
+		   	   BAN_REASON = #{banReason}
+		 WHERE
+		 	   LIST_NO = #{listNo}
+	</update>
+
+	<select id="selectPosssibleDetail" parameterType="smallBoard" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM
+		       TB_SMALL_LIST
+		 WHERE
+		       REF_BNO = #{boardNo}
+		   AND
+		       WRITER_PERMISSION = 'Y'
+		   AND
+		       PARTICIPANT_NO = #{loginUserNo}
+	</select>
 	
+	<insert id="insertWriterAllow" parameterType="smallBoard">
+		INSERT
+		  INTO
+		  	   TB_SMALL_LIST
+		  	   (
+		  	   LIST_NO,
+		  	   REF_BNO,
+		  	   PARTICIPANT_NO,
+		  	   WRITER_PERMISSION
+		  	   )
+	    VALUES
+	    	   (
+	    	   SEQ_SGLNO.NEXTVAL,
+	    	   #{boardNo},
+	    	   #{boardWriter},
+	    	   'Y'
+	    	   )
+	</insert>
 	
-	
-	
+	<select id="validateParticipateForm" parameterType="smallBoardList" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM
+		       TB_SMALL_LIST
+		 WHERE
+		       REF_BNO = #{refBno}
+		   AND
+		       PARTICIPANT_NO = #{loginUserNo}
+	</select>
 	
 	
 	
