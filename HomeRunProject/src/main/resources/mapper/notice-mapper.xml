@@ -4,13 +4,6 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.notice.model.dao.NoticeMapper">
 
-	<select id="getTotalCount" resultType="_int">
-		SELECT
-				COUNT(*)
-		  FROM
-		  		TB_NOTICE
-	</select>
-	
 	<select id="selectTotalCount" resultType="_int">
 		SELECT
 				COUNT(*)
@@ -20,13 +13,25 @@
 	
 	<select id="selectNoticeList" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
-				*
+				NOTICE_NO AS noticeNo,
+				TITLE AS noticeTitle,
+				CREATION_DATE AS creationDate,
+				ATTACHMENT AS attachMent
 		  FROM
 		  		TB_NOTICE
 		 ORDER
 		 	BY
 		 		NOTICE_NO DESC
 	</select>
+	
+	<select id="findNoticesByTitle" resultType="Notice">
+	    SELECT * FROM TB_NOTICE WHERE notice_title LIKE #{keyword}
+	</select>
+	
+	<select id="findNoticesByContent" resultType="Notice">
+	    SELECT * FROM TB_NOTICE WHERE notice_content LIKE #{keyword}
+	</select>
+	
 	
 	<insert id="insertNotice" parameterType="com.kh.baseball.notice.model.vo.Notice">
 		INSERT
@@ -44,7 +49,7 @@
 		 		SEQ_NOTICE_NO.NEXTVAL,
 		 		#{noticeTitle},
 		 		#{noticeContent},
-		 		#{creation_Date},
+		 		SYSDATE,
 		 		#{attachMent}
 		 		)
 	</insert>
@@ -53,15 +58,15 @@
 		UPDATE
 				TB_NOTICE
 		   SET
-		   		TITLE = #{Title},
-		   		CONTENT = #{Content},
+		   		TITLE = #{noticeTitle},
+		   		CONTENT = #{noticeContent},
 		   		CREATION_DATE = #{creationDate},
 		   		ATTACHMENT = #{attachMent}
 		  WHERE
 		  		NOTICE_NO = #{noticeNo}
 	</update>
 	
-	<delete id="deleteNotice" parameterType="_int">
+	<delete id="deleteNotice" parameterType="Long">
 		DELETE
 		  FROM
 		  		TB_NOTICE
@@ -72,8 +77,8 @@
 	<select id="selectNoticeById" parameterType="long" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
 				notice_no AS noticeNo,
-				title AS Title,
-				content AS Content,
+				title AS noticeTitle,
+				content AS noticeContent,
 				creation_date AS creationDate,
 				attachment AS attachMent
 		  FROM
@@ -84,7 +89,11 @@
 	
 	<select id="getNoticeById" parameterType="long" resultType="com.kh.baseball.notice.model.vo.Notice">
 		SELECT
-				*
+				notice_no AS noticeNo,
+				title AS noticeTitle,
+				content AS noticeContent,
+				creation_date AS creationDate,
+				attachment As attachMent
 		   FROM
 		   		TB_NOTICE
 		  WHERE	

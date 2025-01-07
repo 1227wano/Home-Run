@@ -1,13 +1,10 @@
 package com.kh.baseball.notice.controller;
 
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +31,7 @@ public class NoticeController {
 	@GetMapping("notices")
 	public ModelAndView selectNoticeList(@RequestParam(value="page", defaultValue="1") int page) {
 		Map<String, Object> map = noticeService.selectNoticeList(page);
+		log.info("{}", map);
 		return mv.setViewNameAndData("notice/list", map);
 	}
 	
@@ -50,15 +48,16 @@ public class NoticeController {
 	}
 	
 	@GetMapping("notices/{id}")
-	public ModelAndView selectNoticeById(@PathVariable(name="id") long id) {
-		Map<String, Object> responseData = noticeService.selectNoticeById((long) id);
+	public ModelAndView selectNoticeById(@PathVariable(name="id") Long id) {
+		Map<String, Object> responseData = noticeService.selectNoticeById(id);
 		return mv.setViewNameAndData("notice/detail", responseData);
 	}
 	
 	@PostMapping("notices/delete")
-	public String delteNotice(Long noticeNo, String attachMent) {
+	public ModelAndView delteNotice(Long noticeNo, String attachMent, HttpSession session) {
 		noticeService.deleteNotice(noticeNo, attachMent);
-		return "redirect:notices";
+		session.setAttribute("alertMsg", "게시글이 삭제되었습니다.");
+		return mv.setViewNameAndData("redirect:/notices", null);
 	}
 	
 	@PostMapping("notices/update-form")
@@ -67,8 +66,11 @@ public class NoticeController {
 		return mv.setViewNameAndData("notice/update", responseData);
 	}
 	
-	
-
+	@PostMapping("notices/update")
+	public ModelAndView updateNotice(Notice notice, MultipartFile upfile) {
+		noticeService.updateNotice(notice, upfile);
+		return mv.setViewNameAndData("redirect:/notices", null);
+	}
 
 	
 }
