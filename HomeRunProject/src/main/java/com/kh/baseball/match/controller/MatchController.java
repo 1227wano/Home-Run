@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.baseball.common.ModelAndViewUtil;
@@ -23,10 +24,10 @@ public class MatchController {
 	private final ModelAndViewUtil mv;
 	
 	@GetMapping("match")
-	public ModelAndView selectMatchList() {
+	public ModelAndView selectMatchList(@RequestParam(value="page", defaultValue="1") int page) {
 		
 		Map<String, Object> map = new HashMap<>();
-		map.put("matchList", matchService.selectMatchList());
+		map = matchService.selectMatchList(page);
 		return mv.setViewNameAndData("match/list", map);
 	}
 	
@@ -37,5 +38,12 @@ public class MatchController {
 		return mv.setViewNameAndData(null, null);
 	}
 	
+	@GetMapping("enrollForm.match")
+	public ModelAndView enrollForm() {
+		
+//		matchService.selectTeamList();
+		
+		return mv.setViewNameAndData("match/enroll_form", null);
+	}
 
 }

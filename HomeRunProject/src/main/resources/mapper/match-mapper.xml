@@ -16,6 +16,15 @@
 		       DOM_ADDR AS domAddr
 	</sql>
 
+	<select id="selectTotalCount" resultType="_int"> 
+		SELECT
+			   COUNT(*) AS count
+		  FROM
+		  	   TB_MATCH
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
+
 	<select id="selectMatchList" resultType="match">
 		<include refid="matchColumn" />
 		  FROM  

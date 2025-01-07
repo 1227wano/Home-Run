@@ -35,7 +35,7 @@ public class DomController {
 		return mv.setViewNameAndData("dom/list", map);
 	}
 	
-	@GetMapping("saveForm")
+	@GetMapping("enrollForm")
 	public String saveForm() {
 		return "dom/enroll_form";
 	}

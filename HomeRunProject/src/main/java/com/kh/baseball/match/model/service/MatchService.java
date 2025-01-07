@@ -1,12 +1,12 @@
 package com.kh.baseball.match.model.service;
 
-import java.util.List;
+import java.util.Map;
 
 import com.kh.baseball.match.model.vo.Match;
 
 public interface MatchService {
 	
-	List<Match> selectMatchList();
+	Map<String, Object> selectMatchList(int currentPage);
 	
 	Match selectMatch();
 	

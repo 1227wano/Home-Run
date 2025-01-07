@@ -15,6 +15,7 @@ import com.kh.baseball.exception.FailToReplyInsertException;
 import com.kh.baseball.exception.FileNotFoundException;
 import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
+import com.kh.baseball.exception.NotFoundException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.exception.RequestFailedException;
@@ -31,6 +32,13 @@ public class ExceptionHandlingController {
 
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("errorMsg", errorMsg).setViewName("common/error_page");
+		log.info("발생 예외 : {}", e.getMessage(), e);
+		return mv;
+	}
+	
+	private ModelAndView createAlertResponse(String alertMsg, Exception e) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("alertMsg", alertMsg).setViewName("redirect:/");
 		log.info("발생 예외 : {}", e.getMessage(), e);
 		return mv;
 	}
@@ -100,13 +108,18 @@ public class ExceptionHandlingController {
 	}
 	
 	@ExceptionHandler(TooLargeValueException.class)
-	protected ModelAndView valueLengthOverException(TooLargeValueException e) {
+	protected ModelAndView valueLengthOverErr(TooLargeValueException e) {
 		return createErrorResponse("유효하지 않은 길이의 값을 입력하였습니다.", e);
 	}
 	
 	@ExceptionHandler(RequestFailedException.class)
 	protected ModelAndView requestFailErr(RequestFailedException e) {
 		return createErrorResponse("요청 처리에 실패했습니다.", e);
+	}
+	
+	@ExceptionHandler(NotFoundException.class)
+	protected ModelAndView noSuchDataErr(NotFoundException e) {
+		return createAlertResponse("요청에 필요한 데이터를 찾지 못했습니다.", e);
 	}
 }
 
