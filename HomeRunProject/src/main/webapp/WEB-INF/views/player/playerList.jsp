@@ -28,10 +28,10 @@
 						<li id="">
 							<a href="findPlayer/${ p.playerNo }"> 
 								<img src="/baseball${ p.imagePath }" alt="선수사진" class="player-photo"> <br>
-								<strong class="player-name"> 선수명 : ${ p.userName } </strong> <br>
+								<span class="player-position"> ${ p.playerPosition } </span> <br>
+								<strong class="player-name"> ${ p.userName } </strong> <br>
 								<span class="player-team"> 소속팀 : ${ p.playerTeam } </span> <br>
-								<span class="player-position"> 포지션 : ${ p.playerPosition } </span> <br>
-								<span class="player-number"> 등번호 : ${ p.backNo } </span> <br>
+								<span class="player-number"> No. ${ p.backNo } </span> <br>
 							</a> <br>
 						 </li>
 					</c:forEach>
@@ -52,7 +52,7 @@
         function showMorePlayer(){
 
         	$.ajax({
-            	url : '/baseball/player',
+            	url : '/baseball/player',	// PlayerAjaxController
             	type : 'get',
             	data : { 
             		page : moreNum
@@ -63,10 +63,10 @@
 							    			        		`<li>
 							    			        		<a href="findPlayer/\${ p.playerNo }"> 
 															<img src="/baseball\${ p.imagePath }" alt="선수사진" class="player-photo"> <br>
-															<strong class="name"> 선수명 : \${ p.userName } </strong> <br>
+															<span class="position"> \${ p.playerPosition } </span> <br>
+															<strong class="name"> \${ p.userName } </strong> <br>
 															<span class="team"> 소속팀 : ${ p.playerTeam } </span> <br>
-															<span class="position"> 포지션 : \${ p.playerPosition } </span> <br>
-															<span class="number"> 등번호 : \${ p.backNo } </span> <br> 
+															<span class="number"> No. \${ p.backNo } </span> <br> 
 															</a>
 															</li>`
 							    			        	).join('');

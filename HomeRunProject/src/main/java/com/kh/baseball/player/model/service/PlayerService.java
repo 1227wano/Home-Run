@@ -28,12 +28,17 @@ public interface PlayerService {
 	// 선수 정보 상세조회
 	Map<String, Object> selectPlayer(int playerNo);
 	
+	// 마이페이지 선수 정보 상세조회
+	Map<String, Object> mypagePlayer(int userNo);
+		
 	
 	// 선수 정보 수정
-	int updatePlayer(Player player);
+	void updatePlayer(Player player, MultipartFile upfile);
 	
-	// 선수 정보 삭제
-	int deletePlayer(int userNo);
+	// 선수 
+	void deletePlayer(Player player);
+	
+	
 	
 	
 

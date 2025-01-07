@@ -33,14 +33,10 @@
 				</h3>
 				<table class="profile">
 					<tbody>
-						<c:choose>
-							<c:when test="${ player.playerTeam eq 'null' || player.playerTeam eq 'N' }">
-								<span class="player-team"> FA(자유계약선수) </span><br>
-							</c:when>
-							<c:otherwise>
-								<span class="player-team"> ${ player.playerTeam } </span><br>
-							</c:otherwise>
-						</c:choose>
+						<tr>
+							<th scope="row">소속팀</th>
+							<td>${ player.playerTeam }</td>
+						</tr>
 						<tr>
 							<th scope="row">포지션</th>
 							<td>${ player.playerPosition }</td>
@@ -59,16 +55,6 @@
 						</tr>
 					</tbody>
 				</table>
-				
-				<!--  
-				<strong class="player-name"> 선수명 : ${ p.userName } </strong> <br>
-				<span class="player-number"> 등번호 : ${ p.backNo } </span> <br>
-				<span class="player-position"> 포지션 : ${ p.playerPosition } </span> <br>
-				<span class="player-date"> 입단일 : ${ p.playerDate } </span> <br>
-				<span class="player-salary"> 연봉 : ${ p.playerSalary } </span> <br>
-				<span class="player-intro"> 자기소개 : ${ p.playerIntro } </span> <br>
-				-->
-				
 			</div>
 		</div>
 	</main>

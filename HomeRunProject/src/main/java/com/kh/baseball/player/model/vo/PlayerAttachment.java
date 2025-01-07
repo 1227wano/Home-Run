@@ -16,10 +16,10 @@ import lombok.ToString;
 public class PlayerAttachment {
 	
 	private int playerAttachmentNo;
+	private int refPno;
 	private String originName;
 	private String changeName;
 	private String filePath;
 	private String uploadDate;
-	private int playerNo;
 
 }

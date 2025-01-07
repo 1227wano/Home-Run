@@ -20,6 +20,18 @@ public interface PlayerMapper {
 	List<Player> findAllPlayerKorean(RowBounds rowbounds);
 	
 	Player findPlayerDetail(int playerNo);
+
+	int updatePlayer(Player player);
+
+	void updatePlayerFile(PlayerAttachment playerAtt);
+
+	List<PlayerAttachment> findAllPlayerFile();
+
+	Player mypagePlayerDetail(int userNo);
+
+	PlayerAttachment findPlayerFile(int playerNo);
+
+	void deletePlayer(Player player);
 	
 
 }

@@ -39,7 +39,7 @@ public class PlayerController {
 		
 		playerService.savePlayer(player, upfile);
 		
-		session.setAttribute("alertMsg", "선수 등록 신청 성공");
+		session.setAttribute("alertMsg", "선수 등록 신청 성공");	
 		
 		// log.info("입력된거 : {}", player);
 		
@@ -67,12 +67,51 @@ public class PlayerController {
 	// 선수 상세보기
 	@GetMapping("findPlayer/{playerNo}")
 	public ModelAndView forwardPlayerList(@PathVariable(name="playerNo") int playerNo) {
-		log.info("{}", playerNo);
+		// log.info("{}", playerNo);
 		
 		Map<String, Object> responseData = playerService.selectPlayer(playerNo);
-		
 		
 		return mv.setViewNameAndData("player/playerDetail", responseData);
 	}
 	
+	// 마이페이지에서 선수및팀 관련 정보로 넘기는데 선수 상세정보 같이 넘기기
+	@GetMapping("playerAndTeam/{userNo}")
+	public ModelAndView playerAndTeam(@PathVariable(name="userNo") int userNo) {
+		
+		Map<String, Object> responseData = playerService.mypagePlayer(userNo);
+		
+		return mv.setViewNameAndData("player/playerAndTeam", responseData);
+	}
+	
+	// 선수 수정 양식 열어
+	@GetMapping("updatePlayerform")
+	public ModelAndView updateform(int playerNo) {
+		
+		Map<String, Object> responseData = playerService.selectPlayer(playerNo);
+		
+		return mv.setViewNameAndData("player/player_update", responseData); 
+	}
+	
+	// 선수 등록
+	@PostMapping("updatePlayer")
+	public ModelAndView updatePlayer(Player player, MultipartFile upfile, HttpSession session) {
+		log.info("{}", player);
+		playerService.updatePlayer(player, upfile);
+		
+		session.setAttribute("alertMsg", "선수 정보 수정 성공");
+		
+		return mv.setViewNameAndData("redirect:/playerAndTeam/" + player.getUserNo(), null); // 되나?
+		
+	}
+	
+	// 선수 등록
+	@PostMapping("deletePlayer")
+	public ModelAndView deletePlayer(Player player, HttpSession session) {
+	playerService.deletePlayer(player);
+	
+	session.setAttribute("alertMsg", "선수 정보 삭제 성공");
+	
+	return mv.setViewNameAndData("redirect:/", null);
+	
+}
 }

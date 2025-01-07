@@ -54,7 +54,7 @@
 
         <div class="list" >
             <li><a href="mypage.me">  ⚾개인 정보</a></li>
-            <li><a href="#">  ⚾선수 등록</a></li>
+            <li><a href="playerAndTeam/${ loginUser.userNo }">  ⚾선수 및 팀 정보</a></li>
             <li><a href="#">  ⚾야구교실</a></li>
             <li><a href="#">  ⚾소모임</a></li>
             <li><a href="#">  ⚾푸드트럭</a></li>

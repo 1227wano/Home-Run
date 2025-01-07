@@ -12,10 +12,12 @@ import javax.servlet.ServletContext;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
+import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.player.model.dao.PlayerMapper;
 import com.kh.baseball.player.model.vo.Player;
@@ -113,6 +115,8 @@ public class PlayerServiceImpl implements PlayerService {
 		map.put("players", players);
 		map.put("PageInfo", pi);
 		
+		List<PlayerAttachment> playerAttrs = mapper.findAllPlayerFile();
+		map.put("playerAttrs", playerAttrs);
 		return map;
 	}
 
@@ -157,16 +161,85 @@ public class PlayerServiceImpl implements PlayerService {
 		return player;
 	}
 
+	@Transactional
+	@Override
+	public void updatePlayer(Player player, MultipartFile upfile) {
+		
+		// 검증
+		findPlayerById(player.getPlayerNo());
+		validatePlayer(player);
+		
+		PlayerAttachment playerAtt = mapper.findPlayerFile(player.getPlayerNo());
+
+		// 새 파일을 첨부했는지
+		if(!upfile.getOriginalFilename().equals("")) {
+			
+			if(playerAtt.getChangeName() != null) {
+				// 기존 첨부파일 존재했는지 체크후 삭제
+				new File(context.getRealPath(playerAtt.getChangeName())).delete();
+			}
+			handleFileUpload(playerAtt, upfile);
+			mapper.updatePlayerFile(playerAtt);
+			// log.info("{}", playerAtt);
+
+		}
+		mapper.updatePlayer(player);
+		// log.info("{}", result);
+		
+	}
+	
+	private Player findPlayerById(int playerNo) {
+		Player player = mapper.findPlayerDetail(playerNo);
+		if(player == null) {
+			throw new PlayerNotFoundException("선수 정보를 찾을 수 없습니다.");
+		}
+		return player;
+	}
+	
+	private void validatePlayer(Player player) {
+		if (player == null || 
+			player.getPlayerIntro() == null || 
+			player.getPlayerIntro().trim().isEmpty()) {
+			throw new BoardNoValueException("자기소개글의 입력값이 부적절합니다.");
+		}
+		String playerIntro = escapeHtml(player.getPlayerIntro());
+		player.setPlayerIntro(convertNewlineToBr(playerIntro));
+	} 
+	private String escapeHtml(String value) {
+		return value.replaceAll("<", "&lt;")
+					.replaceAll(">", "&gt;");
+	}
+	private String convertNewlineToBr(String value) {
+		return value.replaceAll("\n", "<br>");
+	}
+	
 	
 	@Override
-	public int updatePlayer(Player player) {
-		return 0;
+	public Map<String, Object> mypagePlayer(int userNo) {
+		
+		Player player = mypagePlayerDetail(userNo);
+		Map<String, Object> responseData = new HashMap();
+		responseData.put("player", player);
+		
+		return responseData;
 	}
-
+	private Player mypagePlayerDetail(int userNo) {
+		Player player = mapper.mypagePlayerDetail(userNo);
+		// log.info("{}", player.getPlayerNo());
+		if(player == null) {
+			throw new PlayerNotFoundException("선수를 찾을 수 없습니다.");
+		}
+		return player;
+	}
+	
 	@Override
-	public int deletePlayer(int userNo) {
-		return 0;
+	public void deletePlayer(Player player) {
+		findPlayerById(player.getPlayerNo());
+
+		mapper.deletePlayer(player);
+		
 	}
+	
 
 
 	

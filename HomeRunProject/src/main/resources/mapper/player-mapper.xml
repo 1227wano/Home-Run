@@ -4,18 +4,22 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.player.model.dao.PlayerMapper">
 
-	<!-- 나중에 써야지
 	<sql id="playerColumn">  
 		SELECT
 				PLAYER_NO playerNo,
-		        GRADE grade,
-		        PLAYER_POSITION playerPosition,
-		        BACK_NO backNo,
-		        PLAYER_STATUS playerStatus,
-		        PLAYER_TEAM playerTeam,
-		        USER_NAME userName,
-			   (FILE_PATH || '/' || CHANGE_NAME) AS imagePath
+		        USER_NAME userName,				
+				BACK_NO backNo,
+				USER_NO userNo,
+				PLAYER_TEAM playerTeam,
+				PLAYER_POSITION playerPosition,									
+				PLAYER_DATE playerDate,
+				PLAYER_INTRO playerIntro,
+				PLAYER_SALARY playerSalary,
+			    CHANGE_NAME AS imagePath,
+			    PLAYER_STATUS playerStatus,
+				GRADE grade			    
 	</sql>
+	<!-- 나중에 써야지
 	<sql id="playerAttachmentColumn" >
 		SELECT
 			   PLAYER_ATTACHMENT_NO playerAttachmentNo,
@@ -25,7 +29,6 @@
 			   TB_PLAYER_ATTACHMENT.STATUS status
 	</sql>
 	-->
-
 
 	<insert id="savePlayer" parameterType="player">
 	INSERT 
@@ -52,7 +55,7 @@
 	        )
 	</insert>
 	
-	<insert id="savePlayerFile" parameterType="com.kh.baseball.player.model.vo.PlayerAttachment">
+	<insert id="savePlayerFile" parameterType="playerAttachment">
 		INSERT
 		  INTO
 		  	   TB_PLAYER_ATTACHMENT
@@ -84,15 +87,7 @@
 	
 	<!-- 가나다순으로 보기 -->
 	<select id="findAllPlayerKorean" resultType="player">
-		  SELECT
-				PLAYER_NO playerNo,
-		        GRADE grade,
-		        PLAYER_POSITION playerPosition,
-		        BACK_NO backNo,
-		        PLAYER_STATUS playerStatus,
-		        PLAYER_TEAM playerTeam,
-		        USER_NAME userName,
-			    CHANGE_NAME AS imagePath
+		  <include refid="playerColumn" />
 		  FROM
 		  		TB_PLAYER
 		  JOIN
@@ -110,22 +105,13 @@
 	
 	
 	<select id="findPlayerDetail" resultType="player">
-		SELECT
-		        PLAYER_NO playerNo,
-		        USER_NAME userName,				
-				BACK_NO backNo,
-				PLAYER_TEAM playerTeam,
-				PLAYER_POSITION playerPosition,									
-				PLAYER_DATE playerDate,
-				PLAYER_INTRO playerIntro,
-				PLAYER_SALARY playerSalary,
-			    CHANGE_NAME AS imagePath
+		<include refid="playerColumn" />
 		  FROM
 		  		TB_PLAYER
 		  JOIN
-		  		TB_USER ON (USER_NO = PLAYER_NO)	
+		  		TB_USER USING (USER_NO)	
 		  JOIN
-		  		TB_PLAYER_ATTACHMENT ON (PLAYER_NO = PLAYER_ATTACHMENT_NO)
+		  		TB_PLAYER_ATTACHMENT ON (PLAYER_NO = REF_PNO)
 		 WHERE
 		 		PLAYER_STATUS = 'Y'
 		   AND
@@ -133,7 +119,84 @@
 		   AND
 		   		PLAYER_NO = #{playerNo}
 	</select>
+	
+	<select id="mypagePlayerDetail" resultType="player">
+		<include refid="playerColumn" />
+		  FROM
+		  		TB_PLAYER
+		  JOIN
+		  		TB_USER USING (USER_NO)	
+		  JOIN
+		  		TB_PLAYER_ATTACHMENT ON (PLAYER_NO = REF_PNO)
+		 WHERE
+		   		PLAYER_STATUS = 'Y'
+		   AND
+		   		GRADE = 1
+		   AND
+		   		USER_NO = #{userNo}
+	</select>
+	
+	<update id="updatePlayer" parameterType="player">
+		UPDATE
+				TB_PLAYER
+		   SET
+		        GRADE = #{grade},
+		        PLAYER_POSITION = #{playerPosition},
+		        PLAYER_INTRO = #{playerIntro},
+		        PLAYER_SALARY = #{playerSalary}
+		 WHERE
+		   		PLAYER_NO = #{playerNo}
+	</update>
+
+	<select id="findAllPlayerFile" resultType="playerAttachment">
+		SELECT
+			   PLAYER_ATTACHMENT_NO playerAttachmentNo,
+			   REF_PNO refPno,
+			   ORIGIN_NAME originName,
+			   CAHNGE_NAME changeName,
+			   UPLOAD_DATE uploadDate
+		  FROM
+		  		TB_PLAYER_ATTACHMENT
+		 WHERE
+		 		STATUS = 'Y'
+	</select>
+	
+	<select id="findPlayerFile" resultType="playerAttachment">
+		SELECT
+			   PLAYER_ATTACHMENT_NO playerAttachmentNo,
+			   REF_PNO refPno,
+			   ORIGIN_NAME originName,
+			   CHANGE_NAME changeName,
+			   UPLOAD_DATE uploadDate
+		  FROM
+		  		TB_PLAYER_ATTACHMENT
+		 WHERE
+		 		STATUS = 'Y'
+		   AND
+		   	    REF_PNO = #{playerNo}
+	</select>
+
+	<update id="updatePlayerFile" parameterType="playerAttachment">
+		UPDATE
+				TB_PLAYER_ATTACHMENT
+		   SET
+			    ORIGIN_NAME = #{originName},
+			    CHANGE_NAME = #{changeName},
+			    FILE_PATH = #{filePath}
+		 WHERE
+		   		PLAYER_ATTACHMENT_NO = #{playerAttachmentNo}
+	</update>
 
 
+	<update id="deletePlayer" parameterType="player">
+		UPDATE
+				TB_PLAYER
+		   SET
+		   		STATUS = 'N'
+		  WHERE
+		  		STATUS = 'Y'
+		    AND
+		    	PLAYER_NO = #{playerNo} 		
+	</update>
 
 </mapper>
