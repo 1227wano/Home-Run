@@ -19,6 +19,7 @@
 		<typeAlias type="com.kh.baseball.small.model.vo.SmallBoardReply" alias="smallBoardReply"/>
 		<typeAlias type="com.kh.baseball.player.model.vo.Player" alias="player"/>
 		<typeAlias type="com.kh.baseball.notice.model.vo.Notice" alias="notice"/>
+		<typeAlias type="com.kh.baseball.match.model.vo.Match" alias="match"/>
 	</typeAliases>
 
 	<mappers>
@@ -28,6 +29,7 @@
 		<mapper resource="/mapper/player-mapper.xml" />
 		<mapper resource="/mapper/notice-mapper.xml" />
 		<mapper resource="/mapper/smallBoard-mapper.xml"/>
+		<mapper resource="/mapper/match-mapper.xml" />
 	</mappers>
 
 

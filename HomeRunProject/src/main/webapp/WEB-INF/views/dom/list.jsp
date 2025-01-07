@@ -36,7 +36,9 @@
 	<div align="center">
 		<c:if test="${ sessionScope.loginUser.userId eq 'admin' }">
 			<a href="/baseball/saveForm">구장 등록</a>
+			|
 		</c:if>
+		<a href="/baseball/match">경기 일정</a>
 	</div>
 	<br><br>
 	

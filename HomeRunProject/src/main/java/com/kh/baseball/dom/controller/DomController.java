@@ -28,7 +28,6 @@ public class DomController {
 	private final DomService domService;
 	private final ModelAndViewUtil mv;
 	
-	
 	@GetMapping("dom")
 	public ModelAndView selectDomList(@RequestParam(value="page", defaultValue="1") int page) {
 		
@@ -71,19 +70,11 @@ public class DomController {
 		return mv.setViewNameAndData("redirect:/dom/" + dom.getDomNo(), null);
 	}
 	
-	
 	@PostMapping("dom/delete.dom")
 	public ModelAndView delete(Dom dom, MultipartFile upfile, HttpSession session) {
 		
 		Member loginMember = (Member)session.getAttribute("loginUser");
-		
-		log.info("삭제할 구장 정보 : {}", dom);
-		log.info("삭제 요청한 유저 정보 : {}", loginMember);
-		
 		domService.deleteDom(dom, upfile, loginMember);
-		
 		return mv.setViewNameAndData("redirect:/dom", null);
 	}
-	
-	
 }

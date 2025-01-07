@@ -12,13 +12,14 @@ import com.kh.baseball.member.model.service.MemberValidator;
 import com.kh.baseball.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DomValidator {
 	
 	private final DomMapper domMapper;
-	private final MemberMapper memberMapper;
 	private final MemberValidator memberValidator;
 	
 	// domNo 유효 검증
@@ -44,7 +45,7 @@ public class DomValidator {
 		
 		memberValidator.validateMemberExists(member);
 		
-		if("admin" != (memberMapper.searchId(member)).getUserId()) {
+		if(1 != member.getUserNo()) {
 			throw new IdNotFoundException("유효하지 않은 아이디로 요청을 보냈습니다.");
 		}
 	}
