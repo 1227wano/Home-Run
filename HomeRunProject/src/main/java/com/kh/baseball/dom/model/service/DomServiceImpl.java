@@ -20,12 +20,7 @@ import com.kh.baseball.common.Pagination;
 import com.kh.baseball.dom.model.dao.DomMapper;
 import com.kh.baseball.dom.model.vo.Dom;
 import com.kh.baseball.dom.model.vo.DomAttachment;
-import com.kh.baseball.exception.IdNotFoundException;
-import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.exception.RequestFailedException;
-import com.kh.baseball.exception.TooLargeValueException;
-import com.kh.baseball.member.model.dao.MemberMapper;
-import com.kh.baseball.member.model.service.MemberValidator;
 import com.kh.baseball.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -37,25 +32,15 @@ import lombok.extern.slf4j.Slf4j;
 @EnableTransactionManagement
 public class DomServiceImpl implements DomService {
 	
-	private final MemberMapper memberMapper;
-	private final MemberValidator memberValidator;
-	
 	private final DomMapper domMapper;
+	private final DomValidator domValidator;
 	private final ServletContext context;
 	
+	@Override
 	public Map<String, Object> selectDomList(int currentPage){
 		
-		int totalCount = domMapper.selectTotalCount();
-		
-		if(totalCount == 0) {
-			log.info("현재 등록된 구장 수 : {}", totalCount); // 예외처리
-		}
-		
-		PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 5, 5);
-		
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		List<Dom> domList = domMapper.selectDomList(rowBounds);
+		PageInfo pi = getPageInfo(currentPage);
+		List<Dom> domList = getDomList(pi);
 		List<DomAttachment> attList = domMapper.selectAttachmentList();
 		
 		Map<String, Object> map = new HashMap<>();
@@ -64,6 +49,25 @@ public class DomServiceImpl implements DomService {
 		map.put("attList", attList);
 		
 		return map;
+	}
+	
+	private PageInfo getPageInfo(int currentPage) {
+		
+		int totalCount = domMapper.selectTotalCount();
+		
+		if(totalCount == 0) {
+			throw new RequestFailedException("현재 등록된 구장이 존재하지 않습니다");
+		}
+		
+		return Pagination.getPageInfo(totalCount, currentPage, 5, 5);
+	}
+	
+	private List<Dom> getDomList(PageInfo pi){
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return domMapper.selectDomList(rowBounds);
 	}
 	
 	// 사용자가 첨부한 첨부파일이름의 중복이 발생할 수 있기 때문에 DB에 저장 할 때 우리만의 저장 방식으로 저장
@@ -87,75 +91,11 @@ public class DomServiceImpl implements DomService {
 		domAtt.setChangeName(changeName);
 		domAtt.setFilePath("/resources/upload_files/");
 	}
-
-	private void validateAuthority(Member member) {
-		if("admin" != (memberMapper.searchId(member)).getUserId()) {
-			log.info("요청 보낸 사용자 아이디 : {}", (memberMapper.searchId(member)).getUserId());
-			throw new IdNotFoundException("유효하지 않은 아이디로 요청을 보냈습니다.");
-		}
-	}
-	
-	private void validateParameterLength(Dom dom) {
-		if(dom.getDomName().length() > 100 || dom.getDomContent().length() > 3000
-		   || dom.getDomAddr().length() > 100) {
-			throw new TooLargeValueException("글자 제한 수 초과");
-		}
-	}
-	
-	private void validateDom(Dom dom) {
-		
-		if(dom == null ||
-		   dom.getDomName() == null || dom.getDomName().trim().isEmpty() || 
-		   dom.getDomContent() == null || dom.getDomContent().trim().isEmpty() ||
-		   dom.getDomAddr() == null || dom.getDomAddr().trim().isEmpty()) {
-			throw new InvalidParameterException("필수 입력 값이 부적절합니다.");
-		}
-		
-		String domName = escapeHtml(dom.getDomName());
-		String domContent = escapeHtml(dom.getDomContent());
-		String domAddr = escapeHtml(dom.getDomAddr());
-		
-		dom.setDomName(convertNewlineToBr(domName));
-		dom.setDomContent(convertNewlineToBr(domContent));
-		dom.setDomAddr(convertNewlineToBr(domAddr));
-	}
-	
-	private String reEscapeHtml(String value) {
-		return value.replaceAll("&lt;", "<") // 메소드 체이닝 가능
-					.replaceAll("&gt;", ">");
-	}
-	
-	private String convertBrToNewline(String value) {
-		return value.replaceAll("<br>", "\n");
-	}
-	
-	private String escapeHtml(String value) {
-		return value.replaceAll("<", "&lt;") // 메소드 체이닝 가능
-					.replaceAll(">", "&gt;");
-	}
-	
-	private String convertNewlineToBr(String value) {
-		return value.replaceAll("\n", "<br>");
-	}
-	
-	private void validateDomNo(Dom dom) {
-		
-		Dom checkDom = domMapper.selectId(dom.getDomNo());
-		
-		if(checkDom == null || checkDom.getDomNo() <= 0) {
-			throw new IdNotFoundException("유효하지 않은 구장 번호입니다.");
-		}
-	}
-	
 	
 	@Override
 	public void insertDom(Dom dom, MultipartFile upfile, Member loginMember) {
 		
-		memberValidator.validateMemberExists(loginMember);
-		
-		validateAuthority(loginMember);
-		validateDom(dom);
-		validateParameterLength(dom);
+		domValidator.validateDom(dom, loginMember);
 		
 		int resultDom = domMapper.insertDom(dom);
 		int resultAtt = 1;
@@ -169,30 +109,19 @@ public class DomServiceImpl implements DomService {
 		}
 		
 		if((resultDom * resultAtt) < 1) {
-			log.info("등록 실패"); // 예외처리
+			throw new RequestFailedException("요청 처리에 실패했습니다.");
 		}
-		
 	}
 
-	private void reconversion(Dom dom) {
-		
-		String domName = reEscapeHtml(dom.getDomName());
-		String domContent = reEscapeHtml(dom.getDomContent());
-		String domAddr = reEscapeHtml(dom.getDomAddr());
-		
-		dom.setDomName(convertBrToNewline(domName));
-		dom.setDomContent(convertBrToNewline(domContent));
-		dom.setDomAddr(convertBrToNewline(domAddr));
-		
-	}
-	
 	@Override
 	public Map<String, Object> selectId(Long id) {
+		
+		domValidator.validateDomNo(id);
 		
 		Map<String, Object> map = new HashMap<>();
 		Dom dom = domMapper.selectId(id);
 
-		reconversion(dom);
+		domValidator.reconversion(dom);
 		
 		map.put("dom", dom);
 		
@@ -202,11 +131,7 @@ public class DomServiceImpl implements DomService {
 	@Override
 	public void updateDom(Dom dom, MultipartFile upfile, Member loginMember) {
 		
-		memberValidator.validateMemberExists(loginMember);
-
-		validateDomNo(dom);
-		validateParameterLength(dom);
-		validateDom(dom);
+		domValidator.validateDom(dom, loginMember);
 		
 		int resultAtt = 1;
 		DomAttachment domAtt = null;
@@ -214,13 +139,11 @@ public class DomServiceImpl implements DomService {
 		if(!("".equals(upfile.getOriginalFilename()))) {
 			
 			if(dom.getImagePath() != null) {
-				
 				String imagePath = dom.getImagePath();
-				
 				imagePath = imagePath.substring(imagePath.indexOf("/"));
-				
 				new File(context.getRealPath(imagePath)).delete();
 			}
+			
 			domAtt = new DomAttachment();
 			domAtt.setRefDno(dom.getDomNo());
 			handleFileUpload(domAtt, upfile);
@@ -231,18 +154,17 @@ public class DomServiceImpl implements DomService {
 		int resultDom = domMapper.updateDom(dom);
 		
 		if((resultDom * resultAtt) < 1) {
-			log.info("업데이트 실패"); // 예외처리
+			throw new RequestFailedException("정보 수정에 실패했습니다.");
 		}
 	}
 
 	@Override
 	public void deleteDom(Dom dom, MultipartFile upfile, Member loginMember) {
 		
-		memberValidator.validateMemberExists(loginMember);
-		validateDomNo(dom);
+		domValidator.validateAuthority(loginMember);
+		domValidator.validateDomNo(dom.getDomNo());
 		
 		int domResult = domMapper.deleteDom(dom);
-		
 		int domAttResult = 1;
 		
 		if(dom.getImagePath() != null) {
