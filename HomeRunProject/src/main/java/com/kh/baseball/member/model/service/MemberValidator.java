@@ -27,6 +27,7 @@ public class MemberValidator {
 			return existingMember;
 		}
 		throw new UserIdNotFoundException("존재하지 않는 사용자입니다.");
+		
 	}
 	
 	public void validateDuplicateMember(Member member) {

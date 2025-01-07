@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.baseball.foodtruck.model.dao.FoodTruckMapper">
+
+<select id="selectTotalCount" resultType="_int">
+	SELECT
+			COUNT(*)
+	 FROM
+	 		TB_FOOD_TRUCK
+	 WHERE
+	 		STATUS = 'Y'
+</select>
+
+<select id="selectFoodTruckList" parameterType="foodTruck" resultType="foodTruck">
+	  SELECT
+	            FOOD_TRUCK_NO foodTruckNo,
+	            FOOD_TRUCK_USER foodTruckUser,
+		        DOM_NO domNo,
+		        DOM_NAME domName,
+		        FOOD_TRUCK_NAME foodTruckName,
+		        FOOD_TRUCK_START_TIME foodTruckStartTime,
+		        FOOD_TRUCK_END_TIME foodTruckEndTime,
+		        FOOD_TRUCK_DAY foodTruckDay,
+		        FOOD_TRUCK_CONTENT foodTruckContent,
+		        TB_FOOD_TRUCK.ENROLL_DATE enrollDate,
+		        TB_FOOD_TRUCK.MODIFY_DATE modifyDate,
+		        FOOD_TRUCK_COUNT foodTruckCount
+		FROM
+		        TB_FOOD_TRUCK
+	    JOIN
+	            TB_USER ON (FOOD_TRUCK_USER = USER_ID)
+		JOIN
+		        TB_DOM USING (DOM_NO)
+		WHERE
+		        ADMIN_STATUS = 'N'
+		  AND
+		        TB_FOOD_TRUCK.STATUS = 'Y'
+		ORDER
+		BY
+		        FOOD_TRUCK_NO
+
+</select>
+
+<select id="selectDom" resultType="String">
+	SELECT
+	        DOM_NAME
+	FROM
+	        TB_DOM
+	WHERE
+			STATUS = 'Y'
+</select>
+
+
+
+
+</mapper>

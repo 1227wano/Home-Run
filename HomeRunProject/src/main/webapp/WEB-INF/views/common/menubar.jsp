@@ -78,7 +78,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/baseball/">
       	<img class="img-fluid" src="/webapp/resources/upload_files/logo.png" alt="임시로고" style="width:50px; height:50px;" />
       </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -115,7 +115,7 @@
             <a class="nav-link js-scroll-trigger" href="/baseball/small">소모임</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">주변먹거리</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/foodTruckBoards">푸드트럭</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="notices">공지사항</a>

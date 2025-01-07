@@ -13,6 +13,8 @@ import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FailToReplyDeleteException;
 import com.kh.baseball.exception.FailToReplyInsertException;
 import com.kh.baseball.exception.FileNotFoundException;
+import com.kh.baseball.exception.FoodTruckNoValueException;
+import com.kh.baseball.exception.FoodTruckNotFoundException;
 import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.exception.NoticeNotFoundException;
@@ -35,9 +37,9 @@ public class ExceptionHandlingController {
 	
 	//-----Member Exception
 	@ExceptionHandler(UserIdNotFoundException.class)
-	protected ModelAndView NoSuchUserIdError(DuplicateKeyException e) {
-		return createErrorResponse("존재하지 않는 사용자입니다.", e);
-	}
+	protected ModelAndView NoSuchUserIdError(UserIdNotFoundException e) {
+		return createErrorResponse("로그인 실패", e);
+	}//--로그인 오류(존재하지 않는 사용자)
 	
 	@ExceptionHandler(ComparePasswordException.class)
 	protected ModelAndView NotMatchingPasswordError(ComparePasswordException e) { 
@@ -95,6 +97,17 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(FailToReplyDeleteException.class)
 	protected ModelAndView failToReplyDeleteException(FailToReplyDeleteException e) {
 		return createErrorResponse("댓글 삭제에 실패했습니다.", e);
+	}
+	
+	//--- FoodTruck Exception
+	@ExceptionHandler(FoodTruckNotFoundException.class)
+	protected ModelAndView FoodTruckNotFoundError(FoodTruckNotFoundException e) {
+		return createErrorResponse("푸드트럭 게시물이 존재하지 않습니다.", e);
+	}
+	
+	@ExceptionHandler(FoodTruckNoValueException.class)
+	protected ModelAndView foodTruckNoValueError(FoodTruckNoValueException e) {
+		return createErrorResponse("푸드트럭 게시물에 잘못된 입력입니다.", e);
 	}
 	
 }
