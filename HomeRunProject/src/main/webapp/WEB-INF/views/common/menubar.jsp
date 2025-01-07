@@ -106,7 +106,7 @@
             <a class="nav-link js-scroll-trigger" href="#">야구교실</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">굿즈</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/goods">굿즈</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="/baseball/freeBoard">자유게시판</a>
