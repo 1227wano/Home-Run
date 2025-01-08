@@ -58,7 +58,7 @@ public class SmallBoardValidator {
 	
 	public PageInfo getPageInfo(int totalCount, int page) {
 		
-		return Pagination.getPageInfo(totalCount, page, 10, 5);
+		return Pagination.getPageInfo(totalCount, page, 5, 5);
 		
 	}
 	
@@ -213,7 +213,7 @@ public class SmallBoardValidator {
 	public List<SmallBoardList> getParticipantList(PageInfo pi, Long boardNo){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		List<SmallBoardList> list = mapper.selectParticipantList(rowBounds, boardNo);
+		List<SmallBoardList> list = mapper.selectParticipantList(boardNo, rowBounds);
 		if(list.isEmpty()) {
 			
 			throw new SmallBoardListNotFoundException("조회되는 내역이 없습니다.");
@@ -274,6 +274,13 @@ public class SmallBoardValidator {
 		}
 		
 		return smallBoardList;
+	}
+	
+	public RowBounds getRowBounds(PageInfo pi){
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return rowBounds;
 	}
 	
 	

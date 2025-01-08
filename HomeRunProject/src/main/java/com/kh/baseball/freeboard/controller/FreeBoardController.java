@@ -44,7 +44,7 @@ public class FreeBoardController {
 	
 	@PostMapping("freeBoard")
 	public ModelAndView insertBoard(FreeBoard freeBoard, MultipartFile[] upfile, HttpSession session) {
-		// log.info("게시글 정보 : {}, 파일 정보 : {}", freeBoard, upfile);
+		  log.info("게시글 정보 : {}, 파일 정보 : {}", freeBoard, upfile);
 		
 		freeBoardService.insertBoard(freeBoard, upfile);
 		session.setAttribute("alertMsg", "게시글 등록 성공!");

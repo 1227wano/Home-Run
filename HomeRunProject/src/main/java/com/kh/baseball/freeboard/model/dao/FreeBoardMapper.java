@@ -37,7 +37,7 @@ public interface FreeBoardMapper {
 	
 	int searchListCount(Map<String, Object> map);
 	
-	List<FreeBoard> searchList(Map<String, Object> map);
+	List<FreeBoard> searchList(Map<String, Object> map, RowBounds rowBounds);
 	
 	int insertReply(FreeBoardReply reply);
 	

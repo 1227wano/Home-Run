@@ -38,7 +38,6 @@ public class SmallBoardController {
 	@GetMapping("small")
 	public ModelAndView selectBoardList(@RequestParam(value="page", defaultValue="1") int Page,
 										@RequestParam(value="boardLimit", defaultValue="5") int boardLimit) {
-		
 		Map<String, Object> map = smallBoardService.selectBoardList(Page, boardLimit);
 		
 		return mv.setViewNameAndData("small/smallBoard_list", map);
@@ -183,7 +182,20 @@ public class SmallBoardController {
 		return mv.setViewNameAndData("redirect:small", null);
 	}
 	
-	
+	@GetMapping("searchList.small")
+	public ModelAndView searchList(@RequestParam(value="page", defaultValue="1") int page
+									,@RequestParam("condition") String condition
+									,@RequestParam("keyword") String keyword
+									,@RequestParam(value="option", defaultValue="5") int option) {
+		Map<String, Object> map = new HashMap();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		map.put("page", page);
+		map.put("option", option);
+		log.info("{}", map);
+		Map<String, Object> searchMap = smallBoardService.searchList(map);
+		return mv.setViewNameAndData("small/smallBoard_list", searchMap);
+	}
 	
 	
 	

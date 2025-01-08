@@ -21,6 +21,7 @@ import com.kh.baseball.exception.FileNotFoundException;
 import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.exception.NeedToLoginException;
+import com.kh.baseball.exception.NoReadyInsertBoardException;
 import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.ParticipantNotAllowException;
@@ -156,5 +157,10 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(SmallBoardListNotFoundException.class)
 	protected ModelAndView smallBoardListNotFoundException(SmallBoardListNotFoundException e) {
 		return createErrorResponse("해당 게시글에서 참여자리스트가 존재하지 않습니다.", e);
+	}
+	
+	@ExceptionHandler(NoReadyInsertBoardException.class)
+	protected ModelAndView noReadyInsertBoardException(NoReadyInsertBoardException e) {
+		return createErrorResponse("현재 게시글을 작성할 수 없습니다.", e);
 	}
 }

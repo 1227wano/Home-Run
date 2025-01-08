@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,12 +18,15 @@ import com.kh.baseball.exception.BoardNotFoundException;
 import com.kh.baseball.exception.FailToBanParticipant;
 import com.kh.baseball.exception.FailToBoardInsertException;
 import com.kh.baseball.exception.FailToFileUploadException;
+import com.kh.baseball.exception.FailToReplyInsertException;
 import com.kh.baseball.exception.NeedToLoginException;
+import com.kh.baseball.exception.NoReadyInsertBoardException;
 import com.kh.baseball.exception.ParticipantNotAllowException;
 import com.kh.baseball.member.model.vo.Member;
 import com.kh.baseball.small.model.dao.SmallBoardMapper;
 import com.kh.baseball.small.model.vo.SmallBoard;
 import com.kh.baseball.small.model.vo.SmallBoardList;
+import com.kh.baseball.small.model.vo.SmallBoardReply;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 import lombok.RequiredArgsConstructor;
@@ -31,8 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class SmallBoardServiceImpl implements SmallBoardService {
 
+public class SmallBoardServiceImpl implements SmallBoardService {
 	private final SmallBoardMapper mapper;
 	private final SmallBoardValidator validator;
 	private final ServletContext context;
@@ -57,7 +61,9 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 	public List<String> selectTeamList() {
 		
 		List<String> teams = mapper.getTeamList();
-		
+		if(teams.isEmpty()) {
+			throw new NoReadyInsertBoardException("팀이 조회되지 않습니다.");
+		}
 		return teams;
 	}
 
@@ -275,6 +281,56 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 			throw new FailToBoardInsertException("참가신청을 할 수 없습니다.");
 		}
 		
+	}
+
+	@Override
+	public Map<String, Object> searchList(Map<String, Object> map) {
+
+		int result = mapper.searchListCount(map);
+
+		PageInfo pi = validator.getPageInfo(result, (int)map.get("page"), (int)map.get("option"));
+		log.info("{}", pi);
+		RowBounds rowBounds = validator.getRowBounds(pi);
+		
+		
+		List<SmallBoard> boards = mapper.searchList(map, rowBounds);
+		
+		map.put("smallBoard", boards);
+		map.put("pageInfo", pi);
+		
+		return map;
+	}
+
+	@Override
+	public int insertReply(SmallBoardReply reply) {
+
+		int result = mapper.insertReply(reply);
+		if(result < 1) {
+			throw new FailToReplyInsertException("댓글작성을 실패했습니다.");
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public List<SmallBoardReply> selectReply(Long boardNo){
+		
+		return mapper.selectReply(boardNo);
+		
+	}
+
+	@Override
+	public int deleteChat(int replyNo, HttpSession session) {
+		
+		SmallBoardReply reply = mapper.selectReplyById(replyNo);
+		Member member = (Member)session.getAttribute("loginUser");
+		int result = 0;
+		
+		if((member!=null && reply.getReplyNickName().equals(member.getNickName())) || (member != null && "admin".equals(member.getUserId()))) {
+			result = mapper.deleteChat(replyNo);
+		}
+		
+		return result;
 	}
 	
 	

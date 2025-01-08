@@ -431,11 +431,149 @@
 			   )
 	</insert>
 	
+	<!-- 전체조회 게시글 검색기능 -->
 	
+	<select id="searchListCount" parameterType="hashmap" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_SMALL_BOARD
+		  JOIN
+		  	   TB_USER ON (BOARD_WRITER = USER_NO)
+		 WHERE
+		 	   TB_SMALL_BOARD.STATUS = 'Y'
+		   AND
+		   	   TB_SMALL_BOARD.ADMIN_STATUS = 'Y'
+		 <if test="condition == 'writer'">
+		   AND
+		 	   NICKNAME
+		 </if>
+		 <if test="condition == 'title'">
+		   AND
+		   	   BOARD_TITLE
+		 </if>
+		 <if test="condition == 'content'">
+		   AND
+		   	   BOARD_CONTENT
+		 </if>
+		 <if test="condition == 'team'">
+		   AND
+		   	   TEAM_NAME
+		 </if>
+		  LIKE '%' || #{keyword} || '%'
+	</select>
 	
+	<select id="searchList" parameterType="hashmap" resultType="smallBoard">
+		SELECT
+			   BOARD_NO boardNo,
+			   TEAM_NAME teamName,
+			   BOARD_WRITER boardWriter,
+			   NICKNAME,
+			   BOARD_TITLE boardTitle,
+			   CREATE_DATE createDate,
+			   BOARD_CONTENT boardContent,
+			   SELECT_COUNT selectCount,
+			   TB_SMALL_BOARD.STATUS status,
+			   ADMIN_STATUS adminStatus
+		  FROM
+		 	   TB_SMALL_BOARD
+		  JOIN
+		  	   TB_USER ON(BOARD_WRITER = USER_NO)
+		 WHERE
+		 	   TB_SMALL_BOARD.STATUS = 'Y'
+		   AND
+		   	   TB_SMALL_BOARD.ADMIN_STATUS = 'Y'
+		 <choose>
+		 	<when test="condition == 'writer'">
+		   AND
+		   	   NICKNAME
+		 	</when>
+		 	<when test="condition == 'title'">
+		   AND
+		   	   BOARD_TITLE
+		 	</when>
+		 	<when test="condition == 'content'">
+		   AND
+		   	   BOARD_CONTENT
+		 	</when>
+		 	<otherwise>
+		   AND
+		   	   TEAM_NAME
+		 	</otherwise>
+		 </choose>
+		 LIKE '%' || #{keyword} || '%'
+		 ORDER
+		 	BY
+		 	   BOARD_NO DESC
+	</select>
 	
+	<insert id="insertReply" parameterType="smallBoardReply">
+		INSERT
+		  INTO
+		  	   TB_SMALL_REPLY
+		  	   (
+		  	   REPLY_NO,
+		  	   REF_NO,
+		  	   REPLY_WRITER,
+		  	   CONTENT
+		  	   )
+		VALUES
+		  	   (
+		  	   SEQ_SGRNO.NEXTVAL,
+		  	   #{refNo},
+		  	   #{replyWriter},
+		  	   #{content}
+		  	   ) 
+	</insert>
 	
+	<select id="selectReply" parameterType="long" resultType="smallBoardReply">
+		SELECT
+			   REPLY_NO replyNo,
+			   REF_NO refNo,
+			   REPLY_WRITER replyWriter,
+			   CONTENT,
+			   TO_CHAR(CREATE_DATE, 'YYYY"-"MM"-"DD" "HH24":"MI') AS createDate,
+			   TB_SMALL_REPLY.STATUS,
+			   NICKNAME replyNickName
+		  FROM
+		  	   TB_SMALL_REPLY
+		  JOIN
+		  	   TB_USER ON (REPLY_WRITER = USER_NO)
+		 WHERE
+		 	   REF_NO = #{boardNo}
+		   AND
+		   	   TB_SMALL_REPLY.STATUS = 'Y'
+		 ORDER
+		 	BY
+		 	   REPLY_NO DESC
+	</select>
 	
+	<select id="selectReplyById" parameterType="_int" resultType="smallBoardReply">
+		SELECT
+			   REPLY_NO replyNo,
+			   CONTENT,
+			   TO_CHAR(CREATE_DATE, 'YYYY"-"MM"-"DD" "HH24":"MI') AS createDate,
+			   NICKNAME replyNickName
+		  FROM
+		  	   TB_SMALL_REPLY
+		  JOIN
+		  	   TB_USER ON (REPLY_WRITER = USER_NO)
+		 WHERE
+		 	   REPLY_NO = #{replyNo}
+		   AND
+		   	   TB_SMALL_REPLY.STATUS = 'Y'
+		 ORDER
+		 	BY
+		 	   REPLY_NO DESC
+	</select>
 	
+	<update id="deleteChat" parameterType="_int">
+		UPDATE
+			   TB_SMALL_REPLY
+		   SET
+		   	   STATUS = 'N'
+		 WHERE
+		 	   REPLY_NO = #{replyNo}
+	</update>
 	
 </mapper>

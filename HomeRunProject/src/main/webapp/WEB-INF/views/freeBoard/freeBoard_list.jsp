@@ -100,11 +100,22 @@
                     	</c:otherwise>
                     </c:choose>
                     <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
-                    	<li class="page-item">
-	                    	<a class="page-link" href="freeBoard?page=${ num }">
-	                    		${ num }
-	                    	</a>
-                    	</li>
+                    	<c:choose>
+		                	<c:when test="${empty condition}">
+		                		<li class="page-item">
+			                    	<a class="page-link" href="freeBoard?page=${ num }">
+			                    		${ num }
+			                    	</a>
+		                    	</li>
+		               		</c:when>
+			                <c:otherwise>
+			              	    <li class="page-item">
+			                    	<a class="page-link" href="searchList.free?page=${ num }&condition=${condition}&keyword=${keyword}">
+			                    		${ num }
+			                    	</a>
+		                    	</li>
+			                </c:otherwise>
+		                </c:choose>
                     </c:forEach>
                     <c:choose>
                     	<c:when test="${ pageInfo.currentPage eq pageInfo.endPage }">

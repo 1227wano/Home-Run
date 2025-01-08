@@ -68,7 +68,15 @@
                         <option value="20">20개씩</option>
                     </select>
                 </div>
-                <button type="submit" class="searchBtn btn btn-secondary">적용</button>
+                <c:choose>
+                	<c:when test="${empty condition}">
+                		<button type="submit" class="searchBtn btn btn-secondary">적용</button>
+               		</c:when>
+	                <c:otherwise>
+	              	    <button type="button" class="searchBtn btn btn-secondary" 
+	              	    		onclick="searchCondition();">적용</button>
+	                </c:otherwise>
+                </c:choose>
             </form>
             <br>
             <br>
@@ -110,6 +118,13 @@
 				function participate(boardNo){
 					location.href = `/baseball/participate-form.small/\${boardNo}`
 				}
+				
+				function searchCondition(){
+					const option = document.querySelector('select').value;
+					
+					location.href = '/baseball/searchList.small?condition=${condition}&keyword=${keyword}&option='+option;
+					
+				}
 			</script>
             <div id="pagingArea">
                 <ul class="pagination">
@@ -125,11 +140,23 @@
                     	</c:otherwise>
                     </c:choose>
                     <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
-                    	<li class="page-item">
-	                    	<a class="page-link" href="small?page=${ num }">
-	                    		${ num }
-	                    	</a>
-                    	</li>
+                    	<c:choose>
+		                	<c:when test="${empty condition}">
+		                		<li class="page-item">
+			                    	<a class="page-link" href="small?page=${ num }">
+			                    		${ num }
+			                    	</a>
+		                    	</li>
+		               		</c:when>
+			                <c:otherwise>
+			              	    <li class="page-item">
+			                    	<a class="page-link" href="searchList.small?page=${ num }&condition=${condition}&keyword=${keyword}">
+			                    		${ num }
+			                    	</a>
+		                    	</li>
+			                </c:otherwise>
+		                </c:choose>
+                    	
                     </c:forEach>
                     <c:choose>
                     	<c:when test="${ pageInfo.currentPage eq pageInfo.endPage }">
@@ -144,10 +171,10 @@
 
             <br clear="both"><br>
 
-            <form id="searchForm" action="searchList.free" method="get" align="center">
+            <form id="searchForm" action="searchList.small" method="get" align="center">
                 <div class="select">
                     <select class="custom-select" name="condition">
-                        <option value="writer">작성자</option>
+                        <option value="writer">닉네임</option>
                         <option value="title">제목</option>
                         <option value="content">내용</option>
                         <option value="team">팀</option>

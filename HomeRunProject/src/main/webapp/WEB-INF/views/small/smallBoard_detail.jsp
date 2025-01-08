@@ -103,11 +103,119 @@
             </form>
             
             <br><br>
-
+			
+			<table id="replyArea" class="table" align="center">
+                <thead>
+                
+                	<c:choose>
+                		<c:when test="${ empty sessionScope.loginUser }">
+	                    <tr>
+	                        <th colspan="2">
+	                            <textarea class="form-control" readonly cols="55" rows="2" style="resize:none; width:100%;">로그인 후 이용가능합니다.</textarea>
+	                        </th>
+	                        <th style="vertical-align:middle"><button class="btn btn-secondary">등록하기</button></th> 
+	                    </tr>
+                    	</c:when>
+                    	<c:otherwise>
+	                    <tr>
+	                        <th colspan="2">
+	                            <textarea class="form-control" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+	                        </th>
+	                        <th style="vertical-align:middle"><button class="btn btn-secondary" onclick="addReply();">등록하기</button></th> 
+	                    </tr>
+                    	</c:otherwise>
+                    </c:choose>
+                    <tr>
+                        <td colspan="3">댓글(<span id="rcount">0</span>)</td>
+                    </tr>
+                </thead>
+                <tbody>
+					
+                </tbody>
+            </table>
         </div>
         <br><br>
 
     </div>
 
+	<script>
+		$(function(){
+			selectReply();
+		})
+		
+		function addReply(){
+			
+			if($('#content').val().trim() != ''){
+				
+				$.ajax({
+					url : '/baseball/reply.small',
+					type : 'post',
+					data : {
+						refNo : ${smallBoard.boardNo},
+						content : $('#content').val(),
+						replyWriter : '${sessionScope.loginUser.userNo}'
+					},
+					success : function(result){
+						if(result.data === 1){
+							$('#content').val('');
+						}
+						selectReply();
+						alert("댓글 등록에 성공했습니다.");
+					},
+					error : function(result){
+						alert(result.responseJSON.message);
+					}
+				});
+			}
+		}
+		
+		function selectReply(){
+			
+			$.ajax({
+				url : '/baseball/reply.small',
+				type : 'get',
+				data : {
+					boardNo : ${smallBoard.boardNo}
+				},
+				success : function(result){
+					const replies = [...result.data];
+					
+					const resultStr = replies.map(e => 
+													`<tr>
+													<td>\${e.replyNickName}</td>
+													<td>\${e.content}</td>
+													<td>\${e.createDate}</td>
+													<td>
+														<button onclick="deleteChat(\${e.replyNo});"> 삭제 </button>
+													</td>
+													</tr>`
+													).join('');
+					$('#replyArea tbody').html(resultStr);
+					$('#rcount').text(result.data.length);
+				}
+			});
+		}
+	
+		function deleteChat(e){
+			const replyNo = e;
+			
+			$.ajax({
+				url : '/baseball/reply.small/deleteChat',
+				type : 'get',
+				data : {
+					replyNo : replyNo
+				},
+				success : function(result){
+					alert("댓글 삭제 성공하셨습니다.");
+					selectReply();
+				},
+				error : function(result){
+					alert(result.responseJSON.message);
+				}
+			})
+		}
+	
+	
+	</script>
 </body>
 </html>

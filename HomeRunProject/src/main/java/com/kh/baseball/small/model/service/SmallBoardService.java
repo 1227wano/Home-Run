@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.baseball.member.model.vo.Member;
 import com.kh.baseball.small.model.vo.SmallBoard;
 import com.kh.baseball.small.model.vo.SmallBoardList;
+import com.kh.baseball.small.model.vo.SmallBoardReply;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 public interface SmallBoardService {
@@ -45,4 +46,14 @@ public interface SmallBoardService {
 	SmallBoardList validateParticipateForm(Long boardNo, Member member);
 	
 	void insertParticipate(SmallBoardList smallBoardList);
+	
+	Map<String, Object> searchList(Map<String, Object> map);
+	
+	// 댓글기능
+	
+	int insertReply(SmallBoardReply reply);
+	
+	List<SmallBoardReply> selectReply(Long boardNo);
+	
+	int deleteChat(int replyNo, HttpSession session);
 }

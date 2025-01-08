@@ -190,9 +190,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		RowBounds rowBounds = validator.getRowBounds(pi);
 		
-		map.put("rowBounds", rowBounds);
-		
-		List<FreeBoard> boards = mapper.searchList(map);
+		List<FreeBoard> boards = mapper.searchList(map, rowBounds);
 		// log.info("{}", boards);
 		map.put("freeBoard", boards);
 		map.put("pageInfo", pi);
