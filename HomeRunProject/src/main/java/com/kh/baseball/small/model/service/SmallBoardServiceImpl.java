@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.exception.BoardNotFoundException;
 import com.kh.baseball.exception.FailToBanParticipant;
+import com.kh.baseball.exception.FailToBoardInsertException;
 import com.kh.baseball.exception.FailToFileUploadException;
+import com.kh.baseball.exception.NeedToLoginException;
 import com.kh.baseball.exception.ParticipantNotAllowException;
 import com.kh.baseball.member.model.vo.Member;
 import com.kh.baseball.small.model.dao.SmallBoardMapper;
@@ -250,6 +252,10 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 	}
 	
 	public SmallBoardList validateParticipateForm(Long boardNo, Member member) {
+		if(member == null) {
+			throw new NeedToLoginException("로그인해주셔야 합니다.");
+		}
+		
 		SmallBoardList smallBoardList = new SmallBoardList();
 		smallBoardList.setRefBno(boardNo);
 		smallBoardList.setLoginUserNo(member.getUserNo());
@@ -258,6 +264,18 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 		return smallBoardList;
 	}
 	
+	public void insertParticipate(SmallBoardList smallBoardList) {
+		validator.validateParticipateForm(smallBoardList);
+		
+		SmallBoardList updateSmallBoardList = validator.validateParticipationContent(smallBoardList);
+		
+		int insertResult = mapper.insertSmallBoardList(updateSmallBoardList);
+		
+		if(insertResult < 1) {
+			throw new FailToBoardInsertException("참가신청을 할 수 없습니다.");
+		}
+		
+	}
 	
 	
 	

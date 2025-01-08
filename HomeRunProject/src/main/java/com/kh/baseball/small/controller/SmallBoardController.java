@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.baseball.common.ModelAndViewUtil;
+import com.kh.baseball.exception.FailToBoardInsertException;
 import com.kh.baseball.exception.NeedToLoginException;
 import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.member.model.vo.Member;
@@ -130,7 +131,7 @@ public class SmallBoardController {
 		return mv.setViewNameAndData("redirect:/small", null);
 	}
 	
-	// 마이리스트에서 디테일정보 보면서 사람 전체조회하는 
+	
 	@GetMapping("myListDetail/{boardNo}")
 	public ModelAndView myListDetail(@PathVariable(name="boardNo") Long boardNo,
 									 @RequestParam(value="page", defaultValue="1") int Page,
@@ -176,7 +177,11 @@ public class SmallBoardController {
 		return mv.setViewNameAndData("small/smallBoard_participateForm", map);
 	}
 	
-	
+	@PostMapping("participate.small")
+	public ModelAndView participate(SmallBoardList smallBoardList) {
+		smallBoardService.insertParticipate(smallBoardList);
+		return mv.setViewNameAndData("redirect:small", null);
+	}
 	
 	
 	

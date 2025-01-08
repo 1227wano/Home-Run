@@ -65,4 +65,6 @@ public interface SmallBoardMapper {
 	void insertWriterAllow(SmallBoard smallBoard);
 	
 	int validateParticipateForm(SmallBoardList smallBoardList);
+	
+	int insertSmallBoardList(SmallBoardList updateSmallBoardList);
 }

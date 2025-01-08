@@ -12,6 +12,7 @@ import com.kh.baseball.exception.ComparePasswordException;
 import com.kh.baseball.exception.ExistParticipateListException;
 import com.kh.baseball.exception.FailToBanParticipant;
 import com.kh.baseball.exception.FailToBoardDetailException;
+import com.kh.baseball.exception.FailToBoardInsertException;
 import com.kh.baseball.exception.FailToBoardUpdateException;
 import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FailToReplyDeleteException;
@@ -24,6 +25,7 @@ import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.ParticipantNotAllowException;
 import com.kh.baseball.exception.PlayerNotFoundException;
+import com.kh.baseball.exception.SmallBoardListNotFoundException;
 import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 
@@ -144,5 +146,15 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(ExistParticipateListException.class)
 	protected ModelAndView existParticipateListException(ExistParticipateListException e) {
 		return createErrorResponse("이미 해당 게시글 참가 요청이 있습니다.", e);
+	}
+	
+	@ExceptionHandler(FailToBoardInsertException.class)
+	protected ModelAndView failToBoardInsertException(FailToBoardInsertException e) {
+		return createErrorResponse("주어진 정보가 부족해 게시물을 입력할 수 없습니다.", e);
+	}
+	
+	@ExceptionHandler(SmallBoardListNotFoundException.class)
+	protected ModelAndView smallBoardListNotFoundException(SmallBoardListNotFoundException e) {
+		return createErrorResponse("해당 게시글에서 참여자리스트가 존재하지 않습니다.", e);
 	}
 }

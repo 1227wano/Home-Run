@@ -43,4 +43,6 @@ public interface SmallBoardService {
 	void updateBanReason(SmallBoardList smallBoardList);
 	
 	SmallBoardList validateParticipateForm(Long boardNo, Member member);
+	
+	void insertParticipate(SmallBoardList smallBoardList);
 }

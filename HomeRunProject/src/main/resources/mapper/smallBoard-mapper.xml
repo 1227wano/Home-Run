@@ -412,6 +412,25 @@
 		       PARTICIPANT_NO = #{loginUserNo}
 	</select>
 	
+	<insert id="insertSmallBoardList" parameterType="smallBoardList">
+		INSERT
+		  INTO
+		  	   TB_SMALL_LIST
+		  	   (
+		  	   LIST_NO,
+		  	   REF_BNO,
+		  	   PARTICIPANT_NO,
+		  	   PARTICIPATION_CONTENT
+		  	   )
+		VALUES
+			   (
+			   SEQ_SGLNO.NEXTVAL,
+			   #{refBno},
+			   #{participantNo},
+			   #{participationContent}
+			   )
+	</insert>
+	
 	
 	
 	

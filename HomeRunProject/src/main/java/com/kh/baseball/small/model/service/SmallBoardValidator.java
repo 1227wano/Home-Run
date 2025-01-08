@@ -3,6 +3,7 @@ package com.kh.baseball.small.model.service;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,8 @@ import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FileNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.exception.NotFoundListNoException;
+import com.kh.baseball.exception.SmallBoardListNotFoundException;
+import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.small.model.dao.SmallBoardMapper;
 import com.kh.baseball.small.model.vo.SmallBoard;
 import com.kh.baseball.small.model.vo.SmallBoardList;
@@ -89,6 +92,14 @@ public class SmallBoardValidator {
 		
 		smallBoard.setBoardTitle(convertNewLineToBr(boardTitle));
 		smallBoard.setBoardContent(convertNewLineToBr(boardContent));
+		
+		if(smallBoard.getBoardTitle().length() > 20) {
+			throw new TooLargeValueException("20자 이내로 작성해주시면 감사하겠습니다.");
+		}
+		
+		if(smallBoard.getBoardContent().length() > 300) {
+			throw new TooLargeValueException("300자 이내로 작성해주시면 감사하겠습니다.");
+		}
 	}
 	
 	public SmallBoard convertOriginLine(SmallBoard smallBoard) {
@@ -142,17 +153,14 @@ public class SmallBoardValidator {
 		if(smallBoard == null) {
 			throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
 		}
-		smallBoard.setBoardTitle(convertOriginLineToN(smallBoard.getBoardTitle()));
-		smallBoard.setBoardContent(convertOriginLineToN(smallBoard.getBoardContent()));
-		return smallBoard;
+		return convertOriginLine(smallBoard);
 	}
 	
 	public void checkWriterPermission(SmallBoard smallBoard) {
-		log.info("{}", smallBoard);
 		
 		int result = mapper.selectPosssibleDetail(smallBoard);
-		log.info("{}",result);
-		if(result < 1) {
+
+		if(result < 1 && smallBoard.getLoginUserNo() != 1) {
 			throw new FailToBoardDetailException("게시물 참가신청 후 조회하실 수 있습니다.");
 		}
 	}
@@ -195,10 +203,22 @@ public class SmallBoardValidator {
 		return mapper.selectMyParticipantListCount(boardNo);
 	}
 	
+	public SmallBoardList convertOriginLine(SmallBoardList smallBoardList) {
+		smallBoardList.setBanReason(convertOriginLineToN(smallBoardList.getBanReason()));
+		smallBoardList.setParticipationContent(convertOriginLineToN(smallBoardList.getParticipationContent()));
+		
+		return smallBoardList;
+	}
+	
 	public List<SmallBoardList> getParticipantList(PageInfo pi, Long boardNo){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return mapper.selectParticipantList(rowBounds, boardNo);
+		List<SmallBoardList> list = mapper.selectParticipantList(rowBounds, boardNo);
+		if(list.isEmpty()) {
+			
+			throw new SmallBoardListNotFoundException("조회되는 내역이 없습니다.");
+		}
+		return list;
 	}
 	
 	public void validateListNo(int listNo) {
@@ -221,6 +241,10 @@ public class SmallBoardValidator {
 		
 		smallBoardList.setBanReason(convertNewLineToBr(banReason));
 		
+		if(smallBoardList.getBanReason().length() > 30) {
+			throw new TooLargeValueException("30자 이내로 작성해주시면 감사하겠습니다.");
+		}
+		
 		return smallBoardList;
 	}
 	
@@ -235,7 +259,22 @@ public class SmallBoardValidator {
 		}
 	}
 	
-	
+	public SmallBoardList validateParticipationContent(SmallBoardList smallBoardList) {
+		if(smallBoardList == null || smallBoardList.getParticipationContent() == null || smallBoardList.getParticipationContent().trim().isEmpty() 
+																					  || smallBoardList.getParticipantNo() == 0) {
+		throw new BoardNoValueException("부적절한 입력값");
+		}
+		
+		String boardContent = escapeHtml(smallBoardList.getParticipationContent());
+		
+		smallBoardList.setParticipationContent(convertNewLineToBr(boardContent));
+		
+		if(smallBoardList.getParticipationContent().length() > 30 ) {
+			throw new TooLargeValueException("30자 이내로 작성해주시면 감사하겠습니다.");
+		}
+		
+		return smallBoardList;
+	}
 	
 	
 	

@@ -42,38 +42,22 @@
     <div class="content">
         <br><br>
         <div class="innerOuter">
-            <h2>게시글 작성하기</h2>
+            <h2>게시글 참가신청하기</h2>
             <br>
             <a class="btn btn-secondary" style="float:right;" href="/baseball/small">목록으로</a>
             <br><br>
 
-            <form id="enrollForm" method="post" action="small" enctype="multipart/form-data">
-                <input type="hidden" name="boardWriter" value="${ sessionScope.loginUser.userNo }">
+            <form id="enrollForm" method="post" action="/baseball/participate.small" enctype="multipart/form-data">
+                <input type="hidden" name="participantNo" value="${ sessionScope.loginUser.userNo }"/>
+                <input type="hidden" name="refBno" value="${smallBoardList.refBno}"/>
                 <table align="center">
                     <tr>
-                        <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" name="boardTitle" required></td>
-                    </tr>
-                    <tr>
-                    	<div class="select">
-                    		<select class="team-select" name="teamName">
-                    			<c:forEach items="${ teamList }" var="team">
-	                    			<option value="${ team }">${ team }</option>
-                    			</c:forEach>
-                    		</select>
-                    	</div>
-                    </tr>
-                    <tr>
                         <th><label for="writer">작성자</label></th>
-                        <td><input type="text" id="writer" class="form-control" value="${ sessionScope.loginUser.userId }" readonly></td>
+                        <td><input type="text" id="writer" class="form-control" value="${ sessionScope.loginUser.nickName }" readonly></td>
                     </tr>
                     <tr>
-                        <th><label for="upfile">첨부파일</label></th>
-                        <td><input type="file" id="upfile" class="form-control-file border" name="upfile"></td>
-                    </tr>
-                    <tr>
-                        <th><label for="content">내용</label></th>
-                        <td><textarea id="content" class="form-control" rows="10" style="resize:none;" name="boardContent" required></textarea></td>
+                        <th><label for="content">참가신청내용</label></th>
+                        <td><textarea id="content" class="form-control" rows="10" style="resize:none;" name="participationContent" required placeholder="30자 이내로 작성하세요."></textarea></td>
                     </tr>
                 </table>
                 <br>
