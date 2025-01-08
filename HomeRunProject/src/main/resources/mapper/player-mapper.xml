@@ -198,5 +198,15 @@
 		    AND
 		    	PLAYER_NO = #{playerNo} 		
 	</update>
+	
+	<update id="updatePlayerTeam" parameterType="team">
+		UPDATE
+				TB_PLAYER
+		   SET
+		   		PLAYER_TEAM = #{teamName}
+		  WHERE
+		  		USER_NO = #{userNo}
+	</update>
+	
 
 </mapper>

@@ -96,14 +96,11 @@
 	            <ul id="playerAndTeam">
 					<li><a href="/baseball/savePlayerform">선수 등록</a></li>
 					<li><a href="/baseball/findAllPlayer">선수 조회</a></li>
-					<li><a href="">팀 등록</a></li>
-					<li><a href="">팀 조회</a></li>
+					<li><a href="/baseball/insertTeamform">팀 등록</a></li>
+					<li><a href="/baseball/selectAllTeam">팀 조회</a></li>
 				</ul>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">야구교실</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#">굿즈</a>
           </li>

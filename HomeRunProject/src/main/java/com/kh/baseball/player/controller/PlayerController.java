@@ -36,41 +36,22 @@ public class PlayerController {
 	// 선수 등록
 	@PostMapping("savePlayer")
 	public ModelAndView savePlayer(Player player, MultipartFile upfile, HttpSession session) {
-		
 		playerService.savePlayer(player, upfile);
-		
-		session.setAttribute("alertMsg", "선수 등록 신청 성공");	
-		
-		// log.info("입력된거 : {}", player);
-		
-		// 응답페이지 미정
+		session.setAttribute("alertMsg", "선수 등록이 성공적으로 신청되었습니다. 승인을 기다려주세요.");	
 		return mv.setViewNameAndData("redirect:/", null);
-		
 	}
-	
-	/* 선수 조회 페이지 열어 <- 이거 왜만듦?
-	@GetMapping("findPlayerform.player")
-	public String enrollFrom(Player player) {
-		return "player/playerList";
-	}
-	*/
 	
 	// 등록된 전체 선수 열람
 	@GetMapping("findAllPlayer")
 	public ModelAndView findAllPlayer(Player player, @RequestParam(value="page", defaultValue="1") int page) {
-		// log.info("{}", page);
 		Map<String, Object> map = playerService.findAllPlayerKorean(page);
-		
 		return mv.setViewNameAndData("player/playerList", map); 
 	}
 	
 	// 선수 상세보기
 	@GetMapping("findPlayer/{playerNo}")
 	public ModelAndView forwardPlayerList(@PathVariable(name="playerNo") int playerNo) {
-		// log.info("{}", playerNo);
-		
 		Map<String, Object> responseData = playerService.selectPlayer(playerNo);
-		
 		return mv.setViewNameAndData("player/playerDetail", responseData);
 	}
 	
@@ -86,19 +67,17 @@ public class PlayerController {
 	// 선수 수정 양식 열어
 	@GetMapping("updatePlayerform")
 	public ModelAndView updateform(int playerNo) {
-		
 		Map<String, Object> responseData = playerService.selectPlayer(playerNo);
-		
 		return mv.setViewNameAndData("player/player_update", responseData); 
 	}
 	
-	// 선수 등록
+	// 선수 수정
 	@PostMapping("updatePlayer")
 	public ModelAndView updatePlayer(Player player, MultipartFile upfile, HttpSession session) {
-		log.info("{}", player);
+		// log.info("{}", player);
 		playerService.updatePlayer(player, upfile);
 		
-		session.setAttribute("alertMsg", "선수 정보 수정 성공");
+		session.setAttribute("alertMsg", "선수 정보가 수정되었습니다.");
 		
 		return mv.setViewNameAndData("redirect:/playerAndTeam/" + player.getUserNo(), null); // 되나?
 		
@@ -109,7 +88,7 @@ public class PlayerController {
 	public ModelAndView deletePlayer(int playerNo, HttpSession session) {
 		playerService.deletePlayer(playerNo);
 		
-		session.setAttribute("alertMsg", "선수 정보 삭제 성공");
+		session.setAttribute("alertMsg", "선수 정보가 삭제되었습니다.");
 		
 		return mv.setViewNameAndData("redirect:/playerAndTeam/" + playerNo, null);
 	

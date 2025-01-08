@@ -84,9 +84,6 @@
             </form>		
         </div>
         <br><br>
-        
-        
-        
     </div>
     
 	<form action="" method="post" id="postForm">
@@ -100,28 +97,11 @@
             });
         });
         
-
 		function deletePlayer(){
 				$('#postForm').attr('action', '/baseball/deletePlayer')
 						.submit();
 		}
-        
-        /*
-        function deletePlayer(){
-
-        	$.ajax({
-            	url : '/baseball/deletePlayer',
-            	type : 'post',
-            	data : { 
-            		userNo : userNo,
-            		userId : userId
-            	},
-            	success : function(result){
-            	}
-            })
-        }
-        */
-        
+                
         // 선수 정보 수정시 기존의 정보로 출력시키기
         window.onload = function(){
 	        document.querySelector('input[value="${player.grade}"]').checked = true;

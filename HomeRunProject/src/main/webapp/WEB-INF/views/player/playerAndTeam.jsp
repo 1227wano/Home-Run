@@ -11,11 +11,8 @@
 	
 	<jsp:include page="../common/menubar.jsp" />
 	
-	<!-- 
-		본인이 선수신청했다 == (시퀀스로) 선수번호가 생겼다. if(playerNo != null)
-		-> case 1 : 선수 승인 안됨 -> "아직 승인되지 않았습니다."
-		   case 2 : 선수 승인 됨 ->	선수 정보 상세보기처럼 출력하기  
-	-->	
+	<!-- 선수 -->	
+	<h3>${ player.userName }님의 선수정보</h2>
 	<c:choose> 
 		<c:when test="${ player.playerNo ne null }">
 			<c:choose>
@@ -65,7 +62,39 @@
 			선수 등록을 해주세요
 		</c:otherwise>
 	</c:choose>
-		
+	<br><br>
 	
+	<!-- 팀정보 -->
+	<c:choose>
+	<c:when test="${ not empty team.teamNo }">
+	<h3>${ player.userName }님이 창설한 팀</h3>
+	<div id="team-detail">	
+		<div class="team-thumnail">
+			<img src="/baseball${ team.changeName }" alt="팀사진" id="team-photo"><br>
+		</div>
+		<div class="team-info">
+			<h3>
+				<em>${ team.teamName }</em><br>
+				<span>${ team.teamGrade }팀</span>
+			</h3>
+			<table class="profile">
+				<tbody>
+					<tr>
+						<th scope="row">창단일</th>
+						<td>${ team.teamDate }</td>
+					</tr>
+					<tr>
+						<th scope="row">팀 소개글</th>
+						<td>${ team.teamIntro }</td>
+					</tr>
+				</tbody>
+			</table>
+		<a href="/baseball/updateTeamform?teamNo=${ team.teamNo }">팀정보 수정</a>
+		</div>
+	</div>
+	</c:when>
+	<c:otherwise>팀 등록 또는 팀 소속 신청을 해주세요.</c:otherwise>
+	</c:choose>
+	<br><br><br>
 </body>
 </html>

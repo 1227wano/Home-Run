@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.player.model.vo.Player;
 
-
 public interface PlayerService {
 	
 	// 선수 등록 신청
@@ -20,10 +19,6 @@ public interface PlayerService {
 	
 	// 선수 더보기
 	List<Player> findMorePlayer(int page);
-	
-	/* 선수 정보 일람 (조회수 순) => 보류
-	Map<String, Object> findAllPlayerCount(int currentPage);			
-	*/
 
 	// 선수 정보 상세조회
 	Map<String, Object> selectPlayer(int playerNo);
@@ -31,7 +26,6 @@ public interface PlayerService {
 	// 마이페이지 선수 정보 상세조회
 	Map<String, Object> mypagePlayer(int userNo);
 		
-	
 	// 선수 정보 수정
 	void updatePlayer(Player player, MultipartFile upfile);
 	

@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.kh.baseball.player.model.vo.Player;
 import com.kh.baseball.player.model.vo.PlayerAttachment;
+import com.kh.baseball.team.model.vo.Team;
 
 @Mapper
 public interface PlayerMapper {
@@ -32,6 +33,8 @@ public interface PlayerMapper {
 	PlayerAttachment findPlayerFile(int playerNo);
 
 	void deletePlayer(int playerNo);
-	
+
+	void updatePlayerTeam(Team team);
+
 
 }

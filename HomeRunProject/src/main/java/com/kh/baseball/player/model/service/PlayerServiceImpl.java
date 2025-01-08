@@ -19,9 +19,12 @@ import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
 import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.PlayerNotFoundException;
+import com.kh.baseball.exception.TeamNotFoundException;
 import com.kh.baseball.player.model.dao.PlayerMapper;
 import com.kh.baseball.player.model.vo.Player;
 import com.kh.baseball.player.model.vo.PlayerAttachment;
+import com.kh.baseball.team.model.dao.TeamMapper;
+import com.kh.baseball.team.model.vo.Team;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,11 +36,12 @@ public class PlayerServiceImpl implements PlayerService {
 
 	private final PlayerMapper mapper;
 	private final ServletContext context;
+	private final TeamMapper teamMapper;
+	
 	
 	// get 총 player 수
 	private int getTotalCount() {
 		int totalCount = mapper.getTotalCount();
-
 		if (totalCount == 0) {
 			throw new PlayerNotFoundException("등록된 선수가 없습니다");
 		}
@@ -46,6 +50,7 @@ public class PlayerServiceImpl implements PlayerService {
 	// get 페이지 정보
 	private PageInfo getPageInfo(int totalCount, int page) {
 		return Pagination.getPageInfo(totalCount, page, 5, 5);
+		// 첫 페이지에 선수 5명 -> 더보기버튼으로 5명씩 추가 셀렉
 	}
 	// get 전체 player 정보
 	private List<Player> getPlayerList(PageInfo pi) {
@@ -58,16 +63,12 @@ public class PlayerServiceImpl implements PlayerService {
 	// 선수 등록
 	@Override
 	public void savePlayer(Player player, MultipartFile upfile) {
-		
 		// 익셉션핸들러(handler) & 값 검증(validate) 해야됨
 		mapper.savePlayer(player);
-		
 		// 파일 유무 체크 / 업로드
 		if(!("".equals(upfile.getOriginalFilename()))) {
-			
 			PlayerAttachment playerAtt = new PlayerAttachment();
 			handleFileUpload(playerAtt, upfile);
-			
 			mapper.savePlayerFile(playerAtt);
 		}
 	}
@@ -101,13 +102,9 @@ public class PlayerServiceImpl implements PlayerService {
 	// 전체 선수 조회(가나다순)
 	@Override
 	public Map<String, Object> findAllPlayerKorean(int currentPage) {
-		
 		// 총 개수 == DB 조회
-		// 요청 페이지 == currentPage
-		// 첫 페이지에 선수 5명 -> 더보기버튼으로 5명씩 추가 셀렉
 		int totalCount = getTotalCount();
-		
-		PageInfo pi = getPageInfo(totalCount, currentPage);
+		PageInfo pi = getPageInfo(totalCount, currentPage); // 요청 페이지 == currentPage
 		
 		List<Player> players = getPlayerList(pi);
 		// System.out.print(players);
@@ -119,42 +116,26 @@ public class PlayerServiceImpl implements PlayerService {
 		map.put("playerAttrs", playerAttrs);
 		return map;
 	}
-
 	
 	// 선수 더보기
 	@Override
 	public List<Player> findMorePlayer(int page) {
-		
 		int totalCount = getTotalCount();
 		PageInfo pi = getPageInfo(totalCount, page);
-		
 		List<Player> players = getPlayerList(pi);
-		
 		return players;
 	}
-	
-	/* 전체 선수 조회(선수 조회수순)
-	@Override
-	public Map<String, Object> findAllPlayerCount(int currentPage) {
-		return null;
-	}
-	*/
 	
 	// 선수 상세보기
 	@Override
 	public Map<String, Object> selectPlayer(int playerNo) {
-		
 		Player player = findPlayerDetail(playerNo);
-		// log.info("{}", player);
 		Map<String, Object> responseData = new HashMap();
 		responseData.put("player", player);
-		
 		return responseData;
 	}
 	private Player findPlayerDetail(int playerNo) {
 		Player player = mapper.findPlayerDetail(playerNo);
-		// log.info("{}", player);
-
 		if(player == null) {
 			throw new PlayerNotFoundException("선수를 찾을 수 없습니다.");
 		}
@@ -164,28 +145,21 @@ public class PlayerServiceImpl implements PlayerService {
 	@Transactional
 	@Override
 	public void updatePlayer(Player player, MultipartFile upfile) {
-		
 		// 검증
 		findPlayerById(player.getPlayerNo());
 		validatePlayer(player);
 		
 		PlayerAttachment playerAtt = mapper.findPlayerFile(player.getPlayerNo());
-
 		// 새 파일을 첨부했는지
 		if(!upfile.getOriginalFilename().equals("")) {
-			
 			if(playerAtt.getChangeName() != null) {
 				// 기존 첨부파일 존재했는지 체크후 삭제
 				new File(context.getRealPath(playerAtt.getChangeName())).delete();
 			}
 			handleFileUpload(playerAtt, upfile);
 			mapper.updatePlayerFile(playerAtt);
-			// log.info("{}", playerAtt);
-
 		}
 		mapper.updatePlayer(player);
-		// log.info("{}", result);
-		
 	}
 	
 	private Player findPlayerById(int playerNo) {
@@ -216,28 +190,36 @@ public class PlayerServiceImpl implements PlayerService {
 	
 	@Override
 	public Map<String, Object> mypagePlayer(int userNo) {
-		
 		Player player = mypagePlayerDetail(userNo);
+		Team team = mypageTeamDetail(userNo);
 		Map<String, Object> responseData = new HashMap();
 		responseData.put("player", player);
-		
+		responseData.put("team", team);		
 		return responseData;
 	}
 	private Player mypagePlayerDetail(int userNo) {
 		Player player = mapper.mypagePlayerDetail(userNo);
-		// log.info("{}", player.getPlayerNo());
 		if(player == null) {
-			throw new PlayerNotFoundException("선수를 찾을 수 없습니다.");
+			throw new PlayerNotFoundException("등록된 선수가 없습니다.");
 		}
 		return player;
+	}
+	private Team mypageTeamDetail(int userNo) {
+		Team team = teamMapper.mypageTeamDetail(userNo);
+		// log.info("{}", userNo);
+		/*
+		if(team == null) {
+			throw new TeamNotFoundException("등록된 팀이 없습니다.");
+		}
+		jsp에서 없다고 보여주는걸로!
+		*/
+		return team;
 	}
 	
 	@Override
 	public void deletePlayer(int playerNo) {
 		findPlayerById(playerNo);
-
 		mapper.deletePlayer(playerNo);
-		
 	}
 	
 
