@@ -233,10 +233,10 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 	
 	@Override
-	public void deletePlayer(Player player) {
-		findPlayerById(player.getPlayerNo());
+	public void deletePlayer(int playerNo) {
+		findPlayerById(playerNo);
 
-		mapper.deletePlayer(player);
+		mapper.deletePlayer(playerNo);
 		
 	}
 	

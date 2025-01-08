@@ -153,7 +153,7 @@
 			   PLAYER_ATTACHMENT_NO playerAttachmentNo,
 			   REF_PNO refPno,
 			   ORIGIN_NAME originName,
-			   CAHNGE_NAME changeName,
+			   CHANGE_NAME changeName,
 			   UPLOAD_DATE uploadDate
 		  FROM
 		  		TB_PLAYER_ATTACHMENT
@@ -188,13 +188,13 @@
 	</update>
 
 
-	<update id="deletePlayer" parameterType="player">
+	<update id="deletePlayer" parameterType="_int">
 		UPDATE
 				TB_PLAYER
 		   SET
-		   		STATUS = 'N'
+		   		PLAYER_STATUS = 'N'
 		  WHERE
-		  		STATUS = 'Y'
+		  		PLAYER_STATUS = 'Y'
 		    AND
 		    	PLAYER_NO = #{playerNo} 		
 	</update>

@@ -35,8 +35,8 @@ public interface PlayerService {
 	// 선수 정보 수정
 	void updatePlayer(Player player, MultipartFile upfile);
 	
-	// 선수 
-	void deletePlayer(Player player);
+	// 선수 삭제
+	void deletePlayer(int playerNo);
 	
 	
 	

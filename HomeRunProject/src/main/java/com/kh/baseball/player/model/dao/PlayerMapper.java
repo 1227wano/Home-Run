@@ -31,7 +31,7 @@ public interface PlayerMapper {
 
 	PlayerAttachment findPlayerFile(int playerNo);
 
-	void deletePlayer(Player player);
+	void deletePlayer(int playerNo);
 	
 
 }

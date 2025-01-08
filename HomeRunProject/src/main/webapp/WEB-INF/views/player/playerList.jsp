@@ -24,19 +24,28 @@
 			<ul class="playerList">
 				<c:choose>
 					<c:when test="${ not empty players }">
-					<c:forEach items="${ players }" var="p">
-						<li id="">
-							<a href="findPlayer/${ p.playerNo }"> 
-								<img src="/baseball${ p.imagePath }" alt="선수사진" class="player-photo"> <br>
-								<span class="player-position"> ${ p.playerPosition } </span> <br>
-								<strong class="player-name"> ${ p.userName } </strong> <br>
-								<span class="player-team"> 소속팀 : ${ p.playerTeam } </span> <br>
-								<span class="player-number"> No. ${ p.backNo } </span> <br>
-							</a> <br>
-						 </li>
-					</c:forEach>
-					<!-- 일단 5명까지 출력 -->
-					<button id="show-more-btn" align="center" onclick="showMorePlayer();">더보기</button>
+						<c:forEach items="${ players }" var="p">
+							<li id="">
+								<a href="findPlayer/${ p.playerNo }"> 
+									<img src="/baseball${ p.imagePath }" alt="선수사진" class="player-photo"> <br>
+									<span class="player-position"> ${ p.playerPosition } </span> <br>
+									<strong class="player-name"> ${ p.userName } </strong> <br>
+									<span class="player-team"> 소속팀 : ${ p.playerTeam } </span> <br>
+									<span class="player-number"> No. ${ p.backNo } </span> <br>
+								</a><br>
+							 </li>
+						</c:forEach>
+						<button id="show-more-btn" align="center" onclick="showMorePlayer();">더보기</button>
+						
+						<!-- 일단 5명까지 출력 -->
+						<!--  
+						<c:choose>
+							<c:when test="=선수정보가 더 있을때">
+								<button id="show-more-btn" align="center" onclick="showMorePlayer();">더보기</button>
+							</c:when>
+							<c:otherwise>더 이상의 선수가 존재하지 않습니다.</c:otherwise>
+						</c:choose>
+						-->
 					</c:when>
 					<c:otherwise>
 						등록된 정보가 없습니다. 
@@ -70,7 +79,6 @@
 															</a>
 															</li>`
 							    			        	).join('');
-            		// 더이상 선수정보가 없을때 조건문으로 $('#show-more-btn').style('display:none'); 근데 이코드 잘못됨
     				$('#show-more-btn').before(resultPlayersInfo);
     				moreNum++;
             	}

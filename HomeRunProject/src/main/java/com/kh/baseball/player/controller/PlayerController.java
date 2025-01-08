@@ -104,14 +104,14 @@ public class PlayerController {
 		
 	}
 	
-	// 선수 등록
+	// 선수 삭제
 	@PostMapping("deletePlayer")
-	public ModelAndView deletePlayer(Player player, HttpSession session) {
-	playerService.deletePlayer(player);
+	public ModelAndView deletePlayer(int playerNo, HttpSession session) {
+		playerService.deletePlayer(playerNo);
+		
+		session.setAttribute("alertMsg", "선수 정보 삭제 성공");
+		
+		return mv.setViewNameAndData("redirect:/playerAndTeam/" + playerNo, null);
 	
-	session.setAttribute("alertMsg", "선수 정보 삭제 성공");
-	
-	return mv.setViewNameAndData("redirect:/", null);
-	
-}
+	}
 }

@@ -79,7 +79,7 @@
                 <div class="btns" align="center">
                     <button type="submit" class="btn btn-primary disabled" id="player-enroll-btn">제출</button>
                     <button type="reset" class="btn btn-danger" id="player-reset-btn">초기화</button>
-                    <button id="player-delete-btn" onclick="deletePlayer();">선수 탈퇴</button>
+                    <button type="button" class="btn btn-danger" id="player-delete-btn" onclick="deletePlayer();">선수 탈퇴</button>
                 </div>
             </form>		
         </div>
@@ -89,7 +89,10 @@
         
     </div>
     
-
+	<form action="" method="post" id="postForm">
+		<input type="hidden" name="playerNo" value="${ player.playerNo }" /> 
+	</form>
+	
     <script>
         $(function(){
             $('#player-intro').keyup(function(){
@@ -97,28 +100,33 @@
             });
         });
         
+
+		function deletePlayer(){
+				$('#postForm').attr('action', '/baseball/deletePlayer')
+						.submit();
+		}
+        
+        /*
         function deletePlayer(){
 
         	$.ajax({
             	url : '/baseball/deletePlayer',
-            	type : 'get',
+            	type : 'post',
             	data : { 
             		userNo : userNo,
             		userId : userId
             	},
             	success : function(result){
-            		
             	}
             })
         }
+        */
         
+        // 선수 정보 수정시 기존의 정보로 출력시키기
         window.onload = function(){
-        	
-        	// console.log(document.querySelector('input[type=radio][value="${player.grade}"]'));
 	        document.querySelector('input[value="${player.grade}"]').checked = true;
 	        document.querySelector('option[value="${player.playerPosition}"]').selected = true;
         }
-
     </script>
 
 

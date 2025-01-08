@@ -62,7 +62,7 @@
 			</c:choose>	
 		</c:when>
 		<c:otherwise>
-			"선수 등록을 해주세요"
+			선수 등록을 해주세요
 		</c:otherwise>
 	</c:choose>
 		
