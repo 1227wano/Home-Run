@@ -21,15 +21,15 @@
 		
 		<div>
 			<label>구장명</label>
-			<input style="width: 500px;" type="text" name="domName" value="${ requestScope.dom.domName }">
+			<input style="width: 500px;" type="text" name="domName" value="${ requestScope.dom.domName }" readonly>
 		</div>
 		<div>
 			<label>구장 세부 내용</label>
-			<textarea style="width: 500px; height: 500px;" name="domContent">${ requestScope.dom.domContent }</textarea>
+			<textarea style="width: 500px; height: 500px;" name="domContent" readonly>${ requestScope.dom.domContent }</textarea>
 		</div>
 		<div>
 			<label>구장 주소</label>
-			<textarea style="width: 200px; height: 50px;" name="domAddr">${ requestScope.dom.domAddr }</textarea>
+			<textarea style="width: 200px; height: 50px;" name="domAddr" readonly>${ requestScope.dom.domAddr }</textarea>
 		</div>
 		<div>
 			<label>구장 이미지 첨부</label>

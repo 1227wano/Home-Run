@@ -20,6 +20,7 @@
 		<typeAlias type="com.kh.baseball.player.model.vo.Player" alias="player"/>
 		<typeAlias type="com.kh.baseball.notice.model.vo.Notice" alias="notice"/>
 		<typeAlias type="com.kh.baseball.match.model.vo.Match" alias="match"/>
+		<typeAlias type="com.kh.baseball.goods.model.vo.Goods" alias="goods"/>
 	</typeAliases>
 
 	<mappers>
@@ -30,6 +31,7 @@
 		<mapper resource="/mapper/notice-mapper.xml" />
 		<mapper resource="/mapper/smallBoard-mapper.xml"/>
 		<mapper resource="/mapper/match-mapper.xml" />
+		<mapper resource="/mapper/goods-mapper.xml" />
 	</mappers>
 
 

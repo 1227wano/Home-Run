@@ -13,17 +13,22 @@ import lombok.ToString;
 @ToString
 public class Goods {
 	
+	private Long userNo;
+	private String userName;
+    private String nickname;
+    private String phone;
+	
 	private Long goodsNo;
 	private String goodsName;
-	private double goodsPrice;
+	private Long goodsPrice;
 	private int goodsCount;
 	private String startDate;
 	private String endDate;
 	private String description;
-	private Long userNo;
 	private String status;
 	
 	private String originName;
 	private String changeName;
+	private String filePath;
 	
 }
