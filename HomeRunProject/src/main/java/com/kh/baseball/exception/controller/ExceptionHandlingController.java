@@ -169,11 +169,6 @@ public class ExceptionHandlingController {
 		return createErrorResponse("게시물을 수정하지 못했습니다.", e);
 	}
 	
-	@ExceptionHandler(TooLargeValueException.class)
-	protected ModelAndView tooLargeValueException(TooLargeValueException e) {
-		return createErrorResponse("길이가 범위를 넘었습니다.", e);
-	}
-	
 	//-----SmallBoard Exception
 	
 	@ExceptionHandler(ParticipantNotAllowException.class)
