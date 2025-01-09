@@ -331,13 +331,5 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 		
 		return result;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
