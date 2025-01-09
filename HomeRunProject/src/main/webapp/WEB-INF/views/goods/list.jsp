@@ -53,7 +53,22 @@
 	<div class="list-area">
 		
 		<h2>굿즈 목록</h2>
-		<a style="float:center;" href="/baseball/enrollForm.goods">상품등록</a>
+		<button type="button" style="float:center;" onclick="enrollGoods('${sessionScope.loginUser}');">상품등록</button>
+		
+		<script>
+			function enrollGoods(loginUser){
+				
+				if(loginUser === ''){
+					window.alert('로그인 후 이용 가능합니다 !');
+					location.href = '/baseball/goods';
+				} else {
+					location.href = '/baseball/enrollForm.goods';
+				}
+				
+			}
+			
+		</script>
+		
 		<br>
 
 		<c:forEach items="${ requestScope.goodsList }" var="goods">

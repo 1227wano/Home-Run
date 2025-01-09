@@ -63,6 +63,6 @@ public class GoodsController {
 		Member loginMember = (Member)session.getAttribute("loginUser");
 		goodsService.insertGoods(goods, upfile, loginMember);
 		
-		return mv.setViewNameAndData("goods/list", null);
+		return mv.setViewNameAndData("redirect:/goods", null);
 	}
 }

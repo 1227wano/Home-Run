@@ -21,6 +21,7 @@ import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.exception.RequestFailedException;
 import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.exception.UserIdNotFoundException;
+import com.kh.baseball.exception.UserNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,7 +39,7 @@ public class ExceptionHandlingController {
 	
 	private ModelAndView createAlertResponse(String alertMsg, Exception e) {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("alertMsg", alertMsg).setViewName("redirect:/");
+		mv.addObject("alertMsg", alertMsg).setViewName("home");
 		log.info("발생 예외 : {}", e.getMessage(), e);
 		return mv;
 	}
@@ -120,6 +121,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(NotFoundException.class)
 	protected ModelAndView noSuchDataErr(NotFoundException e) {
 		return createAlertResponse("요청에 필요한 데이터를 찾지 못했습니다.", e);
+	}
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	protected ModelAndView noLoginUser(UserNotFoundException e) {
+		return createAlertResponse("로그인 후 이용 가능합니다.", e);
 	}
 }
 

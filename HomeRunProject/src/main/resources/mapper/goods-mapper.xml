@@ -87,8 +87,12 @@
 		       GOODS_NAME,
 		       GOODS_PRICE,
 		       GOODS_COUNT,
+		       <!-- 
 		       START_DATE,
 		       END_DATE,
+		        -->
+		       ORIGIN_NAME,
+		       CHANGE_NAME,
 		       DESCRIPTION,
 		       USER_NO,
 		       STATUS
@@ -99,10 +103,12 @@
 		       #{goodsName},
 		       #{goodsPrice},
 		       #{goodsCount},
-		       <!-- TO_DATE(#{startDate}) --> TO_DATE(20250101),
-		       <!-- TO_DATE(#{endDate}) --> TO_DATE(20250909),
+		       <!-- TO_DATE(#{startDate}) -->
+		       <!-- TO_DATE(#{endDate}) -->
+		       #{originName},
+		       #{changeName},
 		       #{description},
-		       <!-- #{userNo} --> 23,
+		       #{userNo},
 		       'Y'
 		       )
 	</insert>

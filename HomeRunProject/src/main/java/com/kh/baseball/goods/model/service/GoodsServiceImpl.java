@@ -17,8 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
-import com.kh.baseball.dom.model.vo.DomAttachment;
 import com.kh.baseball.exception.RequestFailedException;
+import com.kh.baseball.exception.UserNotFoundException;
 import com.kh.baseball.goods.model.dao.GoodsMapper;
 import com.kh.baseball.goods.model.vo.Goods;
 import com.kh.baseball.goods.model.vo.GoodsAttachment;
@@ -67,22 +67,15 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		String savePath = context.getRealPath("/resources/upload_files/");
 		
-		changeName = savePath + changeName;
-		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
 		} catch (IllegalStateException | IOException e) {
 			log.info("안올라간다 {}", upfile);
 		}
+		
 		goods.setOriginName(fileName);
-		goods.setChangeName(changeName);
+		goods.setChangeName("/resources/upload_files/" + changeName);
 	}
-	
-	
-	
-	
-	
-	
 	
 	@Override
 	public Goods selectGoodsByNo(Long goodsNo) {
@@ -95,26 +88,26 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		PageInfo pi = getPageInfo(currentPage);
 		List<Goods> goodsList = getGoodsList(pi);
-//		List<GoodsAttachment> goodsAttList = goodsMapper.selectGoodsAtt();
 		
 		Map<String, Object> responseData = new HashMap<>();
 		responseData.put("goodsList", goodsList);
 		responseData.put("pageInfo", pi);
-//		if(!!!goodsAttList.isEmpty()) {
-//			responseData.put("goodsAttList", goodsAttList);
-//		}
 		
 		return responseData;
 	}
 
 	@Override
 	public void insertGoods(Goods goods, MultipartFile upfile, Member loginMember) {
+
+		if(loginMember == null) {
+			throw new UserNotFoundException("로그인 후 이용 가능합니다.");
+		}
 		
-		int goodsResult = goodsMapper.insertGoods(goods);
+		if(!("".equals(upfile.getOriginalFilename()))) {
+			handleFileUpload(goods, upfile);
+		}
 		
-		handleFileUpload(goods, upfile);
-		
-		
+		goodsMapper.insertGoods(goods);
 		
 	}
 

@@ -19,6 +19,6 @@ public interface GoodsMapper {
 	
 	Goods selectGoodsByNo(Long goodsNo);
 
-	int insertGoods(Goods goods);
+	void insertGoods(Goods goods);
 
 }
