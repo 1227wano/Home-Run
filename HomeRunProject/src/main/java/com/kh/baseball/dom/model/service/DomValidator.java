@@ -100,7 +100,6 @@ public class DomValidator {
 	
 	public void validateDom(Dom dom, Member loginMember) {
 		validateAuthority(loginMember);
-		validateDomNo(dom.getDomNo());
 		validateParameterLength(dom);
 		validateDom(dom);
 	}

@@ -60,7 +60,7 @@
   	<br>
   	
   	
-  	<a href="/baseball/enrollForm.match" style="display: block; text-align : center;">경기 등록</a>
+  	<a href="#" style="display: block; text-align : center;">경기 등록</a>
   	<br>
   	<div id="pagingArea" align="center">
   		<ul class="pagination">

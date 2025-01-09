@@ -131,6 +131,7 @@ public class DomServiceImpl implements DomService {
 	@Override
 	public void updateDom(Dom dom, MultipartFile upfile, Member loginMember) {
 		
+		domValidator.validateDomNo(dom.getDomNo());
 		domValidator.validateDom(dom, loginMember);
 		
 		int resultAtt = 1;
