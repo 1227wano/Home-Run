@@ -4,16 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.baseball.question.model.dao.QuestionMapper">
 
-	<select id="selectTotalCount" resultType="int">
-		SELECT
-				COUNT(*)
-		  FROM
-		  		TB_QUESTION
-		 WHERE
-		 		STATUS = 'Y'	
-	</select>
-	
-	<select id="selectQuestionList" resultType="question">
+	<sql id="questionColumn">
 		SELECT
 				QUESTION_NO questionNo,
 				TITLE questionTitle,
@@ -24,6 +15,19 @@
 	 	  		TB_QUESTION
 	 	 WHERE
 	 	 		STATUS = 'Y'
+	</sql>
+	
+	<select id="selectTotalCount" resultType="int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_QUESTION
+		 WHERE
+		 		STATUS = 'Y'	
+	</select>
+	
+	<select id="selectQuestionList" resultType="question">
+		<include refid="questionColumn" />
 		 ORDER
 		 	BY
 		 		QUESTION_NO DESC	 	 		

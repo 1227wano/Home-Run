@@ -23,11 +23,10 @@ public class QuestionController {
 	
 	@GetMapping("question")
 	public ModelAndView selectQuestionList(@RequestParam(value="page", defaultValue="1") int page) {
-		
 		Map<String, Object> map = questionService.selectQuestionList(page);
-		
-		return mv.setViewNameAndData(null, map);
+		return mv.setViewNameAndData("question/list", map);
 	}
+	
 	
 	
 }

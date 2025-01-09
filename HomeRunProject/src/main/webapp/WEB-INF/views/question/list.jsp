@@ -205,7 +205,7 @@ pageEncoding="UTF-8"%>
                             <th>제목</th>
                             <th>작성자</th>
                             <th>작성일</th>
-                            <th>상태</th>
+                            <th>응답상태</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -242,7 +242,7 @@ pageEncoding="UTF-8"%>
                     <div class="text">
                         <input type="text" class="form-control" name="keyword" placeholder="검색어를 입력하세요.">
                     </div>
-                    <button type="submit" class="searchBtn btn btn-primary">검색</button>
+                    <button type="submit" class="searchBtn btn btn-secondary">검색</button>
                 </form>
         </div>
        

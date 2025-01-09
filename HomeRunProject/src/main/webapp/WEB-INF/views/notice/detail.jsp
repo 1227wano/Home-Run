@@ -62,8 +62,10 @@
 	                    </c:when>
 	                    <c:otherwise>
 		                    <td colspan="3">
-		                        <a href="${ notice.attachMent }" download="${ notice.attachMent }">${ notice.attachMent }</a>
 		                        <img src="${ notice.attachMent }" height="150" width="15%" >
+		                        <a href="${ notice.attachMent }" download="${ notice.attachMent }">
+		                        	${ notice.attachMent.substring(notice.attachMent.lastIndexOf('/') + 1) }
+		                        </a>
 		                    </td>
 	                    </c:otherwise>
                     </c:choose>

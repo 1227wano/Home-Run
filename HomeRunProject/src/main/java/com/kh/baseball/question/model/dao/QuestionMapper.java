@@ -10,9 +10,9 @@ import com.kh.baseball.question.model.vo.Question;
 @Mapper
 public interface QuestionMapper {
 
-	List<Question> selectQuestionList(RowBounds rowBounds);
-	
 	int selectTotalCount();
+	
+	List<Question> selectQuestionList(RowBounds rowBounds);
 	
 	
 	

@@ -35,23 +35,30 @@ public class QuestionServiceImpl implements QuestionService {
 		return totalCount;
 	}
 	
-	@Override
-	public Map<String, Object> selectQuestionList(int currentPage) {
-		int totalCount = mapper.selectTotalCount();
-		PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 5, 5);
-		
+	private PageInfo getPageInfo(int totalCount, int page) {
+		return Pagination.getPageInfo(totalCount, page, 5, 5);
+	}
+	
+	private List<Question> getQuestionList(PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return mapper.selectQuestionList(rowBounds);
+	}
+	
+	@Override
+	public Map<String, Object> selectQuestionList(int currentPage) {
 		
-		List<Question> questionList = mapper.selectQuestionList(rowBounds);
+		int totalCount = mapper.selectTotalCount();
+		PageInfo pi = getPageInfo(totalCount, currentPage);
 		
-		log.info("게시글목록 : {}", questionList);
+		List<Question> question = getQuestionList(pi);
+		log.info("게시글목록 : {}", question);
 		
-		Map<String, Object> result = new HashMap<>();
-		result.put("questionList", questionList);
-		result.put("pageInfo", pi);
-		
-		return result;
+		Map<String, Object> map = new HashMap();
+		map.put("question", question);
+		map.put("pageInfo", pi);
+
+		return map;
 	}
 
 	@Override
