@@ -18,7 +18,7 @@
 	</style>
 </head>
 <body>
-
+<jsp:include page="../common/menubar.jsp" />
 	<!-- 선수 상세 조회 : 선택한 선수의 a태그로 이동해온다. 선수번호와 함께. -->
 
 	<main id="main">

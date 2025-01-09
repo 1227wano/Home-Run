@@ -19,7 +19,6 @@ import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
 import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.PlayerNotFoundException;
-import com.kh.baseball.exception.TeamNotFoundException;
 import com.kh.baseball.player.model.dao.PlayerMapper;
 import com.kh.baseball.player.model.vo.Player;
 import com.kh.baseball.player.model.vo.PlayerAttachment;
@@ -72,7 +71,6 @@ public class PlayerServiceImpl implements PlayerService {
 			mapper.savePlayerFile(playerAtt);
 		}
 	}
-
 	
 	// 파일 업로드
 	private void handleFileUpload(PlayerAttachment playerAtt, MultipartFile upfile) {
@@ -220,6 +218,14 @@ public class PlayerServiceImpl implements PlayerService {
 	public void deletePlayer(int playerNo) {
 		findPlayerById(playerNo);
 		mapper.deletePlayer(playerNo);
+	}
+	
+	@Override
+	public void joinTeam(Player player) {
+		log.info("{}", player);
+
+		mapper.joinTeam(player);
+		
 	}
 	
 

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.player.model.vo.Player;
+import com.kh.baseball.team.model.vo.Team;
 
 public interface PlayerService {
 	
@@ -31,6 +32,8 @@ public interface PlayerService {
 	
 	// 선수 삭제
 	void deletePlayer(int playerNo);
+
+	void joinTeam(Player player);
 	
 	
 	

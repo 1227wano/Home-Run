@@ -10,21 +10,62 @@
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
+		
+		html, body, div, span, h3, a, em, img, strong, ul, li, fieldset, form, label, table {
+		    margin: 0;
+		    padding: 0;
+		    border: 0;
+		    font-family: 'NanumBarunGothic';
+		    font-size: 100%;
+		    vertical-align: baseline;
+		    background: transparent;
+		}
+		.players {
+			list-style: none;
+			overflow: hidden;
+			border : 1px solid black;
+			border-radius : 20px;
+		}
+		ul, li {
+		    display: inline-block;
+		    list-style-type: disc;
+		    margin-block-start: 1em;
+		    margin-block-end: 1em;
+		    margin-inline-start: 0px;
+		    margin-inline-end: 0px;
+		    padding-inline-start: 40px;
+		    unicode-bidi: isolate;
+		}
+		.playerList:after {
+		    display: block;
+		    clear: both;
+		    content: '';
+		}
 		.player-photo {
 			width : 200px;
 			height: 200px;
 		}
+		.player-photo:hover{
+            font-size : 15px;
+            color: black;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px 2px black;
+            transition: all 0.7s;
+        }
     </style>
 </head>
 
 <body>
+<jsp:include page="../common/menubar.jsp" />
+
     <main id="main">
 		<div class="playerLists">
 			<ul class="playerList">
 				<c:choose>
 					<c:when test="${ not empty players }">
 						<c:forEach items="${ players }" var="p">
-							<li id="">
+							<li id="players">
 								<a href="findPlayer/${ p.playerNo }"> 
 									<img src="/baseball${ p.imagePath }" alt="선수사진" class="player-photo"> <br>
 									<span class="player-position"> ${ p.playerPosition } </span> <br>
@@ -39,7 +80,7 @@
 						<!-- 일단 5명까지 출력 -->
 						<!--  
 						<c:choose>
-							<c:when test="=선수정보가 더 있을때">
+							<c:when test="선수정보가 더 있을때">
 								<button id="show-more-btn" align="center" onclick="showMorePlayer();">더보기</button>
 							</c:when>
 							<c:otherwise>더 이상의 선수가 존재하지 않습니다.</c:otherwise>
@@ -80,6 +121,7 @@
 							    			        	).join('');
     				$('#show-more-btn').before(resultPlayersInfo);
     				moreNum++;
+    				$("#show-more-btn").attr("disabled", true);
             	}
             })
         }

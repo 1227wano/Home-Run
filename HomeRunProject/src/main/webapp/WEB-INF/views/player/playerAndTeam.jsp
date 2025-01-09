@@ -66,34 +66,37 @@
 	
 	<!-- 팀정보 -->
 	<c:choose>
-	<c:when test="${ not empty team.teamNo }">
-	<h3>${ player.userName }님이 창설한 팀</h3>
-	<div id="team-detail">	
-		<div class="team-thumnail">
-			<img src="/baseball${ team.changeName }" alt="팀사진" id="team-photo"><br>
-		</div>
-		<div class="team-info">
-			<h3>
-				<em>${ team.teamName }</em><br>
-				<span>${ team.teamGrade }팀</span>
-			</h3>
-			<table class="profile">
-				<tbody>
-					<tr>
-						<th scope="row">창단일</th>
-						<td>${ team.teamDate }</td>
-					</tr>
-					<tr>
-						<th scope="row">팀 소개글</th>
-						<td>${ team.teamIntro }</td>
-					</tr>
-				</tbody>
-			</table>
-		<a href="/baseball/updateTeamform?teamNo=${ team.teamNo }">팀정보 수정</a>
-		</div>
-	</div>
-	</c:when>
-	<c:otherwise>팀 등록 또는 팀 소속 신청을 해주세요.</c:otherwise>
+		<c:when test="${ not empty team.teamNo }">
+			<h3>${ player.userName }님이 창설한 팀</h3>
+			<div id="team-detail">	
+				<div class="team-thumnail">
+					<img src="/baseball${ team.changeName }" alt="팀사진" id="team-photo"><br>
+				</div>
+				<div class="team-info">
+					<h3>
+						<em>${ team.teamName }</em><br>
+						<span>${ team.teamGrade }팀</span>
+					</h3>
+					<table class="profile">
+						<tbody>
+							<tr>
+								<th scope="row">창단일</th>
+								<td>${ team.teamDate }</td>
+							</tr>
+							<tr>
+								<th scope="row">팀 소개글</th>
+								<td>${ team.teamIntro }</td>
+							</tr>
+						</tbody>
+					</table>
+				<!-- <a href="/baseball/updateTeamform?teamNo=${ team.teamNo }">팀정보 수정</a> -->
+				
+				</div>
+			</div>
+		</c:when>
+		<c:otherwise>팀 등록 또는 팀 소속 신청을 해주세요.
+			<a href="/baseball/joinTeamform?playerNo=${ player.playerNo }">팀 소속 신청</a>
+		</c:otherwise>
 	</c:choose>
 	<br><br><br>
 </body>

@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 <title>팀 창설 신청 페이지</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
@@ -14,51 +13,36 @@
 </head>
 <body>
 <jsp:include page="../common/menubar.jsp" />
+
 	<div class="content">
 	   <br><br>
 	   <div class="innerOuter">
-	    <h2>팀 창설</h2>
+	    <h2>팀 소속 신청</h2>
 	    <br>
 	    
-	    <form id="selectForm" action="insertTeam" method="post" enctype="multipart/form-data">
+	    <form id="joinTeam" action="joinTeam" method="post" enctype="multipart/form-data">
 	        <div class="form-group" id="team-enroll-form">
 	        	
-	        	<input type="hidden" name="userNo" value="${ logiser.userNo }" />
+				<input type="hidden" name="playerNo" value="${ player.playerNo }" />
 				
 				<div class="row g-2">
 				  <div class="col-md">
 				    <div class="form-floating">
-				      <input type="text" class="form-control" id="floatingInputGrid" name="teamName">
-				      <label for="floatingInputGrid">팀명을 입력해주세요.</label>
-				    </div>
-				  </div>
-				  <div class="col-md">
-				    <div class="form-floating">
-				      <select class="form-select" id="floatingSelectGrid" name="teamGrade">
-				        <option selected>팀의 등급을 선택해주세요</option>
-				        <option value="프로">프로</option>
-				        <option value="아마추어">아마추어</option>
-				        <option value="일반">일반</option>
-				      </select>
-				      <label for="floatingSelectGrid">팀 등급</label>
+				      <input type="text" class="form-control" id="floatingInputGrid" name="playerTeam">
+				      <label for="floatingInputGrid">조회되는 팀 중 소속하고 싶은 팀명을 정확히 입력해주세요.</label>
 				    </div>
 				  </div>
 				</div>     	
-	    
+	    		<!--  
 	            <fieldset>
-	                <legend>팀소개글 작성</legend>
-	                <textarea id="team-intro" name="teamIntro" cols="53" rows="34" style="resize:none;" placeholder="1000자 이내로 팀소개글을 작성해주세요." maxlength="1000"></textarea>
+	                <legend>자기소개글 작성</legend>
+	                <textarea id="team-intro" name="teamIntro" cols="53" rows="34" style="resize:none;" placeholder="자기소개와 포부를 1000자 이내로 작성해주세요." maxlength="1000"></textarea>
 	                <br>
 	                <span id="count">0</span> / 1000
 	            </fieldset>
+	            -->
 	            <br>
 	
-	            팀 사진을 선택해주세요. <input type="file" name="upfile">
-	            <!-- 
-	                선택한 파일이 이미지가 아닐 경우
-	                뒷단 : contentType 이 image가 아니라면 예외처리
-	                앞단 : ajax / page 로 image파일이 아닐때 파일 양식 안내 
-	            -->
 	        </div>
 	        <br>
 	        <div class="btns" align="center">

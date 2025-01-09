@@ -208,5 +208,16 @@
 		  		USER_NO = #{userNo}
 	</update>
 	
+	<update id="joinTeam" parameterType="player">
+		UPDATE
+				TB_PLAYER
+		  SET
+				PLAYER_TEAM = #{playerTeam},
+				PLAYER_STATUS = 'N'
+		 WHERE
+		  		PLAYER_NO = #{playerNo}
+		  AND
+		  		PLAYER_STATUS = 'Y'
+	</update>
 
 </mapper>

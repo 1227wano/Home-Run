@@ -20,6 +20,7 @@ import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.TeamNotFoundException;
 import com.kh.baseball.player.model.dao.PlayerMapper;
+import com.kh.baseball.player.model.vo.Player;
 import com.kh.baseball.team.model.dao.TeamMapper;
 import com.kh.baseball.team.model.vo.Team;
 

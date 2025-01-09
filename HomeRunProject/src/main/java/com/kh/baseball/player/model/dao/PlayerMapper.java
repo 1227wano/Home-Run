@@ -36,5 +36,7 @@ public interface PlayerMapper {
 
 	void updatePlayerTeam(Team team);
 
+	void joinTeam(Player player);
+
 
 }

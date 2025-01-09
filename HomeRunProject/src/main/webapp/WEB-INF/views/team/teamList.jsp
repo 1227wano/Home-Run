@@ -15,6 +15,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="../common/menubar.jsp" />
 	<main id="main">
 		<div class="teamLists">
 			<ul class="teamList">
@@ -27,6 +28,17 @@
 									<strong class="team-name"> ${ t.teamName } </strong> <br>
 									<span class="team-grade"> ${ t.teamGrade }팀 </span> <br>
 								</a><br>
+								<!--  
+								<c:if test="${ not empty loginUser.userNo }">
+									<c:if test="${ player.teamName == 'FA(Free Agent)' }">
+										<form id="joinTeam" action="joinTeam" method="post">
+											<input type="hidden" name="userNo" value="${ loginUser.userNo }">
+											<input type="hidden" name="teamName" value="${ t.teamName }">
+											<button>소속 신청하기</button>
+										</form>
+									</c:if>
+								</c:if>
+								-->
 							 </li>
 						</c:forEach>
 						<button id="show-more-btn" align="center" onclick="showMoreTeam();">더보기</button>

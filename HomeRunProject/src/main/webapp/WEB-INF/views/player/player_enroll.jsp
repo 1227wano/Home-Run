@@ -13,6 +13,8 @@
 </style>
 </head>
 <body>
+<jsp:include page="../common/menubar.jsp" />
+
 	<div class="content">
 	   <br><br>
 	   <div class="innerOuter">

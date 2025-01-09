@@ -82,5 +82,16 @@
 		   		USER_NO = #{userNo}
 	</select>
 	
+	<update id="">
+		UPDATE
+				TB_PLAYER
+		   SET
+		   		PLAYER_NAME = #{ teamName }
+		 WHERE
+		 		PLAYER_NAME = 'FA(Free Agent)'
+		   AND
+		 		USER_NO = #{ userName }
+	</update>
+	
 	
 </mapper>

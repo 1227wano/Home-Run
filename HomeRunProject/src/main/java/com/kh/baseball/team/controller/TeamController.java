@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.baseball.common.ModelAndViewUtil;
-import com.kh.baseball.player.model.vo.Player;
+import com.kh.baseball.player.model.service.PlayerService;
 import com.kh.baseball.team.model.service.TeamService;
 import com.kh.baseball.team.model.vo.Team;
 
@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TeamController {
 	
 	private final TeamService teamService;
+	private final PlayerService playerService;
 	private final ModelAndViewUtil mv;
 	
 	// 팀창설 신청 양식 열어
@@ -85,20 +86,13 @@ public class TeamController {
 		
 	}
 	
-	// 팀소속 신청 양식 열어
-	@GetMapping("joinTeamform")
-	public String joinTeamform() {
-		return "team/join-team_enroll";	 
-	}
-	
-	// 팀 소속 신청  : player의 TEAM_NAME을 입력한
-	
 	// 선수 삭제
 	@PostMapping("deleteTeam")
 	public ModelAndView deleteTeam(int teamNo, HttpSession session) {
 		teamService.deleteTeam(teamNo);
 		session.setAttribute("alertMsg", "선수 정보 삭제 성공");
 		return mv.setViewNameAndData("redirect:/playerAndTeam/" + teamNo, null);
-	
 	}
+	
+	
 }

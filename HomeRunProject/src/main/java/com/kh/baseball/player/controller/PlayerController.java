@@ -93,4 +93,23 @@ public class PlayerController {
 		return mv.setViewNameAndData("redirect:/playerAndTeam/" + playerNo, null);
 	
 	}
+	
+	// 선수 소속신청 양식 열어
+	@GetMapping("joinTeamform")
+	public ModelAndView joinTeamform(int playerNo) {
+		Map<String, Object> responseData = playerService.selectPlayer(playerNo);
+		return mv.setViewNameAndData("player/player_join", responseData); 
+	}
+	
+	// 팀 소속 신청
+	@PostMapping("joinTeam")
+	public ModelAndView joinTeam(Player player, HttpSession session) {
+		log.info("{}", player);
+		playerService.joinTeam(player);
+		
+		session.setAttribute("alertMsg", "팀소속이 신청되었습니다. 승인을 기다려주세요.");
+		
+		return mv.setViewNameAndData("redirect:/my_page", null);
+		
+	}
 }
