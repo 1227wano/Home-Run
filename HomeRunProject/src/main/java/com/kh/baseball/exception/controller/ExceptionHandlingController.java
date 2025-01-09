@@ -1,7 +1,6 @@
 package com.kh.baseball.exception.controller;
 
 
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,17 +21,18 @@ import com.kh.baseball.exception.FoodTruckNoValueException;
 import com.kh.baseball.exception.FoodTruckNotFoundException;
 import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
-import com.kh.baseball.exception.NotFoundException;
 import com.kh.baseball.exception.NeedToLoginException;
 import com.kh.baseball.exception.NoReadyInsertBoardException;
+import com.kh.baseball.exception.NotFoundException;
 import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.ParticipantNotAllowException;
 import com.kh.baseball.exception.PlayerNotFoundException;
 import com.kh.baseball.exception.RequestFailedException;
+import com.kh.baseball.exception.SmallBoardListNotFoundException;
 import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.exception.TooSmallValueException;
-import com.kh.baseball.exception.SmallBoardListNotFoundException;
+import com.kh.baseball.exception.UserFoundException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 import com.kh.baseball.exception.UserNotFoundException;
 
@@ -66,6 +66,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(ComparePasswordException.class)
 	protected ModelAndView NotMatchingPasswordError(ComparePasswordException e) { 
 		return createErrorResponse("비밀번호가 일치하지 않습니다.", e);
+	}
+	
+	@ExceptionHandler(UserFoundException.class)
+	protected ModelAndView userDuplicateError(UserFoundException e) {
+		return createErrorResponse("회원이 존재합니다.", e);
 	}
 	
 	// ----Notice Exception
@@ -139,6 +144,7 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(UserNotFoundException.class)
 	protected ModelAndView noLoginUser(UserNotFoundException e) {
 		return createAlertResponse("로그인 후 이용 가능합니다.", e);
+	}
 	
 	//--- FoodTruck Exception
 	@ExceptionHandler(FoodTruckNotFoundException.class)
