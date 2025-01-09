@@ -28,17 +28,13 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void join(Member member) {
 		
-		Member userInfo = mapper.login(member);
+		Member userInfo = mapper.login(member); // 사용자가 입력한 id값이 table의 userId에 있으면 예외 발생 -> DB가서 똑같은 값이 있는지 조회
 		
 		validator.validateJoinMember(member);
-		validator.validateIdLength(member);
-		validator.validatePwdLength(member);
 		
 		member.setUserPwd(passwordEncoder.encode(member.getUserPwd()));
-		
+		   
 		mapper.join(member);
-		
-
 	}
 
 	@Override
@@ -73,8 +69,7 @@ public class MemberServiceImpl implements MemberService {
 		map.put("successId", searchId);
 		
 		return map;
-		
-	
+
 	}
 
 

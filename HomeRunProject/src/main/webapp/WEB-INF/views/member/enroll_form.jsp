@@ -158,10 +158,10 @@
                     <div id="nickNameCheckResult" style="font-size:0.9em; display:none;"></div> <br>
 
                     <label for="phone"> 전화번호('-'포함) </label>
-                    <input type="tel" class="form-control" id="age" placeholder="전화번호를 입력해주세요" name="phone" required> <br>
+                    <input type="tel" class="form-control" id="phone" placeholder="전화번호를 입력해주세요" name="phone" required> <br>
 
                     <label for="email"> 이메일 </label>
-                    <input type="text" class="form-control" id="phone" placeholder="이메일을 입력해주세요" name="email"> <br>
+                    <input type="text" class="form-control" id="email" placeholder="이메일을 입력해주세요" name="email"> <br>
                     
                     <label for="address"> 주소 </label>
                     <input type="text" class="form-control" id="address" placeholder="주소를 입력해주세요" name="address"> <br>
@@ -169,7 +169,7 @@
                     <input type="checkbox" id="agreement" name="agreement" style="display: inline-block;" required> 
                     <label for="agreement"> 인증 약관 전체동의 [필수] </label>
                     <div style="width:730px; height:100px; resize: none; overflow-x: hidden; overflow-y:auto; ">
-						개인정보보호법에 따라 네이버에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및
+						개인정보보호법에 따라 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및
 						이용목적,개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 
 						자세히 읽은 후 동의하여 주시기 바랍니다.<br>
 						<br>

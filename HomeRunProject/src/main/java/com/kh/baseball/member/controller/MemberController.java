@@ -34,9 +34,9 @@ public class MemberController {
 		//log.info("{}" , member);
 		//log.info("{}" , loginMember);
 		
-		//return null;
 		session.setAttribute("loginUser", loginMember);
 		session.setAttribute("alertMsg","로그인 완료");
+		
 		return mv.setViewNameAndData("redirect:/", null);
 		
 		

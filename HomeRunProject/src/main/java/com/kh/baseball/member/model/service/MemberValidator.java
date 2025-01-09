@@ -51,6 +51,7 @@ public class MemberValidator {
 	public void validateJoinMember(Member member) {
 		validateDuplicateMember(member);
 		validateIdLength(member);
+		validatePwdLength(member);
 	}
 	
 	// ID변경에서 사용
