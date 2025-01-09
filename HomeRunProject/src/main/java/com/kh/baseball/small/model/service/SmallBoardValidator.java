@@ -23,6 +23,7 @@ import com.kh.baseball.exception.FailToBoardUpdateException;
 import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FileNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
+import com.kh.baseball.exception.NotFoundExtensionException;
 import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.exception.SmallBoardListNotFoundException;
 import com.kh.baseball.exception.TooLargeValueException;
@@ -137,7 +138,9 @@ public class SmallBoardValidator {
 	public SmallBoardUpfile handleFileUpload(MultipartFile upfile) {
 		
 		String fileName = upfile.getOriginalFilename();
-		
+		if(fileName.lastIndexOf(".") == -1) {
+			throw new NotFoundExtensionException("확장자가 없는 파일은 등록할 수 없습니다.");
+		}
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		int randomNo = (int)(Math.random() * 90000) + 10000;
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmsss").format(new Date());
