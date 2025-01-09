@@ -122,7 +122,7 @@
                     <textarea id="foodTruckContent" class="form-control" rows="10" cols="20" style="resize:none;" name="foodTruckContent" required>푸드트럭 소개 작성해주세요.</textarea><br>
                     
                     
-                    <label for="upfile">첨부파일 1</label> <br>
+                    <label for="upfile">첨부파일 1 [대표이미지]</label> <br>
                     <input type="file" id="upfile1" class="form-control-file border" name="upfile" required><br>
                                                        
                     <label for="upfile">첨부파일 2</label><br>

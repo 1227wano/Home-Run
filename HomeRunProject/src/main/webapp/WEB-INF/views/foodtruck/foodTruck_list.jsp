@@ -7,26 +7,26 @@
 <meta charset="UTF-8">
 <title>푸드트럭 게시물 목록</title>
 <style> 
-	.list-area{
-		text-align : center;
-	}
+
 	.content{
 		width: 100%;
 		text-align : center;
 	}
-	.first{
-		width: 15%;
-	}
-	.outer{
-		width: 70%;
-	}
-	.third{
-		width: 15%;
+	
+	.list-area{
+		text-align : center;
+		width : 70%;
+		margin : auto;
+		
 	}
 	
-	.first, .outer, .third{
+	.outer{
+		width: 100%;
 		float : left;
+		margin : auto;
 	}
+	
+	
 
 	.thumbnail{
 		
@@ -60,7 +60,7 @@
 <body class="content">
 
 	<jsp:include page="../common/menubar.jsp" />
-		<div>
+		 <div>
 		
 			<form action="foodTruckSelectDom">
 
@@ -76,15 +76,12 @@
 			</form>
 
 		</div>
-		
-	<div class="first">
-
-	</div>
+	
 	
 	<div class="outer">
 		
 
-		<div class="list-area">
+		<div class="list-area" >
 			
 			<br>
 			
@@ -104,9 +101,6 @@
 				</c:if>
 				</c:forEach>
 				</c:forEach>
-				
-            
-
 
 		</div>
 		
@@ -120,9 +114,7 @@
 	
 	</div>
 
-	<div class="third">
-
-	</div>
+	
 	
 	<!--<jsp:include page="" />-->
 

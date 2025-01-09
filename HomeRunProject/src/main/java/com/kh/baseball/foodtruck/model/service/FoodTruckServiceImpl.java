@@ -38,6 +38,8 @@ public class FoodTruckServiceImpl implements FoodTruckService {
 		
 		List<FoodTruck> foodTruck = validator.getFoodTruckList(pi);
 		
+		log.info("푸드트럭 게시글 :{}", foodTruck);
+		
 		List<FoodTruck> dom = mapper.selectDom();
 		
 		List<FoodTruckFile> foodTruckFile = mapper.selectFoodTruckFile();

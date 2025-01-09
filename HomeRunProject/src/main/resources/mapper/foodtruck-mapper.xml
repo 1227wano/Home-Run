@@ -13,7 +13,7 @@
 	 		STATUS = 'Y'
 </select>
 
-<select id="selectFoodTruckList" parameterType="foodTruck" resultType="foodTruck">
+<select id="selectFoodTruckList" resultType="foodTruck">
 	  SELECT
 	            FOOD_TRUCK_NO foodTruckNo,
 	            FOOD_TRUCK_USER foodTruckUser,
@@ -40,7 +40,7 @@
 		  AND
 		        TB_FOOD_TRUCK.STATUS = 'Y'
 		ORDER
-		BY
+		   BY
 		        FOOD_TRUCK_NO
 
 </select>
@@ -137,6 +137,7 @@ VALUES
 			TB_FOODTRUCK_FILE
 	WHERE
 			FILE_TYPE = '1'
+	
 
 </select>
 
