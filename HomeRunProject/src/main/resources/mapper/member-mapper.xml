@@ -120,7 +120,7 @@
 
 </update>
 
-<select id ="checkToChangePwd" parameterType="String" resultType="member">
+<select id ="checkToChangePwd" parameterType="string" resultType="member">
 SELECT
 		USER_ID userId,
 		USER_PWD userPwd,

@@ -19,7 +19,7 @@
     
     <div class="content">
         <div class="updatePwd.me" align="center">
-            <h2>비밀번호 찾기</h2>
+            <h2>비밀번호 변경</h2>
             <br>
             <form action="changePwd.me" method="post">
 				<div style="width: 40%; margin: auto;">
