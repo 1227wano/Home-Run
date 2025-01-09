@@ -18,6 +18,8 @@ import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FailToReplyDeleteException;
 import com.kh.baseball.exception.FailToReplyInsertException;
 import com.kh.baseball.exception.FileNotFoundException;
+import com.kh.baseball.exception.FoodTruckNoValueException;
+import com.kh.baseball.exception.FoodTruckNotFoundException;
 import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.exception.NeedToLoginException;
@@ -26,8 +28,9 @@ import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.ParticipantNotAllowException;
 import com.kh.baseball.exception.PlayerNotFoundException;
-import com.kh.baseball.exception.SmallBoardListNotFoundException;
 import com.kh.baseball.exception.TooLargeValueException;
+import com.kh.baseball.exception.TooSmallValueException;
+import com.kh.baseball.exception.SmallBoardListNotFoundException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +49,9 @@ public class ExceptionHandlingController {
 	
 	//-----Member Exception
 	@ExceptionHandler(UserIdNotFoundException.class)
-	protected ModelAndView NoSuchUserIdError(DuplicateKeyException e) {
-		return createErrorResponse("존재하지 않는 사용자입니다.", e);
-	}
+	protected ModelAndView NoSuchUserIdError(UserIdNotFoundException e) {
+		return createErrorResponse("로그인 실패", e);
+	}//--로그인 오류(존재하지 않는 사용자)
 	
 	@ExceptionHandler(ComparePasswordException.class)
 	protected ModelAndView NotMatchingPasswordError(ComparePasswordException e) { 
@@ -108,6 +111,24 @@ public class ExceptionHandlingController {
 		return createErrorResponse("댓글 삭제에 실패했습니다.", e);
 	}
 	
+	//--- FoodTruck Exception
+	@ExceptionHandler(FoodTruckNotFoundException.class)
+	protected ModelAndView FoodTruckNotFoundError(FoodTruckNotFoundException e) {
+		return createErrorResponse("푸드트럭 게시물이 존재하지 않습니다.", e);
+	}
+	
+	@ExceptionHandler(FoodTruckNoValueException.class)
+	protected ModelAndView foodTruckNoValueError(FoodTruckNoValueException e) {
+		return createErrorResponse("푸드트럭 게시물에 잘못된 입력입니다.", e);
+	}
+	
+	//--- Member
+	
+	@ExceptionHandler(TooSmallValueException.class)
+	protected ModelAndView tooSmallValueError(TooSmallValueException e) {
+		return createErrorResponse("비밀번호 조건에 맞지 않습니다.", e);
+	}
+	
 	@ExceptionHandler(FailToBoardUpdateException.class)
 	protected ModelAndView failToBoardUpdateException(FailToBoardUpdateException e) {
 		return createErrorResponse("게시물을 수정하지 못했습니다.", e);
@@ -115,7 +136,7 @@ public class ExceptionHandlingController {
 	
 	@ExceptionHandler(TooLargeValueException.class)
 	protected ModelAndView tooLargeValueException(TooLargeValueException e) {
-		return createErrorResponse("해당 내용의 길이가 범위를 넘었습니다.", e);
+		return createErrorResponse("길이가 범위를 넘었습니다.", e);
 	}
 	
 	//-----SmallBoard Exception
