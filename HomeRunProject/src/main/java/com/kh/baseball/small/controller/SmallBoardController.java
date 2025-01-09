@@ -99,10 +99,12 @@ public class SmallBoardController {
 	@GetMapping("myList.small")
 	public ModelAndView mySmallBoardList(@RequestParam(value="page", defaultValue="1") int page, HttpSession session) {
 		Member member = (Member)(session.getAttribute("loginUser"));
-		int loginUserNo = member.getUserNo();
+		
 		if(member == null) {
 			throw new NeedToLoginException("로그인해주셔야 합니다.");
 		}
+		
+		int loginUserNo = member.getUserNo();
 		
 		Map<String, Object> map = smallBoardService.selectMyBoardList(page, loginUserNo);
 		

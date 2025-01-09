@@ -20,6 +20,7 @@ import com.kh.baseball.common.Pagination;
 import com.kh.baseball.dom.model.dao.DomMapper;
 import com.kh.baseball.dom.model.vo.Dom;
 import com.kh.baseball.dom.model.vo.DomAttachment;
+import com.kh.baseball.exception.NotFoundExtensionException;
 import com.kh.baseball.exception.RequestFailedException;
 import com.kh.baseball.member.model.vo.Member;
 
@@ -74,6 +75,11 @@ public class DomServiceImpl implements DomService {
 	private void handleFileUpload(DomAttachment domAtt, MultipartFile upfile) {
 		
 		String fileName = upfile.getOriginalFilename();
+		
+		if(fileName.lastIndexOf(".") == -1) {
+			throw new NotFoundExtensionException("확장자 없이 파일 등록해서 예외");
+		}
+		
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int randomNum = (int)(Math.random() * 90000) + 10000;

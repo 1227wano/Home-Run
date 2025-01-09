@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.common.Pagination;
+import com.kh.baseball.exception.NotFoundExtensionException;
 import com.kh.baseball.exception.RequestFailedException;
 import com.kh.baseball.exception.UserNotFoundException;
 import com.kh.baseball.goods.model.dao.GoodsMapper;
@@ -59,6 +60,9 @@ public class GoodsServiceImpl implements GoodsService {
 	private void handleFileUpload(Goods goods, MultipartFile upfile) {
 		
 		String fileName = upfile.getOriginalFilename();
+		if(fileName.lastIndexOf(".") == -1) {
+			throw new NotFoundExtensionException("확장자 없이 파일 등록해서 예외");
+		}
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int randomNum = (int)(Math.random() * 90000) + 10000;
