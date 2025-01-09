@@ -157,7 +157,7 @@
                     <button type="button" onclick="nicknamecheck()" >중복확인</button> <br>
                     <div id="nickNameCheckResult" style="font-size:0.9em; display:none;"></div> <br>
 
-                    <label for="phone"> 전화번호 </label>
+                    <label for="phone"> 전화번호('-'포함) </label>
                     <input type="tel" class="form-control" id="age" placeholder="전화번호를 입력해주세요" name="phone" required> <br>
 
                     <label for="email"> 이메일 </label>

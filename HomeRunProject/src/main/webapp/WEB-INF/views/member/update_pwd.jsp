@@ -47,7 +47,7 @@
 		        <script>
 		        	function validatePwd(){
 		        		
-		        		if($('#changePwd').val() != $('checkChangePwd').val()){
+		        		if($('#changePwd').val() != $('#checkChangePwd').val()){
 		        			alert('비밀번호를 동일하게 입력해주세요!');
 		        			$('#checkChangePwd').focus().val('');
 		        			return false;
