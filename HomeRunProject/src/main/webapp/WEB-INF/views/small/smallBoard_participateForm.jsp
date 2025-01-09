@@ -42,49 +42,28 @@
     <div class="content">
         <br><br>
         <div class="innerOuter">
-            <h2>게시글 수정하기</h2>
+            <h2>게시글 참가신청하기</h2>
             <br>
             <a class="btn btn-secondary" style="float:right;" href="/baseball/small">목록으로</a>
             <br><br>
 
-            <form id="enrollForm" method="post" action="update.small" enctype="multipart/form-data">
-                <input type="hidden" name="boardWriter" value="${ sessionScope.loginUser.userNo }"/>
-                <input type="hidden" name="boardNo" value="${ smallBoard.boardNo }"/>
+            <form id="enrollForm" method="post" action="/baseball/participate.small" enctype="multipart/form-data">
+                <input type="hidden" name="participantNo" value="${ sessionScope.loginUser.userNo }"/>
+                <input type="hidden" name="refBno" value="${smallBoardList.refBno}"/>
                 <table align="center">
-                    <tr>
-                        <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" value="${smallBoard.boardTitle}" name="boardTitle" required></td>
-                    </tr>
-                    <tr>
-                        <th><label for="team">팀</label></th>
-                        <td><input type="text" id="title" class="form-control" value="${smallBoard.teamName}" name="teamName" readonly></td>
-                    </tr>
                     <tr>
                         <th><label for="writer">작성자</label></th>
                         <td><input type="text" id="writer" class="form-control" value="${ sessionScope.loginUser.nickName }" readonly></td>
                     </tr>
                     <tr>
-                        <th><label for="upfile">첨부파일</label></th>
-                        <td>
-                            <input type="file" id="upfile" class="form-control-file border" name="upfile">
-                            
-                            <c:if test="${ not empty file.originName }">
-                            현재 업로드된 파일 : 
-                            <a href="${ file.changeName }" download="${ file.originName }">${ file.originName}</a>
-                            <input type="hidden" value="${file.originName}" name="originName" />
-                            <input type="hidden" value="${file.changeName}" name="changeName" />
-                            </c:if>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="content">내용</label></th>
-                        <td><textarea id="content" class="form-control" rows="10" style="resize:none;" name="boardContent" required>${smallBoard.boardContent}${smallBoard.boardContent}</textarea></td>
+                        <th><label for="content">참가신청내용</label></th>
+                        <td><textarea id="content" class="form-control" rows="10" style="resize:none;" name="participationContent" required placeholder="30자 이내로 작성하세요."></textarea></td>
                     </tr>
                 </table>
                 <br>
 
                 <div align="center">
-                    <button type="submit" class="btn btn-primary">수정하기</button>
+                    <button type="submit" class="btn btn-primary">등록하기</button>
                     <button type="reset" class="btn btn-danger">지우기</button>
                 </div>
             </form>
