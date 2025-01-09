@@ -22,16 +22,19 @@ import com.kh.baseball.exception.FoodTruckNoValueException;
 import com.kh.baseball.exception.FoodTruckNotFoundException;
 import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
+import com.kh.baseball.exception.NotFoundException;
 import com.kh.baseball.exception.NeedToLoginException;
 import com.kh.baseball.exception.NoReadyInsertBoardException;
 import com.kh.baseball.exception.NotFoundListNoException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.ParticipantNotAllowException;
 import com.kh.baseball.exception.PlayerNotFoundException;
+import com.kh.baseball.exception.RequestFailedException;
 import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.exception.TooSmallValueException;
 import com.kh.baseball.exception.SmallBoardListNotFoundException;
 import com.kh.baseball.exception.UserIdNotFoundException;
+import com.kh.baseball.exception.UserNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +46,13 @@ public class ExceptionHandlingController {
 
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("errorMsg", errorMsg).setViewName("common/error_page");
+		log.info("발생 예외 : {}", e.getMessage(), e);
+		return mv;
+	}
+	
+	private ModelAndView createAlertResponse(String alertMsg, Exception e) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("alertMsg", alertMsg).setViewName("home");
 		log.info("발생 예외 : {}", e.getMessage(), e);
 		return mv;
 	}
@@ -111,8 +121,24 @@ public class ExceptionHandlingController {
 		return createErrorResponse("댓글 삭제에 실패했습니다.", e);
 	}
 	
+	@ExceptionHandler(TooLargeValueException.class)
+	protected ModelAndView valueLengthOverErr(TooLargeValueException e) {
+		return createErrorResponse("유효하지 않은 길이의 값을 입력하였습니다.", e);
+	}
 	
+	@ExceptionHandler(RequestFailedException.class)
+	protected ModelAndView requestFailErr(RequestFailedException e) {
+		return createErrorResponse("요청 처리에 실패했습니다.", e);
+	}
 	
+	@ExceptionHandler(NotFoundException.class)
+	protected ModelAndView noSuchDataErr(NotFoundException e) {
+		return createAlertResponse("요청에 필요한 데이터를 찾지 못했습니다.", e);
+	}
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	protected ModelAndView noLoginUser(UserNotFoundException e) {
+		return createAlertResponse("로그인 후 이용 가능합니다.", e);
 	
 	//--- FoodTruck Exception
 	@ExceptionHandler(FoodTruckNotFoundException.class)
@@ -189,3 +215,4 @@ public class ExceptionHandlingController {
 		return createErrorResponse("현재 게시글을 작성할 수 없습니다.", e);
 	}
 }
+

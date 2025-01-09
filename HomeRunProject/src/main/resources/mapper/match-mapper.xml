@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.baseball.match.model.dao.MatchMapper">
+
+	<sql id="matchColumn">
+		SELECT
+		       GAME_NO AS gameNo,
+		       REF_DNO AS refDno,
+		       TO_CHAR(MATCH_DATE, 'YYYY-MM-DD') AS matchDate,
+		       FIRST_TEAM AS firstTeam,
+		       SECOND_TEAM AS secondTeam,
+		       
+		       DOM_NAME AS domName,
+		       DOM_ADDR AS domAddr
+	</sql>
+
+	<select id="selectTotalCount" resultType="_int"> 
+		SELECT
+			   COUNT(*) AS count
+		  FROM
+		  	   TB_MATCH
+		 WHERE
+		 	   STATUS = 'Y'
+	</select>
+
+	<select id="selectMatchList" resultType="match">
+		<include refid="matchColumn" />
+		  FROM  
+		       TB_MATCH
+		  JOIN
+		       TB_DOM ON (REF_DNO = DOM_NO)
+		 WHERE
+		       TB_MATCH.STATUS = 'Y'
+		 ORDER
+		 	BY
+		       MATCH_DATE DESC
+	</select>
+	
+	<select id="selectMatch" resultType="match">
+		<include refid="matchColumn" />
+		  FROM  
+		       TB_MATCH
+		  JOIN
+		       TB_DOM ON (REF_DNO = DOM_NO)
+		 WHERE
+		       TB_MATCH.STATUS = 'Y'
+		   AND
+		   	   GAME_NO = #{gameNo}
+	</select>
+
+</mapper>

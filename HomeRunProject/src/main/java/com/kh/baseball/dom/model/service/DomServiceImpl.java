@@ -20,6 +20,8 @@ import com.kh.baseball.common.Pagination;
 import com.kh.baseball.dom.model.dao.DomMapper;
 import com.kh.baseball.dom.model.vo.Dom;
 import com.kh.baseball.dom.model.vo.DomAttachment;
+import com.kh.baseball.exception.RequestFailedException;
+import com.kh.baseball.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,23 +32,16 @@ import lombok.extern.slf4j.Slf4j;
 @EnableTransactionManagement
 public class DomServiceImpl implements DomService {
 	
-	private final DomMapper mapper;
+	private final DomMapper domMapper;
+	private final DomValidator domValidator;
 	private final ServletContext context;
 	
+	@Override
 	public Map<String, Object> selectDomList(int currentPage){
 		
-		int totalCount = mapper.selectTotalCount();
-		
-		if(totalCount == 0) {
-			log.info("현재 등록된 구장 수 : {}", totalCount); // 예외처리
-		}
-		
-		PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, 5, 5);
-		
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		List<Dom> domList = mapper.selectDomList(rowBounds);
-		List<DomAttachment> attList = mapper.selectAttachmentList();
+		PageInfo pi = getPageInfo(currentPage);
+		List<Dom> domList = getDomList(pi);
+		List<DomAttachment> attList = domMapper.selectAttachmentList();
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("domList", domList);
@@ -54,6 +49,25 @@ public class DomServiceImpl implements DomService {
 		map.put("attList", attList);
 		
 		return map;
+	}
+	
+	private PageInfo getPageInfo(int currentPage) {
+		
+		int totalCount = domMapper.selectTotalCount();
+		
+		if(totalCount == 0) {
+			throw new RequestFailedException("현재 등록된 구장이 존재하지 않습니다");
+		}
+		
+		return Pagination.getPageInfo(totalCount, currentPage, 5, 5);
+	}
+	
+	private List<Dom> getDomList(PageInfo pi){
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return domMapper.selectDomList(rowBounds);
 	}
 	
 	// 사용자가 첨부한 첨부파일이름의 중복이 발생할 수 있기 때문에 DB에 저장 할 때 우리만의 저장 방식으로 저장
@@ -77,16 +91,13 @@ public class DomServiceImpl implements DomService {
 		domAtt.setChangeName(changeName);
 		domAtt.setFilePath("/resources/upload_files/");
 	}
-
+	
 	@Override
-	public void insertDom(Dom dom, MultipartFile upfile) {
+	public void insertDom(Dom dom, MultipartFile upfile, Member loginMember) {
 		
-		if(dom.getDomName().length() > 100 || dom.getDomContent().length() > 1000
-		   || dom.getDomAddr().length() > 100) {
-			log.info("제한 글자수 보다 큰 값을 입력하여 추가할 수 없음"); // 예외처리
-		}
+		domValidator.validateDom(dom, loginMember);
 		
-		int resultDom = mapper.insertDom(dom);
+		int resultDom = domMapper.insertDom(dom);
 		int resultAtt = 1;
 		
 		if(!("".equals(upfile.getOriginalFilename()))) {
@@ -94,73 +105,78 @@ public class DomServiceImpl implements DomService {
 			DomAttachment domAtt = new DomAttachment();
 			handleFileUpload(domAtt, upfile);
 			
-			resultAtt = mapper.insertDomFile(domAtt);
+			resultAtt = domMapper.insertDomFile(domAtt);
 		}
 		
 		if((resultDom * resultAtt) < 1) {
-			log.info("등록 실패"); // 예외처리
+			throw new RequestFailedException("요청 처리에 실패했습니다.");
 		}
-		
 	}
 
 	@Override
 	public Map<String, Object> selectId(Long id) {
 		
+		domValidator.validateDomNo(id);
+		
 		Map<String, Object> map = new HashMap<>();
-		Dom dom = mapper.selectId(id);
+		Dom dom = domMapper.selectId(id);
+
+		domValidator.reconversion(dom);
+		
 		map.put("dom", dom);
 		
 		return map;
 	}
 
 	@Override
-	public void updateDom(Dom dom, MultipartFile upfile) {
+	public void updateDom(Dom dom, MultipartFile upfile, Member loginMember) {
 		
-		if(dom.getDomNo() == null || dom.getDomNo() <= 0) {
-			log.info("유효하지 않은 구장 식별 번호"); // 예외처리
-		}
-		
-		Dom selectedDom = mapper.selectId(dom.getDomNo());
-		if(selectedDom == null) {
-			log.info("찾을 수 없는 구장"); // 예외처리
-		}
-		
-		if(dom.getDomName().length() > 100 || dom.getDomContent().length() > 3000 
-		   || dom.getDomAddr().length() > 100) {
-			log.info("제한 글자수 보다 큰 값을 입력하여 추가할 수 없음"); // 예외처리
-		}
+		domValidator.validateDomNo(dom.getDomNo());
+		domValidator.validateDom(dom, loginMember);
 		
 		int resultAtt = 1;
 		DomAttachment domAtt = null;
 		
 		if(!("".equals(upfile.getOriginalFilename()))) {
 			
-			if(selectedDom.getImagePath() != null) {
-				
-				String imagePath = selectedDom.getImagePath();
-				
+			if(dom.getImagePath() != null) {
+				String imagePath = dom.getImagePath();
 				imagePath = imagePath.substring(imagePath.indexOf("/"));
-				
 				new File(context.getRealPath(imagePath)).delete();
-//				log.info("구장 파일 경로 : {}", selectedDom.getImagePath());
 			}
+			
 			domAtt = new DomAttachment();
-			domAtt.setRefDno(selectedDom.getDomNo());
+			domAtt.setRefDno(dom.getDomNo());
 			handleFileUpload(domAtt, upfile);
 			
-			resultAtt = mapper.updateDomFile(domAtt);
+			resultAtt = domMapper.updateDomFile(domAtt);
 		}
 		
-		int resultDom = mapper.updateDom(dom);
+		int resultDom = domMapper.updateDom(dom);
 		
 		if((resultDom * resultAtt) < 1) {
-			log.info("업데이트 실패"); // 예외처리
+			throw new RequestFailedException("정보 수정에 실패했습니다.");
 		}
 	}
 
-	public void deleteDom() {
+	@Override
+	public void deleteDom(Dom dom, MultipartFile upfile, Member loginMember) {
 		
+		domValidator.validateAuthority(loginMember);
+		domValidator.validateDomNo(dom.getDomNo());
+		
+		int domResult = domMapper.deleteDom(dom);
+		int domAttResult = 1;
+		
+		if(dom.getImagePath() != null) {
+			domAttResult = domMapper.deleteDomFile(dom.getDomNo());
+		}
+		
+		if((domResult * domAttResult) < 1) {
+			throw new RequestFailedException("요청 처리에 실패했습니다.");
+		}
 	}
+
 	
 	
 }

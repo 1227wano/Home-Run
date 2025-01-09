@@ -78,8 +78,8 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="/baseball/">
-      	<img class="img-fluid" src="/webapp/resources/upload_files/logo.png" alt="임시로고" style="width:50px; height:50px;" />
+      <a class="navbar-brand" href="/baseball">
+      	<img class="img-fluid" src="/baseball/resources/upload_files/logo.png" alt="임시로고" style="width:50px; height:50px;" />
       </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         메뉴
@@ -106,7 +106,7 @@
             <a class="nav-link js-scroll-trigger" href="#">야구교실</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">굿즈</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/goods">굿즈</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="/baseball/freeBoard">자유게시판</a>

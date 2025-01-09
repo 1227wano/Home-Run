@@ -1,7 +1,6 @@
-package com.kh.baseball.dom.model.vo;
+package com.kh.baseball.match.model.vo;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,14 +11,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
-public class Dom {
+public class Match {
 	
-	private Long domNo;
+	private Long gameNo;
+	private Long refDno;
+	private String matchDate;
+	private String firstTeam;
+	private String secondTeam;
 	private String domName;
-	private String domContent;
 	private String domAddr;
-	private String status;
-	private String imagePath;
 	
 }
