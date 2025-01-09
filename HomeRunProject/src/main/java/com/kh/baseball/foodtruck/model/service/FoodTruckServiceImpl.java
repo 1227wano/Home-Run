@@ -80,13 +80,6 @@ public class FoodTruckServiceImpl implements FoodTruckService {
 	}
 	
 
-
-	@Override
-	public FoodTruck selectById(int foodTruckNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public Map<String, Object> selectDomName() {
 		

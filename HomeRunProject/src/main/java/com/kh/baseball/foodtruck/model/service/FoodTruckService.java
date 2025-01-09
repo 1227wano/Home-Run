@@ -15,8 +15,6 @@ public interface FoodTruckService {
 	
 	void insertFoodTruck(FoodTruck foodTruck, MultipartFile[] upfile);
 	
-	FoodTruck selectById(int foodTruckNo);
-
 	Map<String, Object> selectDomName();
 
 	String foodTruckNameCheck(String foodTruckName);
