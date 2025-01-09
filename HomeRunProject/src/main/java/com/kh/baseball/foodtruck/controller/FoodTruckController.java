@@ -51,10 +51,7 @@ public class FoodTruckController {
 		//log.info("{}",upfile[0]);
 		//log.info("{}",upfile[1]);
 		//log.info("{}",upfile[2]);
-		
-		// 독화살에 맞음
-		// 누가날쐇냐 이건 무슨독이냐 이거 치료는 
-		
+	
 		foodTruckService.insertFoodTruck(foodTruck, upfile);
 		
 		session.setAttribute("alertMsg", "푸드트럭 신청 완료");
