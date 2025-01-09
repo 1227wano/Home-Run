@@ -37,9 +37,10 @@ public class SmallBoardController {
 	
 	@GetMapping("small")
 	public ModelAndView selectBoardList(@RequestParam(value="page", defaultValue="1") int Page,
-										@RequestParam(value="boardLimit", defaultValue="5") int boardLimit) {
-		Map<String, Object> map = smallBoardService.selectBoardList(Page, boardLimit);
+										@RequestParam(value="boardLimit", defaultValue="5") int boardLimit,
+										HttpSession session) {
 		
+		Map<String, Object> map = smallBoardService.selectBoardList(Page, boardLimit);
 		return mv.setViewNameAndData("small/smallBoard_list", map);
 	}
 	
@@ -76,16 +77,13 @@ public class SmallBoardController {
 	
 	@GetMapping("adminListDetail.small/{boardNo}")
 	public ModelAndView adminListDetail(@PathVariable(name="boardNo") Long boardNo){
-		// log.info("{}", boardNo);
 		
 		Map<String, Object> adminDetail = smallBoardService.adminListDetail(boardNo);
-		// log.info("{}", adminDetail.get("file"));
 		return mv.setViewNameAndData("small/smallBoard_adminDetail", adminDetail);
 	}
 	
 	@PostMapping("permit.small")
 	public ModelAndView adminPermit(Long boardNo) {
-		// log.info("{}", boardNo);
 		smallBoardService.adminPermit(boardNo);
 		
 		return mv.setViewNameAndData("redirect:/adminList.small", null);
@@ -123,7 +121,6 @@ public class SmallBoardController {
 	
 	@PostMapping("update.small")
 	public ModelAndView update(SmallBoard smallBoard, MultipartFile upfile, SmallBoardUpfile file) {
-		// log.info("{}", file);
 		
 		smallBoardService.update(smallBoard, upfile, file);
 		
@@ -192,23 +189,8 @@ public class SmallBoardController {
 		map.put("keyword", keyword);
 		map.put("page", page);
 		map.put("option", option);
-		log.info("{}", map);
+		log.info("1{}", map);
 		Map<String, Object> searchMap = smallBoardService.searchList(map);
 		return mv.setViewNameAndData("small/smallBoard_list", searchMap);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

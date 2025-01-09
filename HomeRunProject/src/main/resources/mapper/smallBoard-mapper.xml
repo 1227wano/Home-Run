@@ -15,8 +15,6 @@
 		   	   ADMIN_STATUS = 'Y'
 	</select>
 	
-
-	
 	<select id="selectBoardList" resultType="smallBoard">
 		SELECT
 			   BOARD_NO boardNo,

@@ -77,32 +77,8 @@ public class FreeBoardController {
 	@PostMapping("freeBoard/update-form.free")
 	public ModelAndView updateForm(Long boardNo) {
 		Map<String, Object> responseData = freeBoardService.selectUpdateByBoardNo(boardNo);
-		// log.info("{}", responseData);
 		return mv.setViewNameAndData("freeBoard/freeBoard_update", responseData);
 	}
-	
-	/*
-	@PostMapping("freeBoards/update")
-	public ModelAndView update(FreeBoard freeBoard, MultipartFile[] upfile, @ModelAttribute(name="file1") FreeBoardFile file1
-																		  , FreeBoardFile file2
-																		  , FreeBoardFile file3
-																		  , FreeBoardFile file4
-																		  , @ModelAttribute(name="file5") FreeBoardFile file5) {
-		Map<String, Object> files = new HashMap();
-		files.put("file1", file1);
-		files.put("file2", file2);
-		files.put("file3", file3);
-		files.put("file4", file4);
-		files.put("file5", file5);
-		log.info("{} {} ",file1, file2);
-		log.info("{} {} ",file3, file4);
-		log.info("{}", file5);
-		// log.info("게시글 정보 : {}, 파일 정보 : {}", freeBoard, upfile);
-		// log.info("{}",files);
-		//Map<String, Object> responseData = freeBoardService.updateBoard(freeBoard, upfile);
-		return mv.setViewNameAndData("redirect:/freeBoards", null);
-	}
-	*/
 	
 	@PostMapping("freeBoard/update.free")
 	public ModelAndView update(FreeBoard freeBoard, MultipartFile[] upfile) {
@@ -115,7 +91,6 @@ public class FreeBoardController {
 	public ModelAndView searchList(@RequestParam(value="page", defaultValue="1") int page
 								   ,@RequestParam("condition") String condition
             					   ,@RequestParam("keyword") String keyword) {
-		// log.info("{} {}", condition, keyword);
 		Map<String, Object> map = new HashMap();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
@@ -124,17 +99,4 @@ public class FreeBoardController {
 		Map<String, Object> searchMap = freeBoardService.searchList(map);
 		return mv.setViewNameAndData("freeBoard/freeBoard_list", searchMap);
 	}
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

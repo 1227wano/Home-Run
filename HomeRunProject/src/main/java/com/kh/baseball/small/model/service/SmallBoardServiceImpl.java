@@ -144,6 +144,9 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 
 		SmallBoard smallBoard = validator.selectBoardByBoardNo(boardNo);
 		Member member = (Member)session.getAttribute("loginUser");
+		if(member == null) {
+			throw new NeedToLoginException("로그인 안하고 게시물 열람시도");
+		}
 		int loginUserNo = member.getUserNo();
 		smallBoard.setLoginUserNo(loginUserNo);
 		
@@ -200,7 +203,6 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 	public void update(SmallBoard smallBoard, MultipartFile upfile, SmallBoardUpfile file) {
 
 		validator.validateBoard(smallBoard);
-		// log.info("{}", smallBoard);
 		validator.selectBoardByBoardNo(smallBoard.getBoardNo());
 		
 		int boardResult = mapper.updateBoard(smallBoard);
@@ -244,7 +246,6 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 
 	@Override
 	public void updateBanReason(SmallBoardList smallBoardList) {
-		// listNo 랑 BanReason을 validate해야됨
 		
 		validator.validateListNo(smallBoardList.getListNo());
 		
@@ -289,9 +290,7 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 		int result = mapper.searchListCount(map);
 
 		PageInfo pi = validator.getPageInfo(result, (int)map.get("page"), (int)map.get("option"));
-		log.info("{}", pi);
 		RowBounds rowBounds = validator.getRowBounds(pi);
-		
 		
 		List<SmallBoard> boards = mapper.searchList(map, rowBounds);
 		

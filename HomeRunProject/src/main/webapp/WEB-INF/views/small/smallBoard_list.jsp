@@ -128,44 +128,64 @@
 			</script>
             <div id="pagingArea">
                 <ul class="pagination">
-                
-
 
 					<c:choose>
 						<c:when test="${ pageInfo.currentPage eq 1 }">                
                    			<li class="page-item disabled"><a class="page-link" >이전</a></li>
                    		</c:when>
+                   		<c:when test="${empty condition}">
+                   			<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage - 1}&option=${option}">이전</a></li>
+                   		</c:when>
                    		<c:otherwise>
-                   			<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage - 1}">이전</a></li>
+                   			<li class="page-item"><a class="page-link" href="searchList.small?page=${ pageInfo.currentPage - 1 }&condition=${condition}&keyword=${keyword}&option=${option}">이전</a></li>
                     	</c:otherwise>
                     </c:choose>
+                    
+                    
                     <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
                     	<c:choose>
-		                	<c:when test="${empty condition}">
+		                	<c:when test="${empty condition }">
 		                		<li class="page-item">
+		                		<c:choose>
+		                		<c:when test="${ empty boardLimit }">
 			                    	<a class="page-link" href="small?page=${ num }">
 			                    		${ num }
 			                    	</a>
+		                		</c:when>
+		                		<c:otherwise>
+		                			<a class="page-link" href="small?page=${ num }&boardLimit=${option}">
+			                    		${ num }
+			                    	</a>
+		                		</c:otherwise>
+		                		</c:choose>
 		                    	</li>
 		               		</c:when>
 			                <c:otherwise>
 			              	    <li class="page-item">
-			                    	<a class="page-link" href="searchList.small?page=${ num }&condition=${condition}&keyword=${keyword}">
+			                    	<a class="page-link" href="searchList.small?page=${ num }&condition=${condition}&keyword=${keyword}&option=${option}">
 			                    		${ num }
 			                    	</a>
 		                    	</li>
 			                </c:otherwise>
 		                </c:choose>
-                    	
                     </c:forEach>
+                    
+                    
+                    
                     <c:choose>
                     	<c:when test="${ pageInfo.currentPage eq pageInfo.endPage }">
                     		<li class="page-item disabled"><a class="page-link" >다음</a></li>
                     	</c:when>
+                    	<c:when test="${ empty condition}">
+                    		<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage + 1}&option=${option}">다음</a></li>
+                    	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage + 1}">다음</a></li>
+                    		<li class="page-item"><a class="page-link" href="searchList.small?page=${ pageInfo.currentPage + 1 }&condition=${condition}&keyword=${keyword}">다음</a></li>
                     	</c:otherwise>
                     </c:choose>
+                    
+                    
+                    
                 </ul>
             </div>
 
