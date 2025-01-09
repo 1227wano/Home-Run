@@ -163,7 +163,7 @@
 						alert("댓글 등록에 성공했습니다.");
 					},
 					error : function(result){
-						alert(result.responseJSON.message);
+						alert("댓글 등록에 실패했습니다.");
 					}
 				});
 			}
