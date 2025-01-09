@@ -23,6 +23,9 @@
 	<br><br><br><br><br>
 	
 	<div class="domEnroll-area">
+		
+		<h2>구장 등록 페이지</h2>
+		
 		<form id="" method="post" action="dom" enctype="multipart/form-data" >
 			
 			<!-- <input type="hidden" name="userNo" value="${ loginUser.userNo }" /> -->
@@ -33,15 +36,15 @@
 			</div>
 			<div>
 				<label>구장명</label>
-				<input type="text" name="domName">
+				<input style="width: 500px;" type="text" name="domName">
 			</div>
 			<div>
 				<label>구장 세부 내용</label>
-				<textarea name="domContent"></textarea>
+				<textarea style="width: 500px; height: 500px;" name="domContent"></textarea>
 			</div>
 			<div>
 				<label>구장 주소</label>
-				<textarea name="domAddr"></textarea>
+				<textarea style="width: 200px; height: 50px;" name="domAddr"></textarea>
 			</div>
 			
 			<br>

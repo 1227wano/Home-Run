@@ -47,7 +47,7 @@
  		   	   BOARD_NO = #{boardNo}
  	</update>
  
- 	<select id="selectBoardById" parameterType="long" resultType="freeBoard">
+ 	<select id="selectFreeBoardByBoardNo" parameterType="long" resultType="freeBoard">
  		<include refid="boardColumn"/>
  		   AND
  		   	   BOARD_NO = #{boardNo}

@@ -77,8 +77,8 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="#">
-      	<img class="img-fluid" src="/webapp/resources/upload_files/logo.png" alt="임시로고" style="width:50px; height:50px;" />
+      <a class="navbar-brand" href="/baseball">
+      	<img class="img-fluid" src="/baseball/resources/upload_files/logo.png" alt="임시로고" style="width:50px; height:50px;" />
       </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         메뉴
@@ -100,9 +100,9 @@
 					<li><a href="/baseball/selectAllTeam">팀 조회</a></li>
 				</ul>
           </li>
-          
+
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">굿즈</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/goods">굿즈</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="/baseball/freeBoard">자유게시판</a>
@@ -111,10 +111,13 @@
             <a class="nav-link js-scroll-trigger" href="/baseball/small">소모임</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#">주변먹거리</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/foodTruckBoards">푸드트럭</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="notices">공지사항</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/notices">공지사항</a>
+          </li>
+          <li class="nav-item">
+          	<a class="nav-link js-scroll-trigger" href="/baseball/question">Q&A</a>
           </li>
           
           
@@ -168,7 +171,7 @@
 					<table style="cellpadding: 0; cellspacing: 0; margin: 0 auto; width: 100%">
 						<tr>
 							<td style="text-align: left">
-								<p><strong>아이디를 입력해주세요.</strong>&nbsp;&nbsp;&nbsp;<span id="idCheck"></span></p>
+								<p><strong>아이디</strong>&nbsp;&nbsp;&nbsp;<span id="idCheck"></span></p>
 							</td>
 						</tr>
 						<tr>
@@ -176,11 +179,11 @@
 								class="form-control tooltipstered" maxlength="10"
 								required="required" aria-required="true"
 								style="margin-bottom: 25px; width: 100%; height: 40px; border: 1px solid #d9d9de"
-								placeholder="최대 10자"></td>
+								placeholder="아이디를 입력해주세요."></td>
 						</tr>
 						<tr>
 							<td style="text-align: left">
-								<p><strong>비밀번호를 입력해주세요.</strong>&nbsp;&nbsp;&nbsp;<span id="pwCheck"></span></p>
+								<p><strong>비밀번호</strong>&nbsp;&nbsp;&nbsp;<span id="pwCheck"></span></p>
 							</td>
 						</tr>
 						<tr>
@@ -188,7 +191,7 @@
 								name="userPwd" class="form-control tooltipstered" 
 								maxlength="20" required="required" aria-required="true"
 								style="ime-mode: inactive; margin-bottom: 25px; height: 40px; border: 1px solid #d9d9de"
-								placeholder="최소 8자"></td>
+								placeholder="비밀번호를 입력해주세요."></td>
 						</tr>
 
 						<tr>

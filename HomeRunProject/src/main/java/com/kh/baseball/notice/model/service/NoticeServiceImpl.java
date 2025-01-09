@@ -54,11 +54,11 @@ public class NoticeServiceImpl implements NoticeService {
 	public Map<String, Object> selectNoticeList(int currentPage) {
 		 
 		int totalCount = getTotalCount();
-		
+		log.info("{}", totalCount);
 		PageInfo pi = getPageInfo(totalCount, currentPage);
 		
 		List<Notice> notices = getNoticeList(pi);
-		
+		log.info("{}", notices);
 		Map<String, Object> map = new HashMap();
 		map.put("notices", notices);
 		map.put("pageInfo", pi);
@@ -66,7 +66,6 @@ public class NoticeServiceImpl implements NoticeService {
 		return map;
 	}
 	
-
 	@Override
 	public void insertNotice(Notice notice, MultipartFile upfile) {
 
@@ -91,7 +90,6 @@ public class NoticeServiceImpl implements NoticeService {
 			
 		}
 		
-		
 		mapper.insertNotice(notice);
 	}
 	
@@ -111,12 +109,19 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public void deleteNotice(Long noticeNo, String attachMent) {
+		
+		if(attachMent != null && !attachMent.isEmpty()) {
+			File file = new File("파일 경로" + attachMent);
+			if (file.exists()) {
+				file.delete();
+			}
+		}
 		mapper.deleteNotice(noticeNo);
 	}
 
 
 	@Override
-	public Notice getNoticeById(long noticeNo) {
+	public Notice getNoticeById(Long noticeNo) {
 		return mapper.getNoticeById(noticeNo);
 	}
 
