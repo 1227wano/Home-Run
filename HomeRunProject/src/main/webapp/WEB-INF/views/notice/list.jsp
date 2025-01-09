@@ -46,6 +46,8 @@
 		            location.href = `notices/\${num}`;
 		        }
     	   </script>
+    	   
+    	   
     
 	</head>
 	<body>
@@ -74,7 +76,7 @@
 	                <tbody>
 	                
 	                 <c:forEach items="${ notices }" var="notice">
-	                    <tr onclick="detail('${ notice.noticeNo }')">
+	                   <tr onclick="detail(${ notice.noticeNo })">
 	                        <td>${ notice.noticeNo }</td>
 	                        <td>${ notice.noticeTitle }</td>
 	                        <td>${ notice.creationDate }</td>
@@ -130,9 +132,10 @@
 	        </div>
 	        <br><br>
 	
+			
 	    </div>
 	
-	    <jsp:include page="" />
+	    <!--<jsp:include page="" />-->
 	
 	</body>
 	</html>

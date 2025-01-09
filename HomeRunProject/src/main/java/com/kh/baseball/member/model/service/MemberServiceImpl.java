@@ -31,6 +31,8 @@ public class MemberServiceImpl implements MemberService {
 		Member userInfo = mapper.login(member);
 		
 		validator.validateJoinMember(member);
+		validator.validateIdLength(member);
+		validator.validatePwdLength(member);
 		
 		member.setUserPwd(passwordEncoder.encode(member.getUserPwd()));
 		

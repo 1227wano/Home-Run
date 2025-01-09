@@ -21,4 +21,5 @@ public class SmallBoardReply {
 	private String content;
 	private String createDate;
 	private String status;
+	private String replyNickName;
 }

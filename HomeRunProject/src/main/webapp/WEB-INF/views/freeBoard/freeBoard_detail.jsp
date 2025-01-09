@@ -129,7 +129,7 @@
                     <td colspan="3"></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><p style="height:150px;">${freeBoard.boardContent}</p></td>
+                    <td colspan="4"><pre style="height:150px;">${freeBoard.boardContent}</pre></td>
                 </tr>
             </table>
             <br>

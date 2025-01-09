@@ -24,7 +24,7 @@ public interface NoticeMapper {
 	
 	void deleteNotice(Long noticeNo);
 
-	int getTotalNoticeCount();
+
 
 	
 }

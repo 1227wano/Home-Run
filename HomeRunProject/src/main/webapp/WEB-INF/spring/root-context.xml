@@ -33,6 +33,8 @@
 	<mybatis-spring:scan base-package="com.kh.baseball.small.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.baseball.match.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.baseball.goods.model.dao"/>
+	<mybatis-spring:scan base-package="com.kh.baseball.question.model.dao"/>
+	<mybatis-spring:scan base-package="com.kh.baseball.foodtruck.model.dao"/>
 	
 	
 	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
