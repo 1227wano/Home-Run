@@ -19,9 +19,11 @@ import com.kh.baseball.exception.BoardNoValueException;
 import com.kh.baseball.exception.BoardNotFoundException;
 import com.kh.baseball.exception.FailToFileUploadException;
 import com.kh.baseball.exception.FileNotFoundException;
+import com.kh.baseball.exception.TooLargeValueException;
 import com.kh.baseball.freeboard.model.dao.FreeBoardMapper;
 import com.kh.baseball.freeboard.model.vo.FreeBoard;
 import com.kh.baseball.freeboard.model.vo.FreeBoardFile;
+import com.kh.baseball.freeboard.model.vo.FreeBoardReply;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,13 +67,15 @@ public class FreeBoardValidator {
 		}
 	}
 	
-	public FreeBoard selectBoardById(Long boardNo) {
+	public FreeBoard selectFreeBoardByBoardNo(Long boardNo) {
 		
-		FreeBoard freeBoard = mapper.selectBoardById(boardNo);
+		FreeBoard freeBoard = mapper.selectFreeBoardByBoardNo(boardNo);
 		
 		if(freeBoard == null) {
 			throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
 		}
+		freeBoard.setBoardTitle(convertOriginLineToN(freeBoard.getBoardTitle()));
+		freeBoard.setBoardContent(convertOriginLineToN(freeBoard.getBoardContent()));
 		return freeBoard;
 	}
 	
@@ -86,11 +90,9 @@ public class FreeBoardValidator {
 		String boardTitle = escapeHtml(freeBoard.getBoardTitle());
 		String boardContent = escapeHtml(freeBoard.getBoardContent());
 		
-		convertNewLineToBr(boardTitle);
-		convertNewLineToBr(boardContent);
 		
-		freeBoard.setBoardTitle(boardTitle);
-		freeBoard.setBoardContent(boardContent);
+		freeBoard.setBoardTitle(convertNewLineToBr(boardTitle));
+		freeBoard.setBoardContent(convertNewLineToBr(boardContent));
 	}
 	
 	public String escapeHtml(String value) {
@@ -101,7 +103,21 @@ public class FreeBoardValidator {
 		return value.replaceAll("\n","<br>");
 	}
 	
+	public String convertOriginLineToN(String value) {
+		return value.replaceAll("<br>", "\n");
+	}
 	
+	public void validateBoardLength(FreeBoard freeBoard) {
+		if((freeBoard.getBoardTitle().length()) >= 21 || (freeBoard.getBoardContent().length()) >= 301) {
+			throw new TooLargeValueException("글이 너무 깁니다.");
+		}
+	}
+	
+	public void validateChatLength(FreeBoardReply reply) {
+		if(reply.getReplyContent().length() >= 31) {
+			throw new TooLargeValueException("채팅이 너무 깁니다.");
+		}
+	}
 	
 	public FreeBoardFile handleFileUpload(MultipartFile upfile, int num) {
 		
@@ -146,11 +162,4 @@ public class FreeBoardValidator {
 		}
 	}
 	
-	public FreeBoard selectBoardByFreeBoardNo(Long boardNo) {
-		FreeBoard freeBoard = mapper.selectBoardById(boardNo);
-		if(freeBoard == null) {
-			throw new BoardNotFoundException("게시글을 찾을 수 없습니다.");
-		}
-		return freeBoard;
-	}
 }

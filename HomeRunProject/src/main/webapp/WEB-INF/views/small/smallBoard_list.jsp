@@ -56,7 +56,9 @@
             <c:if test="${ not empty sessionScope.loginUser }">
             	<a class="btn btn-secondary" style="float:right;" href="insertForm.small">글쓰기</a>
             </c:if>
+            <c:if test="${ not empty sessionScope.loginUser }">
             	<a class="btn btn-secondary" style="float:right;" href="myList.small">나의 게시글 리스트</a>
+           	</c:if>
             <form id="searchForm" action="small" method="get" align="left" style="float:right">
                 <div class="select">
                     <select class="custom-select" name="boardLimit">
@@ -66,7 +68,15 @@
                         <option value="20">20개씩</option>
                     </select>
                 </div>
-                <button type="submit" class="searchBtn btn btn-secondary">적용</button>
+                <c:choose>
+                	<c:when test="${empty condition}">
+                		<button type="submit" class="searchBtn btn btn-secondary">적용</button>
+               		</c:when>
+	                <c:otherwise>
+	              	    <button type="button" class="searchBtn btn btn-secondary" 
+	              	    		onclick="searchCondition();">적용</button>
+	                </c:otherwise>
+                </c:choose>
             </form>
             <br>
             <br>
@@ -79,65 +89,112 @@
                         <th>작성자</th>
                         <th>작성일</th>
                         <th>조회수</th>
+                        <th>참가</th>
                     </tr>
                 </thead>
                 <tbody>
                 	<c:forEach items="${ smallBoard }" var="smallBoard">
-	                    <tr onclick="detail('${smallBoard.boardNo}')">
+	                    <tr>
 	                        <td>${ smallBoard.boardNo }</td>
 	                        <td>${ smallBoard.teamName }</td>
-	                        <td>${ smallBoard.boardTitle }</td>
+	                        <td onclick="detail('${smallBoard.boardNo}')">${ smallBoard.boardTitle }</td>
 	                        <td>${ smallBoard.nickName }</td>
 	                        <td>${ smallBoard.createDate }</td>
 	                        <td>${ smallBoard.selectCount }</td>
+	                        <td>
+	                        	<button onclick="participate('${smallBoard.boardNo}')">신청</button>
+	                        </td>
 	                    </tr>
                     </c:forEach>
                 </tbody>
             </table>
             <br>
 			<script>
-				function detail(num){
-					location.href = `small/\${num}`;
+				function detail(boardNo){
+					
+					location.href = `/baseball/small/\${boardNo}`
 				}
 			
+				function participate(boardNo){
+					location.href = `/baseball/participate-form.small/\${boardNo}`
+				}
+				
+				function searchCondition(){
+					const option = document.querySelector('select').value;
+					
+					location.href = '/baseball/searchList.small?condition=${condition}&keyword=${keyword}&option='+option;
+					
+				}
 			</script>
             <div id="pagingArea">
                 <ul class="pagination">
-                
-
 
 					<c:choose>
 						<c:when test="${ pageInfo.currentPage eq 1 }">                
                    			<li class="page-item disabled"><a class="page-link" >이전</a></li>
                    		</c:when>
+                   		<c:when test="${empty condition}">
+                   			<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage - 1}&option=${option}">이전</a></li>
+                   		</c:when>
                    		<c:otherwise>
-                   			<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage - 1}">이전</a></li>
+                   			<li class="page-item"><a class="page-link" href="searchList.small?page=${ pageInfo.currentPage - 1 }&condition=${condition}&keyword=${keyword}&option=${option}">이전</a></li>
                     	</c:otherwise>
                     </c:choose>
+                    
+                    
                     <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
-                    	<li class="page-item">
-	                    	<a class="page-link" href="small?page=${ num }">
-	                    		${ num }
-	                    	</a>
-                    	</li>
+                    	<c:choose>
+		                	<c:when test="${empty condition }">
+		                		<li class="page-item">
+		                		<c:choose>
+		                		<c:when test="${ empty boardLimit }">
+			                    	<a class="page-link" href="small?page=${ num }">
+			                    		${ num }
+			                    	</a>
+		                		</c:when>
+		                		<c:otherwise>
+		                			<a class="page-link" href="small?page=${ num }&boardLimit=${option}">
+			                    		${ num }
+			                    	</a>
+		                		</c:otherwise>
+		                		</c:choose>
+		                    	</li>
+		               		</c:when>
+			                <c:otherwise>
+			              	    <li class="page-item">
+			                    	<a class="page-link" href="searchList.small?page=${ num }&condition=${condition}&keyword=${keyword}&option=${option}">
+			                    		${ num }
+			                    	</a>
+		                    	</li>
+			                </c:otherwise>
+		                </c:choose>
                     </c:forEach>
+                    
+                    
+                    
                     <c:choose>
                     	<c:when test="${ pageInfo.currentPage eq pageInfo.endPage }">
                     		<li class="page-item disabled"><a class="page-link" >다음</a></li>
                     	</c:when>
+                    	<c:when test="${ empty condition}">
+                    		<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage + 1}&option=${option}">다음</a></li>
+                    	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage + 1}">다음</a></li>
+                    		<li class="page-item"><a class="page-link" href="searchList.small?page=${ pageInfo.currentPage + 1 }&condition=${condition}&keyword=${keyword}">다음</a></li>
                     	</c:otherwise>
                     </c:choose>
+                    
+                    
+                    
                 </ul>
             </div>
 
             <br clear="both"><br>
 
-            <form id="searchForm" action="searchList.free" method="get" align="center">
+            <form id="searchForm" action="searchList.small" method="get" align="center">
                 <div class="select">
                     <select class="custom-select" name="condition">
-                        <option value="writer">작성자</option>
+                        <option value="writer">닉네임</option>
                         <option value="title">제목</option>
                         <option value="content">내용</option>
                         <option value="team">팀</option>

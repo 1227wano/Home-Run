@@ -52,14 +52,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Transactional
 	public void insertBoard(FreeBoard freeBoard, MultipartFile[] upfile) {
 		validator.validateBoard(freeBoard);
+		validator.validateBoardLength(freeBoard);
 		
 		mapper.insertBoard(freeBoard);
 		
-		//FreeBoardFile file01 = (FreeBoardFile)upfile[0];
-		//String result = upfile[0].getOriginalFilename();
-		//log.info("{}", result);
-		//log.info("{}", file01);
-		//log.info("",upfile); 인덱스참조해서 .filename="" 으로 비교하기
 		for(int i = 0; i < 5; i++) {
 			if(!!!("".equals(upfile[i].getOriginalFilename()))) {
 				int num = i + 1;
@@ -76,15 +72,13 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public Map<String, Object> selectDetailByBoardNo(Long boardNo) {
 				
-		FreeBoard freeBoard = validator.selectBoardById(boardNo);
-		//log.info("{}", freeBoard);
+		FreeBoard freeBoard = validator.selectFreeBoardByBoardNo(boardNo);
 		
 		Map<String, Object> map = new HashMap();
 		
 		for(int i = 1; i < 6; i++) {
 			map.put("file"+i,selectBoardFile(FreeBoardFile.builder().refBno(boardNo).fileType(i).build()));
 		}
-		//log.info("{}", map);
 		map.put("freeBoard", freeBoard);
 		validator.incrementViewCount(boardNo);
 		return map;
@@ -94,7 +88,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public Map<String, Object> selectUpdateByBoardNo(Long boardNo) {
 				
-		FreeBoard freeBoard = validator.selectBoardById(boardNo);
+		FreeBoard freeBoard = validator.selectFreeBoardByBoardNo(boardNo);
 		
 		Map<String, Object> map = new HashMap();
 		
@@ -114,9 +108,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 											, String file5ChangeName) {
 		
 		validator.validateBoardNo(boardNo);
-		FreeBoard freeBoard = validator.selectBoardByFreeBoardNo(boardNo);
-		//log.info("{}",file1ChangeName);
-		//log.info("{}",file2ChangeName);
+		FreeBoard freeBoard = validator.selectFreeBoardByBoardNo(boardNo);
 		
 		int result = mapper.deleteBoard(boardNo);
 		
@@ -139,21 +131,20 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	public void updateBoard(FreeBoard freeBoard, MultipartFile[] upfile) {
 
 		validator.validateBoardNo(freeBoard.getBoardNo());
-		validator.selectBoardByFreeBoardNo(freeBoard.getBoardNo());
+		validator.validateBoardLength(freeBoard);
+		validator.selectFreeBoardByBoardNo(freeBoard.getBoardNo());
 		
 		
 		
 		for(int i = 0; i < 5; i++) {
 			FreeBoardFile searchFile = new FreeBoardFile();
+			
 			int num = i + 1;
-			// log.info("{}", freeBoard.getBoardNo());
-			// searchFile.builder().refBno(freeBoard.getBoardNo()).fileType(num).build();
+			
 			searchFile.setRefBno(freeBoard.getBoardNo());
 			searchFile.setFileType(num);
-			// log.info("{}", searchFile);
 			FreeBoardFile searchFileTotal = mapper.selectBoardFile(searchFile);
-			// log.info("{}",searchFileTotal);
-			// log.info("{}",upfile);
+			
 			if(searchFileTotal != null && !("".equals(searchFileTotal.getOriginName()))){
 				if(!!!("".equals(upfile[i].getOriginalFilename()))) {
 					validator.delete(searchFileTotal.getChangeName());
@@ -170,7 +161,6 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			}
 		}
 
-		// log.info("{}",freeBoard);
 		int result = mapper.updateBoard(freeBoard);
 		
 		if(result < 1) {
@@ -181,17 +171,12 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
 	@Override
 	public Map<String, Object> searchList(Map<String, Object> map) {
-		// log.info("{}", map);
 		int result = mapper.searchListCount(map);
-		// log.info("{}", result);
 		PageInfo pi = validator.getPageInfo(result, (int)map.get("page"));
 		
 		RowBounds rowBounds = validator.getRowBounds(pi);
 		
-		map.put("rowBounds", rowBounds);
-		
-		List<FreeBoard> boards = mapper.searchList(map);
-		// log.info("{}", boards);
+		List<FreeBoard> boards = mapper.searchList(map, rowBounds);
 		map.put("freeBoard", boards);
 		map.put("pageInfo", pi);
 		
@@ -201,6 +186,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public int insertReply(FreeBoardReply reply) {
 		
+		validator.validateChatLength(reply);
 		int result = mapper.insertReply(reply);
 		
 		if(result < 1) {

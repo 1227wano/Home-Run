@@ -13,18 +13,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class SmallBoard {
+public class SmallBoardList {
 
-	private Long boardNo;
-	private String teamName;
-	private int boardWriter;
-	private String boardTitle;
-	private String createDate;
-	private String boardContent;
-	private int selectCount;
-	private String status;
-	private String adminStatus;
-	private String nickName;
+	private int listNo;
+	private Long refBno;
+	private int participantNo;
 	private String writerPermission;
+	private String banReason;
+	private String userEscape;
+	private String participationContent;
+	private String participationStatus;
+	private String participationDate;
+	private String nickName;
 	private int loginUserNo;
 }

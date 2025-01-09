@@ -1,17 +1,32 @@
 package com.kh.baseball.small.model.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.exception.BoardNotFoundException;
+import com.kh.baseball.exception.FailToBanParticipant;
+import com.kh.baseball.exception.FailToBoardInsertException;
+import com.kh.baseball.exception.FailToFileUploadException;
+import com.kh.baseball.exception.FailToReplyInsertException;
+import com.kh.baseball.exception.NeedToLoginException;
+import com.kh.baseball.exception.NoReadyInsertBoardException;
+import com.kh.baseball.exception.ParticipantNotAllowException;
+import com.kh.baseball.member.model.vo.Member;
 import com.kh.baseball.small.model.dao.SmallBoardMapper;
 import com.kh.baseball.small.model.vo.SmallBoard;
+import com.kh.baseball.small.model.vo.SmallBoardList;
+import com.kh.baseball.small.model.vo.SmallBoardReply;
 import com.kh.baseball.small.model.vo.SmallBoardUpfile;
 
 import lombok.RequiredArgsConstructor;
@@ -20,10 +35,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class SmallBoardServiceImpl implements SmallBoardService {
 
+public class SmallBoardServiceImpl implements SmallBoardService {
 	private final SmallBoardMapper mapper;
 	private final SmallBoardValidator validator;
+	private final ServletContext context;
 	
 	@Override
 	public Map<String, Object> selectBoardList(int Page, int boardLimit) {
@@ -45,7 +61,9 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 	public List<String> selectTeamList() {
 		
 		List<String> teams = mapper.getTeamList();
-		
+		if(teams.isEmpty()) {
+			throw new NoReadyInsertBoardException("팀이 조회되지 않습니다.");
+		}
 		return teams;
 	}
 
@@ -83,10 +101,10 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 
 		SmallBoard adminDetail = mapper.adminBoardDetail(boardNo);
 		SmallBoardUpfile upfile = mapper.adminUpfileDetail(boardNo);
-		
+		SmallBoard validateAdminDetail = validator.convertOriginLine(adminDetail);
 		
 		Map<String, Object> map = new HashMap();
-		map.put("adminDetail", adminDetail);
+		map.put("adminDetail", validateAdminDetail);
 		map.put("file", upfile);
 		
 		return map;
@@ -100,6 +118,8 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 		if(num <= 0) {
 			throw new BoardNotFoundException("게시글을 허가하지 못했습니다.");
 		}
+		SmallBoard smallBoard = mapper.selectBoardByBoardNo(boardNo);
+		mapper.insertWriterAllow(smallBoard);
 	}
 
 	@Override
@@ -120,9 +140,17 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 
 	@Override
 	@Transactional
-	public Map<String, Object> selectDetailByBoardNo(Long boardNo) {
+	public Map<String, Object> selectDetailByBoardNo(Long boardNo, HttpSession session) {
 
 		SmallBoard smallBoard = validator.selectBoardByBoardNo(boardNo);
+		Member member = (Member)session.getAttribute("loginUser");
+		if(member == null) {
+			throw new NeedToLoginException("로그인 안하고 게시물 열람시도");
+		}
+		int loginUserNo = member.getUserNo();
+		smallBoard.setLoginUserNo(loginUserNo);
+		
+		validator.checkWriterPermission(smallBoard);
 		
 		validator.incrementViewCount(boardNo);
 		
@@ -170,16 +198,138 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 		
 		return map;
 	}
+
+	@Override
+	public void update(SmallBoard smallBoard, MultipartFile upfile, SmallBoardUpfile file) {
+
+		validator.validateBoard(smallBoard);
+		validator.selectBoardByBoardNo(smallBoard.getBoardNo());
+		
+		int boardResult = mapper.updateBoard(smallBoard);
+		validator.validateUpdateBoard(boardResult);
+		
+		if(!!!("").equals(upfile.getOriginalFilename())) {
+			if(file.getChangeName() != null) {
+				new File(context.getRealPath(file.getChangeName())).delete();
+			}
+			SmallBoardUpfile smallBoardUpfile = validator.handleFileUpload(upfile);
+			smallBoardUpfile.setRefBno(smallBoard.getBoardNo());
+			int result = mapper.updateBoardUpfile(smallBoardUpfile);
+			if(result < 1) {
+				throw new FailToFileUploadException("파일업로드를 실패했습니다.");
+			}
+		}
+	}
+
+	@Override
+	public Map<String, Object> selectParticipantList(Long boardNo, int Page, int boardLimit) {
+
+		int totalCount = validator.getParticipantListCount(boardNo);
+		
+		PageInfo pi = validator.getPageInfo(totalCount, Page);
+		
+		List<SmallBoardList> lists = validator.getParticipantList(pi, boardNo);
+		Map<String, Object> map = new HashMap();
+		map.put("participantList", lists);
+		map.put("pageInfo", pi);
+		return map;
+	}
+
+	@Override
+	public void writerPermission(int listNo) {
+
+		int allowResult = mapper.writerAllow(listNo);
+		if(allowResult < 1) {
+			throw new ParticipantNotAllowException("참가자를 수락이 불가합니다..");
+		}
+	}
+
+	@Override
+	public void updateBanReason(SmallBoardList smallBoardList) {
+		
+		validator.validateListNo(smallBoardList.getListNo());
+		
+		SmallBoardList updateSmallBoardList = validator.validateBanReason(smallBoardList);
+		
+		int updateResult = mapper.updateBanReason(updateSmallBoardList);
+		
+		if(updateResult < 1) {
+			throw new FailToBanParticipant("참여자를 강퇴하지 못했습니다.");
+		}
+	}
 	
+	public SmallBoardList validateParticipateForm(Long boardNo, Member member) {
+		if(member == null) {
+			throw new NeedToLoginException("로그인해주셔야 합니다.");
+		}
+		
+		SmallBoardList smallBoardList = new SmallBoardList();
+		smallBoardList.setRefBno(boardNo);
+		smallBoardList.setLoginUserNo(member.getUserNo());
+		
+		validator.validateParticipateForm(smallBoardList);
+		return smallBoardList;
+	}
 	
+	public void insertParticipate(SmallBoardList smallBoardList) {
+		validator.validateParticipateForm(smallBoardList);
+		
+		SmallBoardList updateSmallBoardList = validator.validateParticipationContent(smallBoardList);
+		
+		int insertResult = mapper.insertSmallBoardList(updateSmallBoardList);
+		
+		if(insertResult < 1) {
+			throw new FailToBoardInsertException("참가신청을 할 수 없습니다.");
+		}
+		
+	}
+
+	@Override
+	public Map<String, Object> searchList(Map<String, Object> map) {
+
+		int result = mapper.searchListCount(map);
+
+		PageInfo pi = validator.getPageInfo(result, (int)map.get("page"), (int)map.get("option"));
+		RowBounds rowBounds = validator.getRowBounds(pi);
+		
+		List<SmallBoard> boards = mapper.searchList(map, rowBounds);
+		
+		map.put("smallBoard", boards);
+		map.put("pageInfo", pi);
+		
+		return map;
+	}
+
+	@Override
+	public int insertReply(SmallBoardReply reply) {
+
+		int result = mapper.insertReply(reply);
+		if(result < 1) {
+			throw new FailToReplyInsertException("댓글작성을 실패했습니다.");
+		}
+		
+		return result;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public List<SmallBoardReply> selectReply(Long boardNo){
+		
+		return mapper.selectReply(boardNo);
+		
+	}
+
+	@Override
+	public int deleteChat(int replyNo, HttpSession session) {
+		
+		SmallBoardReply reply = mapper.selectReplyById(replyNo);
+		Member member = (Member)session.getAttribute("loginUser");
+		int result = 0;
+		
+		if((member!=null && reply.getReplyNickName().equals(member.getNickName())) || (member != null && "admin".equals(member.getUserId()))) {
+			result = mapper.deleteChat(replyNo);
+		}
+		
+		return result;
+	}
 
 }
