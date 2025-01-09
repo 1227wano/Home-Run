@@ -35,7 +35,7 @@
             	
         
      
-            		if( $idInput.val().length >= 5){
+            		if( $idInput.val().length >= 4){
             			
             			$.ajax({
             				
@@ -61,6 +61,7 @@
             	}
 	
             }
+            
             
             function nicknamecheck(){
             	
@@ -137,16 +138,16 @@
             <form action="sign_up.me" method="post">
                 <div class="form-group" id="enroll_form" style="width: 50%; margin: auto;">
                     <label for="userId"> 아이디 </label>
-                    <input type="text" class="form-control" id="userId" placeholder="아이디를 입력해주세요" name="userId" required> 
+                    <input type="text" class="form-control" id="userId" placeholder="9자 이하 아이디를 입력해주세요" name="userId"  required> 
                     <button type="button" onclick="idcheck()">중복확인</button> <br>
-                    <div id="check-result" style="font-size:0.7em; display:none;"></div> <br>
+                    <div id="check-result" style="font-size:0.9em; display:none;"></div> <br>
 
                     <label for="userPwd"> 비밀번호 </label>
-                    <input type="password" class="form-control" id="userPwd" placeholder="비밀번호를 입력해주세요" name="userPwd" required> <br>
+                    <input type="password" class="form-control" id="userPwd" placeholder="4글자 이상 비밀번호를 입력해주세요" name="userPwd" required> <br>
 
                     <label for="checkPwd"> 비밀번호 재확인 </label>
                     <input type="password" class="form-control" id="checkPwd" placeholder="비밀번호 재확인" name="checkPwd" keyup="pwdcheck()" required > 
-                    <div id="checkPwdResult" style="font-size:0.7em; display:none;"></div> <br>
+                    <div id="checkPwdResult" style="font-size:0.9em; display:none;"></div> <br>
 
                     <label for="userName"> 이름 </label>
                     <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요" name="userName" required> <br>
@@ -154,7 +155,7 @@
                     <label for="nickName"> 닉네임 </label>
                     <input type="text" class="form-control" id="nickName" placeholder="닉네임을 입력해주세요" name="nickName" required>
                     <button type="button" onclick="nicknamecheck()" >중복확인</button> <br>
-                    <div id="nickNameCheckResult" style="font-size:0.7em; display:none;"></div> <br>
+                    <div id="nickNameCheckResult" style="font-size:0.9em; display:none;"></div> <br>
 
                     <label for="phone"> 전화번호 </label>
                     <input type="tel" class="form-control" id="age" placeholder="전화번호를 입력해주세요" name="phone" required> <br>
@@ -165,7 +166,7 @@
                     <label for="address"> 주소 </label>
                     <input type="text" class="form-control" id="address" placeholder="주소를 입력해주세요" name="address"> <br>
                     
-                    <input type="checkbox" class="form-control" id="agreement" name="agreement" required> 
+                    <input type="checkbox" id="agreement" name="agreement" style="display: inline-block;" required> 
                     <label for="agreement"> 인증 약관 전체동의 [필수] </label>
                     <div style="width:730px; height:100px; resize: none; overflow-x: hidden; overflow-y:auto; ">
 						개인정보보호법에 따라 네이버에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및

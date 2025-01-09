@@ -47,16 +47,21 @@
             <a class="btn btn-secondary" style="float:right;" href="/baseball/small">목록으로</a>
             <br><br>
 
-            <form id="enrollForm" method="post" action="small" enctype="multipart/form-data">
-                <input type="hidden" name="boardWriter" value="${ sessionScope.loginUser.userNo }">
+            <form id="enrollForm" method="post" action="update.small" enctype="multipart/form-data">
+                <input type="hidden" name="boardWriter" value="${ sessionScope.loginUser.userNo }"/>
+                <input type="hidden" name="boardNo" value="${ smallBoard.boardNo }"/>
                 <table align="center">
                     <tr>
                         <th><label for="title">제목</label></th>
                         <td><input type="text" id="title" class="form-control" value="${smallBoard.boardTitle}" name="boardTitle" required></td>
                     </tr>
                     <tr>
+                        <th><label for="team">팀</label></th>
+                        <td><input type="text" id="title" class="form-control" value="${smallBoard.teamName}" name="teamName" readonly></td>
+                    </tr>
+                    <tr>
                         <th><label for="writer">작성자</label></th>
-                        <td><input type="text" id="writer" class="form-control" value="${ sessionScope.loginUser.userId }" readonly></td>
+                        <td><input type="text" id="writer" class="form-control" value="${ sessionScope.loginUser.nickName }" readonly></td>
                     </tr>
                     <tr>
                         <th><label for="upfile">첨부파일</label></th>

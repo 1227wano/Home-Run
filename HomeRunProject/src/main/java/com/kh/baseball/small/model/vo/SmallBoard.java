@@ -1,7 +1,5 @@
 package com.kh.baseball.small.model.vo;
 
-import com.kh.baseball.freeBoard.model.vo.FreeBoard;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,4 +25,6 @@ public class SmallBoard {
 	private String status;
 	private String adminStatus;
 	private String nickName;
+	private String writerPermission;
+	private int loginUserNo;
 }

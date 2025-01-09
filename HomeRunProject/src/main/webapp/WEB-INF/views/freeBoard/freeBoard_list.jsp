@@ -95,23 +95,40 @@
 						<c:when test="${ pageInfo.currentPage eq 1 }">                
                    			<li class="page-item disabled"><a class="page-link" >이전</a></li>
                    		</c:when>
-                   		<c:otherwise>
+                   		<c:when test="${empty condition }">
                    			<li class="page-item"><a class="page-link" href="freeBoard?page=${ pageInfo.currentPage - 1}">이전</a></li>
+                   		</c:when>
+                   		<c:otherwise>
+                   			<li class="page-item"><a class="page-link" href="searchList.free?page=${ pageInfo.currentPage - 1}&condition=${condition}&keyword=${keyword}">이전</a>
                     	</c:otherwise>
                     </c:choose>
                     <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
-                    	<li class="page-item">
-	                    	<a class="page-link" href="freeBoard?page=${ num }">
-	                    		${ num }
-	                    	</a>
-                    	</li>
+                    	<c:choose>
+		                	<c:when test="${empty condition}">
+		                		<li class="page-item">
+			                    	<a class="page-link" href="freeBoard?page=${ num }">
+			                    		${ num }
+			                    	</a>
+		                    	</li>
+		               		</c:when>
+			                <c:otherwise>
+			              	    <li class="page-item">
+			                    	<a class="page-link" href="searchList.free?page=${ num }&condition=${condition}&keyword=${keyword}">
+			                    		${ num }
+			                    	</a>
+		                    	</li>
+			                </c:otherwise>
+		                </c:choose>
                     </c:forEach>
                     <c:choose>
                     	<c:when test="${ pageInfo.currentPage eq pageInfo.endPage }">
                     		<li class="page-item disabled"><a class="page-link" >다음</a></li>
                     	</c:when>
-                    	<c:otherwise>
+                    	<c:when test="${empty condition}">
                     		<li class="page-item"><a class="page-link" href="freeBoard?page=${ pageInfo.currentPage + 1}">다음</a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="searchList.free?page=${ pageInfo.currentPage + 1 }&condition=${condition}&keyword=${keyword}">다음</a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>
