@@ -8,12 +8,7 @@
 
 	<jsp:include page="common/menubar.jsp"/>
 	
-	
-	
-	<div style="height : 500px;"></div>
-	
-	
-	<!--<jsp:include page=""/>-->
+	<jsp:include page="common/main.jsp"/>
 	
 
 </body>
