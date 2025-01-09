@@ -19,9 +19,10 @@ public interface NoticeService {
 	
 	void deleteNotice(Long noticeNo, String attachMent);
 
-	Notice getNoticeById(long noticeNo);
+	Notice getNoticeById(Long noticeNo);
 
-	int getTotalCount();
+
+
 	
 
 

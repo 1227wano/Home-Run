@@ -118,7 +118,10 @@
             <a class="nav-link js-scroll-trigger" href="/baseball/foodTruckBoards">푸드트럭</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="notices">공지사항</a>
+            <a class="nav-link js-scroll-trigger" href="/baseball/notices">공지사항</a>
+          </li>
+          <li class="nav-item">
+          	<a class="nav-link js-scroll-trigger" href="/baseball/question">Q&A</a>
           </li>
           
           

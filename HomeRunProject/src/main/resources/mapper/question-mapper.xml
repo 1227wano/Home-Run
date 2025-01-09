@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.baseball.question.model.dao.QuestionMapper">
+
+	<sql id="questionColumn">
+		SELECT
+				QUESTION_NO questionNo,
+				TITLE questionTitle,
+				CONTENT questionContent,
+				QUESTION_WRITER questionWriter,
+				TO_CHAR(CREATION_DATE, 'YYYY-MM-DD') as creationDate
+	 	  FROM
+	 	  		TB_QUESTION
+	 	 WHERE
+	 	 		STATUS = 'Y'
+	</sql>
+	
+	<select id="selectTotalCount" resultType="int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		TB_QUESTION
+		 WHERE
+		 		STATUS = 'Y'	
+	</select>
+	
+	<select id="selectQuestionList" resultType="question">
+		<include refid="questionColumn" />
+		 ORDER
+		 	BY
+		 		QUESTION_NO DESC	 	 		
+	</select>
+
+</mapper>
