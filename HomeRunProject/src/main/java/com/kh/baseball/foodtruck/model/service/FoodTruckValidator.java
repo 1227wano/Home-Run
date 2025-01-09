@@ -63,10 +63,10 @@ public class FoodTruckValidator {
 	}
 	
 	public void validateFoodTruck(FoodTruck foodTruck) {
-		if(foodTruck == null || 
-			foodTruck.getFoodTruckName()== null || foodTruck.getFoodTruckName().trim().isEmpty()||
-			foodTruck.getFoodTruckDay() == null || foodTruck.getFoodTruckDay().trim().isEmpty()||
-			foodTruck.getFoodTruckContent() == null || foodTruck.getFoodTruckContent().trim().isEmpty()){
+		if(foodTruck == null ||
+			foodTruck.getFoodTruckName()== null || foodTruck.getFoodTruckName().trim().isEmpty() ||
+			foodTruck.getFoodTruckContent() == null || foodTruck.getFoodTruckContent().trim().isEmpty()
+			){
 				throw new FoodTruckNoValueException("푸드트럭 게시물에 부적절한 입력입니다.");
 			}
 		
@@ -81,33 +81,44 @@ public class FoodTruckValidator {
 	}
 	
 	public String escapeHtml(String value) {
+		if (value == null)  return null; // 또는 빈 문자열을 반환하거나 다른 처리
 		return value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 	
 	public String convertNewlineToBr(String value) {
+		if (value == null)  return null; // 또는 빈 문자열을 반환하거나 다른 처리
 		return value.replaceAll("\n", "<br>");
 	}
 	
 	
 	public FoodTruckFile handelFileUpload(MultipartFile upfile, int fileType) {
 		
+		log.info("{}",upfile);
+		
 		String fileName = upfile.getOriginalFilename();
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		int randomNum = (int)Math.random()*90000 + 10000;
+		int randomNum = (int)(Math.random()*90000) + 10000;
 		String changeName = currentTime + randomNum + ext;
 		
-		String savePath = context.getRealPath("/resource/upload_files/");
+		
+		String savePath = context.getRealPath("/resources/upload_files/");
+		
+		log.info("Original file name: {}", fileName); 
+		log.info("Changed file name: {}", changeName); 
+		log.info("Save path: {}", savePath);
 		
 		FoodTruckFile foodTruckFile = FoodTruckFile.builder().originName(fileName)
 															 .changeName(changeName)
+															 .filePath(savePath)
 															 .fileType(fileType)
 															 .build();
+		log.info("foodTruckFile:{}", foodTruckFile);
 		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
 		}catch(IllegalStateException | IOException e) {
-			throw new FailToFileUploadException("파일이 문제가 발생했습니다.");
+			throw new FailToFileUploadException("파일에 문제가 발생했습니다.");
 		}
 		
 		return foodTruckFile;

@@ -18,7 +18,7 @@ public class FoodTruck {
 	
 	
 	private int foodTruckNo;
-	private String foodTruckUser;
+	private String userId;
 	private int domNo;
 	private String domName;
 	private String foodTruckName;
@@ -30,5 +30,6 @@ public class FoodTruck {
 	private String modifyDate;
 	private int foodTruckCount;
 	private String status;
+	private String adminStatus; 
 
 }

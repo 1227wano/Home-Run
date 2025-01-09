@@ -61,12 +61,13 @@
 
 	<jsp:include page="../common/menubar.jsp" />
 		<div>
-			<form action="">
+		
+			<form action="foodTruckSelectDom">
 
 				구장 : 
-				<select name="dom-select" name="domName">
-					<c:forEach items="${ domName }" var="domName">
-					<option value="${ domName }">${ domName}</option>
+				<select name="domNo" >
+					<c:forEach items="${ dom }" var="dom">
+					<option value="${ dom.domNo }">${ dom.domName }</option>
 					</c:forEach>
 				</select>
 
@@ -87,18 +88,23 @@
 			
 			<br>
 			
-			<c:forEach items="${ foodTruck }" var="foodTruck">
 			
+				<c:forEach items="${ foodTruck }" var="foodTruck">
+				<c:forEach items="${ foodTruckFile }" var="foodTruckFile">
+				<c:if test="${ foodTruck.foodTruckNo == foodTruckFile.refFtno }">
 				<div class="thumbnail" align="center">
-					<img src="" alt="">
+					<img src="/baseball/resources/upload_files/${ foodTruckFile.changeName }" alt="푸드트럭 이미지">
+					
 					<p>	${ foodTruck.foodTruckName } </p> <br>
 					<label>구장 :</label> <span> ${ foodTruck.domName }</span> <br>
 	                <label>영업시간 :</label> <span> ${foodTruck.foodTruckStartTime } ~ ${foodTruck.foodTruckEndTime}</span> <br>
 	                <label>영업요일 :</label> <span> ${foodTruck.foodTruckDay}</span> <br>
 	                <label>조회수 :</label> <span> ${foodTruck.foodTruckCount }</span>
 				</div>
+				</c:if>
+				</c:forEach>
+				</c:forEach>
 				
-			</c:forEach>
             
 
 

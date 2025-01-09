@@ -17,78 +17,124 @@
     <div class="content">
         <br><br>
         <div class="innerOuter">
-            <h2 style="text-align: center;">푸드트럭 등록</h2>
+            <h2 style="text-align: center;">푸드트럭 신청</h2>
             <br>
             
+            <script>
             
-            <form action="#" method="post"> 
-                <div class="form-group" id="enroll_form" style="width: 50%; margin: auto;">
-                    <label for="userId"> 사용자 아이디</label>
-                    <input type="text" class="form-control" id="userId" placeholder="아이디를 입력해주세요" name="userId" required> <br>
+            function foodTruckNameCheck(){
+            	
+            	const $foodTruckName = $('#foodTruck_form > #foodTruckName');
+            	const $foodTruckNameCheckResult = $('#foodTruckNameCheckResult');
+            	const $foodTruckBtn = $('foodTruck-btn');
+            	
+            	if($foodTruckName.val().length >= 1){
+            		
+            		$.ajax({
+            			
+            			url : 'foodTruckNameCheck',
+            			type : 'get',
+            			data : {
+            				foodTruckName : $foodTruckName.val()
+            			},
+            			success : function(result){
+            				
+            				console.log(result);
+            				
+            				if(result.substr(4) === 'F'){
+            					$foodTruckNameCheckResult.show().css('color','red').text('사용할 수 없는 푸드트럭 상호명입니다.');
+            					$foodTruckBtn.attr('disabled', true);
+            				}else{
+            					$foodTruckNameCheckResult.show().css('color', 'blue').text('사용 가능한 푸드트럭 상호명입니다.');
+            					$foodTruckBtn.attr('disabled');
+            				}
+            			}
+            		});
+            	}
+            }
+            
+            
+            
+            
+            </script>
+            
+            
+            <form action="foodTruck" method="post" enctype="multipart/form-data"> 
+                <div class="form-group" id="foodTruck_form" style="width: 50%; margin: auto;">
+                    <label for="userId"> 사용자 아이디 :   </label> <span>${sessionScope.loginUser.userId}</span> <br>
+                    <input type="hidden" value="${ sessionScope.loginUser.userId }" name="userId"/>
+             
                     
+                    <label for="domName"> 구장 </label>
+                    <select name="domNo" >
+					<c:forEach items="${ dom }" var="dom">
+					<option value="${ dom.domNo }">${ dom.domName }</option>
+					</c:forEach>
+					</select>
+                    <br>
                     
-                    <label for="userPwd"> 구장 </label>
-                    <select name = "dom">
-                        <option>잠실야구장</option>
-                        <option>인천야구장</option>
-                        <option>부산야구장</option>
-                    </select> <br>
-                   
+                   	
+                   	<br>
                     <label for="foodTruckName"> 푸드트럭 이름 </label>
-                    <input type="text" class="form-control" id="userName" placeholder="푸드트럭 상호명을 입력해주세요." name="foodTruckName" required> 
-                    <button type="button" onclick="#">중복확인</button> <br><br>
+                    <input type="text" id="foodTruckName" placeholder="푸드트럭 상호명을 입력해주세요." name="foodTruckName" required> 
+                    <button type="button" onclick="foodTruckNameCheck()">중복확인</button> <br>
+                    <div id="foodTruckNameCheckResult" style="font-size:0.9em; display:none;"></div> <br>
 
-                    <label for="startTime"> 푸드트럭 영업 시작 시간 </label>
-                    <input type="time" class="form-control" id="startTime" name="startTime"><br>
+                    <label for="foodTruckStartTime"> 푸드트럭 영업 시작 시간 </label>
+                    <input type="time"  id="foodTruckStartTime" name="foodTruckStartTime"><br>
                     
-                    <label for="endTime"> 푸드트럭 영업 끝나는 시간</label>
-                    <input type="time" class="form-control" id="endTime" name="endTime"> <br>
+                    <label for="foodTruckEndTime"> 푸드트럭 영업 끝나는 시간</label>
+                    <input type="time" id="foodTruckEndTime" name="foodTruckEndTime"> <br>
 
-                    <label for="openDay"> 푸드트럭 영업 요일 </label> <br>
+                    <label for="foodTruckDay"> 푸드트럭 영업 요일 </label> <br>
                     
                     <div style="display: inline-block;" class="checkbox-inline" >
-                    <input type="checkbox" class="form-control" id="monday" name="openDay"><label for="월요일">월</label> 
+                    <input type="checkbox" id="monday" value="월" name="foodTruckDay" ><label for="monday">월</label> 
                     </div>
                     <div style="display: inline-block;" class="checkbox-inline" >
-                    <input type="checkbox" class="form-control" id="tuesday" name="openDay"><label for="화요일">화</label> 
+                    <input type="checkbox"  id="tuesday" value="화" name="foodTruckDay" ><label for="tuesday">화</label> 
                     </div>
                     <div style="display: inline-block;" class="checkbox-inline" >
-                    <input type="checkbox" class="form-control" id="wednesday" name="openDay"><label for="수요일">수</label> 
+                    <input type="checkbox"  id="wednesday" value="수" name="foodTruckDay" ><label for="wednesday">수</label> 
                     </div>
                     <div style="display: inline-block;" class="checkbox-inline" >
-                    <input type="checkbox" class="form-control" id="thursday" name="openDay"><label for="목요일">목</label> 
+                    <input type="checkbox" id="thursday" value="목" name="foodTruckDay" ><label for="thursday">목</label> 
                     </div>
                     <div style="display: inline-block;" class="checkbox-inline" >
-                    <input type="checkbox" class="form-control" id="friday" name="openDay"><label for="금요일">금</label> 
+                    <input type="checkbox"  id="friday" value="금" name="foodTruckDay" "><label for="friday">금</label> 
                     </div>
                     <div style="display: inline-block;" class="checkbox-inline" >
-                    <input type="checkbox" class="form-control" id="saturday" name="openDay"><label for="토요일">토</label> 
+                    <input type="checkbox" id="saturday" value="토" name="foodTruckDay" ><label for="saturday">토</label> 
                     </div>
                     <div style="display: inline-block;" class="checkbox-inline" >
-                    <input type="checkbox" class="form-control" id="sunday" name="openDay"><label for="일요일">일</label> <br>
-                    </div>
+                    <input type="checkbox"  id="sunday" value="일" name="foodTruckDay" ><label for="sunday">일</label> <br>
+                    </div>  
                     
                     <br>
 
-                    <label for="startDate"> 푸드트럭 시작 날짜 </label>
-                    <input type="date" class="form-control" id="startDate" name="startDate"> <br>
+                    <label for="enrollDate"> 푸드트럭 시작 날짜 </label>
+                    <input type="date" class="form-control" id="enrollDate" name="enrollDate"> <br>
                     
-                    <label for="endDate"> 푸드트럭 끝나는 날짜 </label>
-                    <input type="date" class="form-control" id="endDate"  name="endDate"> <br>
+                    <label for="modifyDate"> 푸드트럭 끝나는 날짜 </label>
+                    <input type="date" class="form-control" id="modifyDate"  name="modifyDate"> <br>
                     
-                    <label for="openDay"> 푸드트럭 소개 </label><br>
-                    <textarea id="content" class="form-control" rows="10" cols="20" style="resize:none;" name="" required>여긴내용~</textarea><br>
+                    <label for="foodTruckContent"> 푸드트럭 소개 </label><br>
+                    <textarea id="foodTruckContent" class="form-control" rows="10" cols="20" style="resize:none;" name="foodTruckContent" required>푸드트럭 소개 작성해주세요.</textarea><br>
                     
-                    <label for="upfile">첨부파일</label><br>
-                    <input type="file" id="upfile1" class="form-control-file border" name=""> <br>
-                    <input type="file" id="upfile2" class="form-control-file border" name=""> <br>
-                    <input type="file" id="upfile3" class="form-control-file border" name=""> <br>
                     
+                    <label for="upfile">첨부파일 1</label> <br>
+                    <input type="file" id="upfile1" class="form-control-file border" name="upfile" required><br>
+                                                       
+                    <label for="upfile">첨부파일 2</label><br>
+                    <input type="file" id="upfile2" class="form-control-file border" name="upfile"><br>
+                   
+                    <label for="upfile">첨부파일 3</label><br>
+                    <input type="file" id="upfile3" class="form-control-file border" name="upfile"> <br>
                     
                 </div> 
                 <br> 
                 <div class="btns" align="center">
-                    <button type="submit" class="btn btn-primary disabled" id="join-btn" >푸드트럭 신청</button>
+                    <button type="submit" class="btn btn-primary disabled" id="foodTruck-btn" >푸드트럭 신청</button>
                 </div>
             </form>
         </div>

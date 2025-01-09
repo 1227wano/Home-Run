@@ -26,7 +26,9 @@
 		        FOOD_TRUCK_CONTENT foodTruckContent,
 		        TB_FOOD_TRUCK.ENROLL_DATE enrollDate,
 		        TB_FOOD_TRUCK.MODIFY_DATE modifyDate,
-		        FOOD_TRUCK_COUNT foodTruckCount
+		        FOOD_TRUCK_COUNT foodTruckCount,
+		        TB_FOOD_TRUCK.STATUS status,
+		        TB_FOOD_TRUCK.ADMIN_STATUS adminStatus
 		FROM
 		        TB_FOOD_TRUCK
 	    JOIN
@@ -43,13 +45,134 @@
 
 </select>
 
-<select id="selectDom" resultType="String">
+<select id="selectDom" resultType="foodTruck">
 	SELECT
-	        DOM_NAME
+			DOM_NO domNo,
+	        DOM_NAME domName
 	FROM
 	        TB_DOM
 	WHERE
 			STATUS = 'Y'
+</select>
+
+<insert id="insertFoodTruck" parameterType="foodTruck">
+INSERT
+  INTO
+        TB_FOOD_TRUCK
+        (
+        FOOD_TRUCK_NO,
+        FOOD_TRUCK_USER,
+        DOM_NO,
+        FOOD_TRUCK_NAME,
+        FOOD_TRUCK_START_TIME,
+        FOOD_TRUCK_END_TIME,
+        FOOD_TRUCK_DAY,
+        ENROLL_DATE,
+        MODIFY_DATE,
+        FOOD_TRUCK_CONTENT
+        )
+VALUES
+        (
+        SEQ_TRUCKNO.NEXTVAL,
+        #{ userId },
+        #{ domNo },
+        #{ foodTruckName },
+        #{ foodTruckStartTime },
+        #{ foodTruckEndTime },
+        #{ foodTruckDay },
+        #{ enrollDate },
+        #{ modifyDate },
+        #{ foodTruckContent }
+        )
+</insert>
+
+<insert id="insertFoodTruckFile" parameterType="foodTruckFile">
+	INSERT
+	  INTO
+	 		   TB_FOODTRUCK_FILE
+	           (
+	 		   FILE_NO,
+	 		   REF_FTNO,
+	 		   ORIGIN_NAME,
+	           CHANGE_NAME,
+	           UPLOAD_DATE,
+	           FILE_TYPE,
+	           FILE_PATH
+	 		   )
+	VALUES
+	 		  (
+	 		   SEQ_FTFNO.NEXTVAL,
+	           SEQ_TRUCKNO.CURRVAL,
+	 		   #{originName},
+	 		   #{changeName},
+	           SYSDATE,
+	           #{fileType},
+	 		   #{filePath}
+	 			)
+	  		
+
+</insert>
+
+<select id="foodTruckNameCheck" parameterType="string" resultType="_int">
+	SELECT
+			COUNT(*)
+	FROM
+		    TB_FOOD_TRUCK
+	WHERE
+	        FOOD_TRUCK_NAME = #{ foodTruckName }
+	AND
+	  	   	STATUS = 'Y'
+</select>
+
+<select id="selectFoodTruckFile" parameterType="foodTruckFile" resultType="foodTruckFile">
+	SELECT
+			FILE_NO fileNo,
+			REF_FTNO refFtno,
+			ORIGIN_NAME originName,
+			CHANGE_NAME changeName,
+			UPLOAD_DATE uploadeDate,
+			FILE_TYPE fileType,
+			FILE_PATH filePath
+	FROM
+			TB_FOODTRUCK_FILE
+	WHERE
+			FILE_TYPE = '1'
+
+</select>
+
+<select id="foodTruckSelectDom" parameterType="_int" resultType="foodTruck">
+
+	  SELECT
+	            FOOD_TRUCK_NO foodTruckNo,
+	            FOOD_TRUCK_USER foodTruckUser,
+		        DOM_NO domNo,
+		        DOM_NAME domName,
+		        FOOD_TRUCK_NAME foodTruckName,
+		        FOOD_TRUCK_START_TIME foodTruckStartTime,
+		        FOOD_TRUCK_END_TIME foodTruckEndTime,
+		        FOOD_TRUCK_DAY foodTruckDay,
+		        FOOD_TRUCK_CONTENT foodTruckContent,
+		        TB_FOOD_TRUCK.ENROLL_DATE enrollDate,
+		        TB_FOOD_TRUCK.MODIFY_DATE modifyDate,
+		        FOOD_TRUCK_COUNT foodTruckCount,
+		        TB_FOOD_TRUCK.STATUS status,
+		        TB_FOOD_TRUCK.ADMIN_STATUS adminStatus
+		FROM
+		        TB_FOOD_TRUCK
+	    JOIN
+	            TB_USER ON (FOOD_TRUCK_USER = USER_ID)
+		JOIN
+		        TB_DOM USING (DOM_NO)
+		WHERE
+		        ADMIN_STATUS = 'N'
+		  AND
+		        TB_FOOD_TRUCK.STATUS = 'Y'
+		  AND
+		  		DOM_NO = #{ domNo }
+		ORDER
+		BY
+		        FOOD_TRUCK_NO
+
 </select>
 
 

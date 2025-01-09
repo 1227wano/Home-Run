@@ -19,6 +19,8 @@ import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.InvalidParameterException;
 import com.kh.baseball.exception.NoticeNotFoundException;
 import com.kh.baseball.exception.PlayerNotFoundException;
+import com.kh.baseball.exception.TooLargeValueException;
+import com.kh.baseball.exception.TooSmallValueException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -108,6 +110,17 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(FoodTruckNoValueException.class)
 	protected ModelAndView foodTruckNoValueError(FoodTruckNoValueException e) {
 		return createErrorResponse("푸드트럭 게시물에 잘못된 입력입니다.", e);
+	}
+	
+	//--- Member
+	@ExceptionHandler(TooLargeValueException.class)
+	protected ModelAndView tooLargeValueError(TooLargeValueException e) {
+		return createErrorResponse("아이디가 조건에 맞지 않습니다.",e);
+	}
+	
+	@ExceptionHandler(TooSmallValueException.class)
+	protected ModelAndView tooSmallValueError(TooSmallValueException e) {
+		return createErrorResponse("비밀번호 조건에 맞지 않습니다.", e);
 	}
 	
 }

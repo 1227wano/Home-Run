@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.kh.baseball.exception.IdNotFoundException;
 import com.kh.baseball.exception.TooLargeValueException;
+import com.kh.baseball.exception.TooSmallValueException;
 import com.kh.baseball.exception.UserFoundException;
 import com.kh.baseball.exception.UserIdNotFoundException;
 import com.kh.baseball.member.model.dao.MemberMapper;
@@ -38,8 +39,14 @@ public class MemberValidator {
 	}
 	
 	public void validateIdLength(Member member) {
-		if(member.getUserId().length() > 30) {
+		if(member.getUserId().length() > 8) {
 			throw new TooLargeValueException("8글자 이하로 작성해주세요.");
+		}
+	}
+	
+	public void validatePwdLength(Member member) {
+		if(member.getUserPwd().length() < 4) {
+			throw new TooSmallValueException("4글자 이상 작성해주세요.");
 		}
 	}
 	
