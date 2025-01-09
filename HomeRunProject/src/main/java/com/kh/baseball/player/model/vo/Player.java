@@ -16,6 +16,7 @@ import lombok.ToString;
 public class Player {
 	
 	private int playerNo;
+	private int userNo;
 	private int grade;
 	private String playerPosition;
 	private Date playerDate;

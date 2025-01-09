@@ -28,9 +28,9 @@ public class PlayerAjaxController {
 	// 선수 더보기
 	@GetMapping(produces="application/json; charset=UTF-8")
 	public ResponseEntity<ResponseData> findMorePlayer(int page) {
-		log.info("{}", page);
+		//log.info("{}", page);
 		List<Player> players = playerService.findMorePlayer(page);
-		log.info("{}", players.get(0));
+		//log.info("{}", players.get(0));
 		ResponseData response = ResponseData.builder()
 											.status(HttpStatus.OK.toString())
 											.data(players)

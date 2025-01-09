@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.baseball.team.model.dao.TeamMapper">
+
+	<sql id="teamColumn">
+		SELECT
+				TEAM_NO teamNo,
+				TEAM_NAME teamName,
+				USER_NO userNo,
+				TEAM_GRADE teamGrade,
+				TEAM_INTRO teamIntro,
+				TEAM_DATE teamDate,
+				STATUS status,
+				ORIGIN_NAME originName,
+				CHANGE_NAME changeName
+	</sql>
+	
+	<insert id="insertTeam" parameterType="team">
+		INSERT
+		  INTO
+				TB_TEAM
+				(
+				TEAM_NO,
+				TEAM_NAME,
+				USER_NO,
+				TEAM_GRADE,
+				TEAM_INTRO,
+				ORIGIN_NAME,
+				CHANGE_NAME
+				)
+		 VALUES
+				(
+				SEQ_TNO.NEXTVAL,
+				#{teamName},
+				#{userNo},
+				#{teamGrade},
+				#{teamIntro},
+				#{originName},
+				#{changeName}
+				)
+	</insert>
+	
+	<select id="getTotalCount" resultType="_int">
+		SELECT
+				COUNT(*)
+		 FROM	
+		 		TB_TEAM
+		WHERE
+				STATUS = 'Y'
+	</select>
+	
+	<select id="selectAllTeam" resultType="team">
+		  <include refid="teamColumn" />
+		  FROM
+		  		TB_TEAM
+		 WHERE
+		 		STATUS = 'Y'
+		 ORDER
+		 	BY
+		 		TEAM_NAME ASC
+	</select>
+	
+	<select id="selectTeamDetail" resultType="team">
+		  <include refid="teamColumn" />
+		  FROM
+		  		TB_TEAM
+		 WHERE
+		 		STATUS = 'Y'
+		   AND
+		   		TEAM_NO = #{teamNo}
+	</select>
+	
+	<select id="mypageTeamDetail" resultType="team">
+		  <include refid="teamColumn" />
+		  FROM
+		  		TB_TEAM
+		 WHERE
+		 		STATUS = 'Y'
+		   AND
+		   		USER_NO = #{userNo}
+	</select>
+	
+	<update id="">
+		UPDATE
+				TB_PLAYER
+		   SET
+		   		PLAYER_NAME = #{ teamName }
+		 WHERE
+		 		PLAYER_NAME = 'FA(Free Agent)'
+		   AND
+		 		USER_NO = #{ userName }
+	</update>
+	
+	
+</mapper>

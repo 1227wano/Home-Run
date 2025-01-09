@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
-import com.kh.baseball.common.PageInfo;
 import com.kh.baseball.player.model.vo.Player;
 import com.kh.baseball.player.model.vo.PlayerAttachment;
+import com.kh.baseball.team.model.vo.Team;
 
 @Mapper
 public interface PlayerMapper {
@@ -20,8 +20,23 @@ public interface PlayerMapper {
 	
 	List<Player> findAllPlayerKorean(RowBounds rowbounds);
 	
-	List<Player> findMorePlayer(int moreNum);
-	
-	
+	Player findPlayerDetail(int playerNo);
+
+	int updatePlayer(Player player);
+
+	void updatePlayerFile(PlayerAttachment playerAtt);
+
+	List<PlayerAttachment> findAllPlayerFile();
+
+	Player mypagePlayerDetail(int userNo);
+
+	PlayerAttachment findPlayerFile(int playerNo);
+
+	void deletePlayer(int playerNo);
+
+	void updatePlayerTeam(Team team);
+
+	void joinTeam(Player player);
+
 
 }
