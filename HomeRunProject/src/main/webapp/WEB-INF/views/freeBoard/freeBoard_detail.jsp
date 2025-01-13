@@ -135,8 +135,10 @@
             <br>
 
             <div align="center">
-                <c:if test="${ (sessionScope.loginUser.nickName eq requestScope.freeBoard.nickName) || (sessionScope.loginUser.userId eq 'admin')}">
+            	<c:if test="${ (sessionScope.loginUser.nickName eq requestScope.freeBoard.nickName) }">
                 <a class="btn btn-primary" onclick="postSubmit(1);">수정하기</a>
+            	</c:if>
+                <c:if test="${ (sessionScope.loginUser.nickName eq requestScope.freeBoard.nickName) || (sessionScope.loginUser.userId eq 'admin')}">
                 <a class="btn btn-danger" onclick="postSubmit(2);">삭제하기</a>
                 </c:if>
             </div>
