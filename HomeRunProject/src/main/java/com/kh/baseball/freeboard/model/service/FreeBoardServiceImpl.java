@@ -187,7 +187,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	public int insertReply(FreeBoardReply reply) {
 		
 		validator.validateChatLength(reply);
+		log.info("ㄴㅇㄻㄴㅇㄻㄴㄹ");
 		int result = mapper.insertReply(reply);
+		log.info("{}",result);
 		
 		if(result < 1) {
 			throw new FailToReplyInsertException("댓글작성 실패했습니다.");

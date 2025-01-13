@@ -215,13 +215,12 @@
     				type : 'post',
     				success : function(result){
     					
-    					// console.log(result);
     					
     					if(result.data === 1){
     						$('#content').val('');
     					}
     					selectReply();
-    					alert("댓글 등록에 성공하셨습니다.");
+    					alert(result.message);
     				},
     				error : function(result){
     					alert(result.responseJSON.message);

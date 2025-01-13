@@ -53,7 +53,7 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 		Map<String, Object> map = new HashMap();
 		map.put("smallBoard", boards);
 		map.put("pageInfo", pi);
-		
+		map.put("boardLimit", boardLimit);
 		return map;
 	}
 
@@ -289,7 +289,7 @@ public class SmallBoardServiceImpl implements SmallBoardService {
 
 		int result = mapper.searchListCount(map);
 
-		PageInfo pi = validator.getPageInfo(result, (int)map.get("page"), (int)map.get("option"));
+		PageInfo pi = validator.getPageInfo(result, (int)map.get("page"), (int)map.get("boardLimit"));
 		RowBounds rowBounds = validator.getRowBounds(pi);
 		
 		List<SmallBoard> boards = mapper.searchList(map, rowBounds);

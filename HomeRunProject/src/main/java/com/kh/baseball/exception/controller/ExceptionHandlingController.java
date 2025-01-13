@@ -48,6 +48,7 @@ public class ExceptionHandlingController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("errorMsg", errorMsg).setViewName("common/error_page");
 		log.info("발생 예외 : {}", e.getMessage(), e);
+		// 글로벌 핸들러 익셉션
 		return mv;
 	}
 	
