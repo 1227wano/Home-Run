@@ -209,7 +209,7 @@ public class SmallBoardController {
 		map.put("condition", condition);
 		map.put("keyword", keyword);
 		map.put("page", page);
-		map.put("option", option);
+		map.put("boardLimit", option);
 		log.info("1{}", map);
 		Map<String, Object> searchMap = smallBoardService.searchList(map);
 		return mv.setViewNameAndData("small/smallBoard_list", searchMap);

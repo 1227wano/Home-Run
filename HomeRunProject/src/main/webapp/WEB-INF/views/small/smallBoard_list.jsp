@@ -125,6 +125,23 @@
 					location.href = '/baseball/searchList.small?condition=${condition}&keyword=${keyword}&option='+option;
 					
 				}
+				
+				window.onload = function(){
+					const boardLimit = document.querySelector('option[value="${boardLimit}"]');
+					//console.log(boardLimit);
+					boardLimit.selected=true;
+					
+					const condition = document.querySelector('option[value="${condition}"]');
+					//console.log(condition);
+					condition.selected=true;
+					
+					const input = document.querySelector('input[name="keyword"]')
+					//console.log(input);
+					//input.innerHTML='${keyword}';
+					input.value='${keyword}';
+				}
+				
+				
 			</script>
             <div id="pagingArea">
                 <ul class="pagination">
@@ -134,7 +151,7 @@
                    			<li class="page-item disabled"><a class="page-link" >이전</a></li>
                    		</c:when>
                    		<c:when test="${empty condition}">
-                   			<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage - 1}&option=${option}">이전</a></li>
+                   			<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage - 1}&boardLimit=${boardLimit}">이전</a></li>
                    		</c:when>
                    		<c:otherwise>
                    			<li class="page-item"><a class="page-link" href="searchList.small?page=${ pageInfo.currentPage - 1 }&condition=${condition}&keyword=${keyword}&option=${option}">이전</a></li>
@@ -146,18 +163,9 @@
                     	<c:choose>
 		                	<c:when test="${empty condition }">
 		                		<li class="page-item">
-		                		<c:choose>
-		                		<c:when test="${ empty boardLimit }">
-			                    	<a class="page-link" href="small?page=${ num }">
+		                			<a class="page-link" href="small?page=${ num }&boardLimit=${boardLimit}">
 			                    		${ num }
 			                    	</a>
-		                		</c:when>
-		                		<c:otherwise>
-		                			<a class="page-link" href="small?page=${ num }&boardLimit=${option}">
-			                    		${ num }
-			                    	</a>
-		                		</c:otherwise>
-		                		</c:choose>
 		                    	</li>
 		               		</c:when>
 			                <c:otherwise>
@@ -177,7 +185,7 @@
                     		<li class="page-item disabled"><a class="page-link" >다음</a></li>
                     	</c:when>
                     	<c:when test="${ empty condition}">
-                    		<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage + 1}&option=${option}">다음</a></li>
+                    		<li class="page-item"><a class="page-link" href="small?page=${ pageInfo.currentPage + 1}&boardLimit=${boardLimit}">다음</a></li>
                     	</c:when>
                     	<c:otherwise>
                     		<li class="page-item"><a class="page-link" href="searchList.small?page=${ pageInfo.currentPage + 1 }&condition=${condition}&keyword=${keyword}">다음</a></li>
